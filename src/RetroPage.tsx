@@ -123,7 +123,7 @@ function MobileBar() {
     <div className={`ra-mbar${on ? " on" : ""}`} aria-hidden={!on}>
       <div className="ra-mbar__txt">
         <b>A partir de R$ 19,90</b>
-        <span>Pronta em até 24h</span>
+        <span>Pronta em até 48h</span>
       </div>
       <a href="#planos" className="ra-btn" tabIndex={on ? 0 : -1}>
         Quero a minha
@@ -158,7 +158,7 @@ const FALTAM = diasParaAData();
 const FALTAM_TXT = FALTAM
   ? `Faltam ${FALTAM.dias} ${FALTAM.dias === 1 ? "dia" : "dias"} para o ${FALTAM.data}`
   : "";
-const STRIP = [FALTAM_TXT, "Peça hoje e receba em até 24h"]
+const STRIP = [FALTAM_TXT, "Peça hoje e receba em até 48h"]
   .filter(Boolean)
   .join(" • ");
 const STRIP_LONG = `${STRIP} • A partir de R$ 19,90 • Ajuste grátis + 7 dias de garantia • `;
@@ -249,15 +249,16 @@ export function RetroADois() {
 /* ---------------------------- navegação ---------------------------- */
 
 function LogoMark() {
+  /* coração com o símbolo de rebobinar: voltar no ano de vocês */
   return (
-    <svg className="ra-logo__mark" viewBox="0 0 34 34" aria-hidden="true">
-      <circle cx="12" cy="17" r="10" fill="#D7263D" />
-      <circle
-        cx="22"
-        cy="17"
-        r="10"
+    <svg className="ra-logo__mark" viewBox="0 0 40 40" aria-hidden="true">
+      <path
+        d="M20 35 C8 27 3 20 3 13.5 A8.5 8.5 0 0 1 20 9.5 A8.5 8.5 0 0 1 37 13.5 C37 20 32 27 20 35Z"
+        fill="#D7263D"
+      />
+      <path
+        d="M19.5 14 L12 19.5 L19.5 25Z M28 14 L20.5 19.5 L28 25Z"
         fill="#FFD23F"
-        style={{ mixBlendMode: "multiply" }}
       />
     </svg>
   );
@@ -437,7 +438,7 @@ function Hero() {
             QUERO A RETRÔ DE NÓS DOIS <ArrowRight size={20} strokeWidth={2.6} />
           </a>
           <p className="ra-note">
-            A partir de R$ 19,90 · Pronta em até 24h · Sem precisar baixar nada
+            A partir de R$ 19,90 · Pronta em até 48h · Sem precisar baixar nada
           </p>
         </div>
       </div>
@@ -867,7 +868,7 @@ function ComoFunciona() {
               </div>
             </div>
             <h3 className="ra-h3">A gente monta a Retrô</h3>
-            <p>Em até 24h você recebe o link pronto no WhatsApp e no e-mail.</p>
+            <p>Em até 48h você recebe o link pronto no WhatsApp e no e-mail.</p>
           </li>
 
           <li className="ra-step ra-rise" style={{ "--i": 2 } as CSSProperties}>
@@ -1569,7 +1570,7 @@ function GarantiaPrazo() {
             <Calendar size={32} strokeWidth={2.2} />
           </span>
           <h2 className="ra-h2">
-            {FALTAM ? FALTAM_TXT : "Peça hoje, receba amanhã"}
+            {FALTAM ? FALTAM_TXT : "Peça hoje, receba em até 48h"}
           </h2>
           <div className="ra-dates">
             <div className="ra-date">
@@ -1578,7 +1579,7 @@ function GarantiaPrazo() {
               <span>Você faz o pedido e conta a história de vocês</span>
             </div>
             <div className="ra-date">
-              <b>24h</b>
+              <b>48h</b>
               <span>A Retrô chega pronta no seu WhatsApp e e-mail</span>
             </div>
           </div>

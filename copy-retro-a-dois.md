@@ -11,7 +11,7 @@ Pendências: links de checkout dos 3 planos (por enquanto os botões usam link p
 
 ## Faixa no topo
 
-Faltam N dias para o Natal • Peça hoje e receba em até 24h (N é calculado automaticamente)
+Faltam N dias para o Natal • Peça hoje e receba em até 48h (N é calculado automaticamente)
 
 ## 1. Hero
 
@@ -20,7 +20,7 @@ Faltam N dias para o Natal • Peça hoje e receba em até 24h (N é calculado a
 **Subheadline:** A Retrô a Dois é uma retrospectiva interativa do casal, com as fotos, as músicas e os momentos que só vocês dois entendem. Você conta a história, a gente monta, e seu amor recebe um link + QR code pra abrir no celular.
 
 **Botão:** QUERO A RETRÔ DE NÓS DOIS
-**Abaixo do botão:** A partir de R$ 19,90 · Pronta em até 24h · Sem precisar baixar nada
+**Abaixo do botão:** A partir de R$ 19,90 · Pronta em até 48h · Sem precisar baixar nada
 
 Ícones: Fotos · Música · Lugares · Carta
 
@@ -51,7 +51,7 @@ Escreva os dois nomes e assista a uma Retrô de exemplo, capítulo por capítulo
 **Pronta em 3 passos**
 
 1. **Escolha seu plano e conte a história de vocês.** Leva uns 10 minutos: você manda as fotos e responde perguntas divertidas sobre o ano de vocês.
-2. **A gente monta a Retrô.** Em até 24h você recebe o link pronto no WhatsApp e no e-mail.
+2. **A gente monta a Retrô.** Em até 48h você recebe o link pronto no WhatsApp e no e-mail.
 3. **Seu amor abre e se emociona.** Pelo link ou pelo QR code, direto no celular, sem baixar nada.
 
 **Botão:** MONTAR A NOSSA RETRÔ
@@ -92,7 +92,7 @@ No plano Inesquecível, o último capítulo é uma mensagem (ou um áudio) tranc
 **Faltam N dias para o Natal** (contagem automática; depois do Natal, conta para o Réveillon)
 
 - **Hoje:** você faz o pedido e conta a história de vocês
-- **24h:** a Retrô chega pronta no seu WhatsApp e e-mail
+- **48h:** a Retrô chega pronta no seu WhatsApp e e-mail
 
 Quanto antes você pedir, mais tempo sobra para ajustar o que quiser e escolher o melhor jeito de entregar.
 
