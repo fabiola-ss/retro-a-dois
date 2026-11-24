@@ -2881,3 +2881,37 @@
 .ra-foot {
   margin-top: clamp(72px, 8vw, 120px);
 }
+
+/* "O problema não é o valor…" vira um cartão de destaque, não mais um título solto */
+.ra .ra-truth {
+  margin-top: clamp(40px, 5vw, 72px);
+  background: var(--cereja);
+  color: #fff;
+  border-radius: 32px;
+  padding: clamp(28px, 4vw, 56px);
+  gap: clamp(16px, 4vw, 64px);
+  align-items: center;
+}
+
+.ra-truth .ra-mark {
+  color: var(--tinta);
+}
+
+.ra-truth .ra-lead {
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .ra .ra-truth {
+    gap: 16px;
+  }
+  .ra .ra-truth__big {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 760px) {
+  .ra-qreveal .ra-questions {
+    margin-top: 28px;
+  }
+}

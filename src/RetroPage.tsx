@@ -519,47 +519,49 @@ function QuestionDeck() {
 
   const n = PERGUNTAS.length;
   return (
-    <div
-      ref={ref}
-      className={`ra-qwrap ra-rise${deck ? " is-deck" : ""}`}
-      style={{ "--i": 2 } as CSSProperties}
-    >
-      <ul className="ra-questions">
-        {PERGUNTAS.map((text, k) => {
-          const pos = (k - q + n) % n;
-          return (
-            <li
-              key={text}
-              data-pos={deck ? pos : undefined}
-              aria-hidden={deck && pos !== 0 ? true : undefined}
-              onClick={deck ? () => setQ((v) => (v + 1) % n) : undefined}
-            >
-              <HelpCircle size={22} strokeWidth={2.4} />
-              {text}
-            </li>
-          );
-        })}
-      </ul>
-      {deck && (
-        <div className="ra-qdots">
-          {PERGUNTAS.map((text, k) => (
-            <button
-              key={text}
-              type="button"
-              aria-label={`Pergunta ${k + 1} de ${n}`}
-              aria-current={q === k}
-              onClick={() => setQ(k)}
-            >
-              {q === k && (
-                <i
-                  key={q}
-                  style={{ "--dur": `${DECK_MS}ms` } as CSSProperties}
-                />
-              )}
-            </button>
-          ))}
-        </div>
-      )}
+    <div data-reveal className="ra-qreveal">
+      <div
+        ref={ref}
+        className={`ra-qwrap ra-rise${deck ? " is-deck" : ""}`}
+        style={{ "--i": 1 } as CSSProperties}
+      >
+        <ul className="ra-questions">
+          {PERGUNTAS.map((text, k) => {
+            const pos = (k - q + n) % n;
+            return (
+              <li
+                key={text}
+                data-pos={deck ? pos : undefined}
+                aria-hidden={deck && pos !== 0 ? true : undefined}
+                onClick={deck ? () => setQ((v) => (v + 1) % n) : undefined}
+              >
+                <HelpCircle size={22} strokeWidth={2.4} />
+                {text}
+              </li>
+            );
+          })}
+        </ul>
+        {deck && (
+          <div className="ra-qdots">
+            {PERGUNTAS.map((text, k) => (
+              <button
+                key={text}
+                type="button"
+                aria-label={`Pergunta ${k + 1} de ${n}`}
+                aria-current={q === k}
+                onClick={() => setQ(k)}
+              >
+                {q === k && (
+                  <i
+                    key={q}
+                    style={{ "--dur": `${DECK_MS}ms` } as CSSProperties}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
