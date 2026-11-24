@@ -12,7 +12,6 @@ import {
   Camera,
   Check,
   Clock,
-  Gift,
   Heart,
   HelpCircle,
   Infinity as InfinityIcon,
@@ -25,15 +24,8 @@ import {
   QrCode,
   Send,
   ShieldCheck,
-  Shirt,
-  Sparkles,
   Star,
-  Sun,
-  Watch,
-  Zap,
   Mail,
-  Ticket,
-  PenLine,
 } from "lucide-react";
 
 /* Links de checkout: troque pelos links reais de cada plano. */
@@ -206,9 +198,8 @@ export function RetroADois() {
       <main>
         <Hero />
         <Identificacao />
-        <ComoFunciona />
-        <OQueTemDentro />
         <Previa />
+        <ComoFunciona />
         <div className="ra-dark">
           <Shape style={{ top: 40, left: -60 }} />
           <Shape style={{ top: 40, right: -60 }} />
@@ -259,7 +250,7 @@ function Nav() {
               <a href="#como-funciona">Como funciona</a>
             </li>
             <li>
-              <a href="#capitulos">O que tem dentro</a>
+              <a href="#previa">Veja um exemplo</a>
             </li>
             <li>
               <a href="#planos">Planos</a>
@@ -443,54 +434,21 @@ function Hero() {
 
 /* -------------------------- identificação -------------------------- */
 
-const ORBIT: {
+type OrbitItem = {
   a: number;
   r: number;
   bg: string;
   fg: string;
   icon: ReactNode;
   label: string;
-}[] = [
-  {
-    a: -90,
-    r: 50,
-    bg: "#F7A1B5",
-    fg: "#1C1416",
-    icon: <Sparkles size={28} />,
-    label: "Perfume",
-  },
-  {
-    a: -10,
-    r: 50,
-    bg: "#FFD23F",
-    fg: "#1C1416",
-    icon: <Watch size={28} />,
-    label: "Relógio",
-  },
-  {
-    a: 75,
-    r: 50,
-    bg: "#1C1416",
-    fg: "#FBF6EF",
-    icon: <Shirt size={28} />,
-    label: "Camiseta",
-  },
-  {
-    a: 160,
-    r: 50,
-    bg: "#D7263D",
-    fg: "#fff",
-    icon: <Ticket size={28} />,
-    label: "Vale-presente",
-  },
-];
+};
 
 function Orbit({
   children,
   items,
 }: {
   children: ReactNode;
-  items: typeof ORBIT;
+  items: OrbitItem[];
 }) {
   return (
     <>
@@ -624,15 +582,8 @@ function Identificacao() {
               shopping e só encontra perfume, relógio, camiseta… coisa que
               qualquer pessoa poderia dar.
             </p>
-            <QuestionDeck />
           </div>
-          <div className="ra-orbit" aria-hidden="true">
-            <Orbit items={ORBIT}>
-              <div className="ra-orbit__center">
-                <Gift size={56} strokeWidth={1.8} />
-              </div>
-            </Orbit>
-          </div>
+          <QuestionDeck />
         </div>
 
         <div className="ra-truth" data-reveal>
@@ -640,17 +591,11 @@ function Identificacao() {
             O problema não é o valor do presente. É que ele não conta a{" "}
             <span className="ra-mark">história de vocês.</span>
           </p>
-          <div className="ra-rise" style={{ "--i": 1 } as CSSProperties}>
-            <p className="ra-lead">
-              E em 2026 vocês viveram muita coisa: aquela viagem, aquela briga
-              boba, aquele dia que ninguém esquece, a música que tocou mil vezes
-              no carro.
-            </p>
-            <p className="ra-lead">
-              Tudo isso está espalhado no rolo da câmera, esperando alguém
-              juntar.
-            </p>
-          </div>
+          <p className="ra-lead ra-rise" style={{ "--i": 1 } as CSSProperties}>
+            E em 2026 vocês viveram muita coisa: aquela viagem, aquela briga
+            boba, a música que tocou mil vezes no carro. Tudo isso está
+            espalhado no rolo da câmera, esperando alguém juntar.
+          </p>
         </div>
       </div>
     </section>
@@ -793,6 +738,10 @@ function ComoFunciona() {
     <section
       className="ra-sec ra-sec--tight-top ra-center"
       id="como-funciona"
+      style={{
+        background: "var(--creme-2)",
+        paddingTop: "clamp(96px, 12vw, 180px)",
+      }}
       aria-labelledby="cf-t"
     >
       <div className="ra-wrap">
@@ -803,14 +752,8 @@ function ComoFunciona() {
             className="ra-h2 ra-rise"
             style={{ "--i": 1 } as CSSProperties}
           >
-            Conheça a Retrô a Dois
+            Pronta em 3 passos
           </h2>
-          <p className="ra-lead ra-rise" style={{ "--i": 2 } as CSSProperties}>
-            Sabe aquelas retrospectivas de fim de ano que mostram suas músicas
-            mais ouvidas? Imagina uma dessas, só que sobre o amor de vocês.
-            Capítulo por capítulo, com fotos, frases e “estatísticas” que só
-            vocês dois vão entender.
-          </p>
         </div>
 
         <ol
@@ -954,146 +897,6 @@ function ComoFunciona() {
 }
 
 /* ------------------------- o que tem dentro ------------------------- */
-
-const CAPITULOS: {
-  t: string;
-  d: string;
-  icon: ReactNode;
-  bg: string;
-  fg: string;
-}[] = [
-  {
-    t: "“2026 foi o ano de [nome] e [nome]”",
-    d: "A abertura, com a foto favorita do casal.",
-    icon: <Camera size={22} />,
-    bg: "#D7263D",
-    fg: "#fff",
-  },
-  {
-    t: "“Vocês passaram 365 dias juntos”",
-    d: "Ou “o primeiro ano juntos”, ou “o 7º ano juntos”.",
-    icon: <Calendar size={22} />,
-    bg: "#FFD23F",
-    fg: "#1C1416",
-  },
-  {
-    t: "“A música do ano de vocês foi…”",
-    d: "Aquela que virou trilha sonora.",
-    icon: <Music size={22} />,
-    bg: "#F7A1B5",
-    fg: "#1C1416",
-  },
-  {
-    t: "“O lugar mais marcante”",
-    d: "A viagem, o restaurante, o rolê.",
-    icon: <MapPin size={22} />,
-    bg: "#1C1416",
-    fg: "#FFD23F",
-  },
-  {
-    t: "“O momento mais caótico do ano”",
-    d: "Porque todo casal tem um.",
-    icon: <Zap size={22} />,
-    bg: "#D7263D",
-    fg: "#fff",
-  },
-  {
-    t: "“A frase que mais se repetiu”",
-    d: "O bordão, a piada interna.",
-    icon: <MessageCircle size={22} />,
-    bg: "#FFD23F",
-    fg: "#1C1416",
-  },
-  {
-    t: "“O mês mais feliz”",
-    d: "Com as fotos daquele período.",
-    icon: <Sun size={22} />,
-    bg: "#F7A1B5",
-    fg: "#1C1416",
-  },
-  {
-    t: "“O que vem em 2027”",
-    d: "Uma promessa ou um sonho para o próximo ano.",
-    icon: <Star size={22} />,
-    bg: "#1C1416",
-    fg: "#FFD23F",
-  },
-];
-
-function OQueTemDentro() {
-  return (
-    <section
-      className="ra-sec ra-center"
-      id="capitulos"
-      aria-labelledby="cap-t"
-      style={{ background: "var(--creme-2)" }}
-    >
-      <div className="ra-wrap">
-        <div data-reveal>
-          <span className="ra-pill ra-rise">O que tem dentro</span>
-          <h2
-            id="cap-t"
-            className="ra-h2 ra-rise"
-            style={{ "--i": 1 } as CSSProperties}
-          >
-            O ano de vocês, contado{" "}
-            <span className="ra-mark">capítulo por capítulo</span>
-          </h2>
-        </div>
-
-        <div className="ra-tree" data-reveal>
-          <div className="ra-tree__root ra-rise">
-            <Heart size={20} fill="currentColor" /> A Retrô de vocês
-          </div>
-          <div className="ra-tree__stem" />
-          <div className="ra-tree__branch" />
-          <ul className="ra-chapters">
-            {CAPITULOS.map((c, i) => (
-              <li
-                key={c.t}
-                className="ra-chapter ra-rise"
-                style={{ "--i": i + 1 } as CSSProperties}
-              >
-                <span
-                  className="ra-chapter__ic"
-                  style={{ background: c.bg, color: c.fg }}
-                  aria-hidden="true"
-                >
-                  {c.icon}
-                </span>
-                <div>
-                  <b>{c.t}</b>
-                  <span>{c.d}</span>
-                </div>
-              </li>
-            ))}
-            <li
-              className="ra-chapter ra-chapter--last ra-rise"
-              style={{ "--i": 9 } as CSSProperties}
-            >
-              <span
-                className="ra-chapter__ic"
-                style={{ background: "#D7263D", color: "#fff" }}
-                aria-hidden="true"
-              >
-                <PenLine size={22} />
-              </span>
-              <div>
-                <b>Carta final</b>
-                <span>
-                  A sua mensagem de amor, pra fechar com chave de ouro.
-                </span>
-              </div>
-            </li>
-          </ul>
-          <p className="ra-unique">
-            Cada Retrô é única, porque é feita com a história real de vocês.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 /* ------------------------------ prévia ------------------------------ */
 
@@ -1246,16 +1049,20 @@ function Previa() {
   const s = SLIDES[i] ?? SLIDES[0]!;
 
   return (
-    <section className="ra-sec" aria-labelledby="prev-t">
+    <section
+      className="ra-sec ra-sec--tight-top"
+      id="previa"
+      aria-labelledby="prev-t"
+    >
       <div className="ra-wrap ra-demo">
         <div data-reveal>
           <h2 id="prev-t" className="ra-h2 ra-rise">
             Veja como seu amor vai <span className="ra-mark">receber</span>
           </h2>
           <p className="ra-lead ra-rise" style={{ "--i": 1 } as CSSProperties}>
-            Escreva os dois nomes e assista a uma Retrô de exemplo. A de vocês
-            vem com as suas fotos, a música de vocês e as histórias que você
-            contar.
+            Escreva os dois nomes e assista a uma Retrô de exemplo, capítulo por
+            capítulo. A de vocês ainda tem o momento mais caótico do ano, o mês
+            mais feliz, o que vem em 2027 e a sua carta final.
           </p>
           <div
             className="ra-demo__form ra-rise"
@@ -1289,8 +1096,8 @@ function Previa() {
             className="ra-note ra-demo__hint ra-rise"
             style={{ "--i": 3 } as CSSProperties}
           >
-            Toque na lateral da tela para avançar ou voltar. Exemplo com
-            ilustrações; a sua Retrô usa as fotos de vocês.
+            Toque nas laterais da tela para avançar ou voltar. Exemplo com
+            ilustrações; a sua usa as fotos de vocês.
           </p>
         </div>
 
@@ -1664,14 +1471,9 @@ function Capsula() {
             <span className="ra-mark">2027</span>
           </h2>
           <p className="ra-lead ra-rise" style={{ "--i": 2 } as CSSProperties}>
-            No plano Inesquecível, o último capítulo da Retrô é uma cápsula do
-            tempo. Você escreve uma mensagem (ou grava um áudio) que fica
-            trancada até a data que você escolher.
-          </p>
-          <p className="ra-lead ra-rise" style={{ "--i": 3 } as CSSProperties}>
-            Até lá, seu amor só vê um cadeado e uma contagem regressiva. E no
-            dia certo, a mensagem se abre. Isso é presente que não acaba no dia
-            25.
+            No plano Inesquecível, o último capítulo é uma mensagem (ou um
+            áudio) trancada até a data que você escolher. Até lá, seu amor só vê
+            um cadeado e uma contagem regressiva.
           </p>
           <a
             href={CHECKOUT.inesquecivel}
@@ -1752,7 +1554,6 @@ function GarantiaPrazo() {
               <span>Ainda dá tempo para o Réveillon</span>
             </div>
           </div>
-          <p>Depois do pedido, a sua Retrô fica pronta em até 24h.</p>
         </div>
       </div>
     </section>
@@ -1767,10 +1568,6 @@ const FAQ = [
     a: "Não. A Retrô abre direto no navegador do celular, pelo link ou pelo QR code.",
   },
   {
-    q: "Em quanto tempo eu recebo?",
-    a: "Em até 24h depois que você enviar as fotos e as respostas do formulário.",
-  },
-  {
     q: "E se a gente estiver junto há pouco tempo?",
     a: "Funciona do mesmo jeito. A Retrô pode contar os primeiros meses de vocês, e isso costuma emocionar ainda mais.",
   },
@@ -1781,10 +1578,6 @@ const FAQ = [
   {
     q: "Posso dar para alguém que mora longe?",
     a: "Pode. Você manda o link por WhatsApp ou escolhe o dia em que a Retrô vai abrir (no plano Inesquecível).",
-  },
-  {
-    q: "Posso mudar alguma coisa depois de pronta?",
-    a: "Pode. Você tem direito a um ajuste sem custo depois de receber.",
   },
   { q: "Quais as formas de pagamento?", a: "Pix ou cartão de crédito." },
 ];
@@ -1897,8 +1690,7 @@ function CtaFinal() {
             <i aria-hidden="true" />
           </a>
           <p className="ra-note ra-rise" style={{ "--i": 3 } as CSSProperties}>
-            A partir de R$ 19,90 · Pronta em até 24h · Ajuste grátis + 7 dias de
-            garantia
+            A partir de R$ 19,90 · 7 dias de garantia
           </p>
         </div>
         <footer className="ra-foot" data-reveal>

@@ -2842,3 +2842,19 @@
     animation: ra-fill var(--dur) linear forwards;
   }
 }
+
+/* identificação sem o círculo: perguntas na coluna da direita */
+@media (min-width: 901px) {
+  .ra-ident .ra-questions {
+    margin-top: 0;
+  }
+}
+
+/* garantia e prazo mais compactos */
+.ra-promise__card .ra-h2 {
+  font-size: clamp(28px, 2.6vw, 38px);
+}
+
+.ra-promise__card {
+  padding: clamp(28px, 3vw, 44px);
+}
