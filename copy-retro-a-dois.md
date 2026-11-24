@@ -11,7 +11,7 @@ Pendências: links de checkout dos 3 planos (por enquanto os botões usam link p
 
 ## Faixa no topo
 
-Faltam N dias para o Natal • Peça hoje e receba em até 48h (N é calculado automaticamente)
+Faltam N dias para o Natal · Entrega em até 48h (faixa discreta, clara e parada; N é calculado automaticamente)
 
 ## 1. Hero
 

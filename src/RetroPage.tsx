@@ -158,10 +158,7 @@ const FALTAM = diasParaAData();
 const FALTAM_TXT = FALTAM
   ? `Faltam ${FALTAM.dias} ${FALTAM.dias === 1 ? "dia" : "dias"} para o ${FALTAM.data}`
   : "";
-const STRIP = [FALTAM_TXT, "Peça hoje e receba em até 48h"]
-  .filter(Boolean)
-  .join(" • ");
-const STRIP_LONG = `${STRIP} • A partir de R$ 19,90 • Ajuste grátis + 7 dias de garantia • `;
+const STRIP = [FALTAM_TXT, "Entrega em até 48h"].filter(Boolean).join(" · ");
 
 export function RetroADois() {
   const root = useRef<HTMLDivElement>(null);
@@ -211,16 +208,7 @@ export function RetroADois() {
 
   return (
     <div className="ra" ref={root}>
-      <div className="ra-strip">
-        <span className="ra-strip__static" aria-hidden="true">
-          {STRIP}
-        </span>
-        <span className="ra-strip__marquee" aria-hidden="true">
-          <span>{STRIP_LONG}</span>
-          <span>{STRIP_LONG}</span>
-        </span>
-        <span className="sr-only ra-strip__sr">{STRIP}</span>
-      </div>
+      <div className="ra-strip">{STRIP}</div>
       <Nav />
       <main>
         <Hero />

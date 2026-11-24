@@ -3032,3 +3032,14 @@
 .ra-date b {
   min-width: 3.1ch;
 }
+
+/* faixa do topo discreta: clara, parada e com texto curto */
+.ra .ra-strip {
+  background: var(--creme-2);
+  color: var(--tinta-2);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px var(--gutter);
+  white-space: normal;
+  text-align: center;
+}
