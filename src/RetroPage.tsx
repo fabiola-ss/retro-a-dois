@@ -738,10 +738,7 @@ function ComoFunciona() {
     <section
       className="ra-sec ra-sec--tight-top ra-center"
       id="como-funciona"
-      style={{
-        background: "var(--creme-2)",
-        paddingTop: "clamp(96px, 12vw, 180px)",
-      }}
+      style={{ background: "var(--creme-2)" }}
       aria-labelledby="cf-t"
     >
       <div className="ra-wrap">

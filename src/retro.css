@@ -2858,3 +2858,26 @@
 .ra-promise__card {
   padding: clamp(28px, 3vw, 44px);
 }
+
+/* ritmo vertical revisto depois de enxugar a página */
+.ra-sec {
+  padding: clamp(64px, 8vw, 120px) 0;
+}
+
+.ra-sec--tight-top {
+  padding-top: clamp(32px, 4vw, 56px);
+}
+
+.ra-truth {
+  margin-top: clamp(56px, 7vw, 104px);
+}
+
+@media (min-width: 721px) {
+  .ra-tiles {
+    height: clamp(220px, 22vw, 320px);
+  }
+}
+
+.ra-foot {
+  margin-top: clamp(72px, 8vw, 120px);
+}
