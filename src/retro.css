@@ -3028,3 +3028,7 @@
     font-weight: 600;
   }
 }
+
+.ra-date b {
+  min-width: 3.1ch;
+}

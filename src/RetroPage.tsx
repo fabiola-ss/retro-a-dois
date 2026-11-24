@@ -132,9 +132,36 @@ function MobileBar() {
   );
 }
 
-const STRIP = "Pedidos para o Natal até 22/12 • Pronta em até 24h";
-const STRIP_LONG =
-  "Pedidos para o Natal até 22/12 • Pronta em até 24h • A partir de R$ 19,90 • Ajuste grátis + 7 dias de garantia • ";
+/** Quantos dias faltam para o Natal (ou para o Réveillon, depois do Natal). */
+function diasParaAData(): { dias: number; data: "Natal" | "Réveillon" } | null {
+  const hoje = new Date();
+  const meiaNoite = new Date(
+    hoje.getFullYear(),
+    hoje.getMonth(),
+    hoje.getDate(),
+  );
+  const ano = hoje.getFullYear();
+  const natal = new Date(ano, 11, 25);
+  const reveillon = new Date(ano, 11, 31);
+  const dia = 86400000;
+  if (meiaNoite < natal)
+    return { dias: Math.round((+natal - +meiaNoite) / dia), data: "Natal" };
+  if (meiaNoite < reveillon)
+    return {
+      dias: Math.round((+reveillon - +meiaNoite) / dia),
+      data: "Réveillon",
+    };
+  return null;
+}
+
+const FALTAM = diasParaAData();
+const FALTAM_TXT = FALTAM
+  ? `Faltam ${FALTAM.dias} ${FALTAM.dias === 1 ? "dia" : "dias"} para o ${FALTAM.data}`
+  : "";
+const STRIP = [FALTAM_TXT, "Peça hoje e receba em até 24h"]
+  .filter(Boolean)
+  .join(" • ");
+const STRIP_LONG = `${STRIP} • A partir de R$ 19,90 • Ajuste grátis + 7 dias de garantia • `;
 
 export function RetroADois() {
   const root = useRef<HTMLDivElement>(null);
@@ -1541,18 +1568,24 @@ function GarantiaPrazo() {
           <span className="ra-promise__ic" aria-hidden="true">
             <Calendar size={32} strokeWidth={2.2} />
           </span>
-          <h2 className="ra-h2">Prazo para pedir</h2>
+          <h2 className="ra-h2">
+            {FALTAM ? FALTAM_TXT : "Peça hoje, receba amanhã"}
+          </h2>
           <div className="ra-dates">
             <div className="ra-date">
               <i className="ra-date__dot" aria-hidden="true" />
-              <b>22/12</b>
-              <span>Último dia para receber antes do Natal</span>
+              <b>Hoje</b>
+              <span>Você faz o pedido e conta a história de vocês</span>
             </div>
             <div className="ra-date">
-              <b>29/12</b>
-              <span>Ainda dá tempo para o Réveillon</span>
+              <b>24h</b>
+              <span>A Retrô chega pronta no seu WhatsApp e e-mail</span>
             </div>
           </div>
+          <p>
+            Quanto antes você pedir, mais tempo sobra para ajustar o que quiser
+            e escolher o melhor jeito de entregar.
+          </p>
         </div>
       </div>
     </section>
@@ -1562,6 +1595,10 @@ function GarantiaPrazo() {
 /* -------------------------------- faq -------------------------------- */
 
 const FAQ = [
+  {
+    q: "Até quando dá para pedir para o Natal?",
+    a: "Pedidos feitos até 22/12 ficam prontos antes do Natal (e até 29/12 para o Réveillon). Mas quanto antes você pedir, mais tempo sobra para ajustes e para preparar a entrega.",
+  },
   {
     q: "Preciso baixar algum aplicativo?",
     a: "Não. A Retrô abre direto no navegador do celular, pelo link ou pelo QR code.",

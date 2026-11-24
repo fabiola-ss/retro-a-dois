@@ -11,7 +11,7 @@ Pendências: links de checkout dos 3 planos (por enquanto os botões usam link p
 
 ## Faixa no topo
 
-Pedidos para o Natal até 22/12 • Pronta em até 24h
+Faltam N dias para o Natal • Peça hoje e receba em até 24h (N é calculado automaticamente)
 
 ## 1. Hero
 
@@ -89,10 +89,16 @@ No plano Inesquecível, o último capítulo é uma mensagem (ou um áudio) tranc
 
 **Ajuste grátis e 7 dias de garantia.** Se a sua Retrô não ficar do jeito que você imaginou, a gente ajusta sem custo. E se ainda assim não gostar, você tem 7 dias para pedir seu dinheiro de volta. Simples assim.
 
-**Prazo para pedir:** 22/12 (último dia para receber antes do Natal) · 29/12 (ainda dá tempo para o Réveillon)
+**Faltam N dias para o Natal** (contagem automática; depois do Natal, conta para o Réveillon)
+
+- **Hoje:** você faz o pedido e conta a história de vocês
+- **24h:** a Retrô chega pronta no seu WhatsApp e e-mail
+
+Quanto antes você pedir, mais tempo sobra para ajustar o que quiser e escolher o melhor jeito de entregar.
 
 ## 8. Perguntas frequentes
 
+- **Até quando dá para pedir para o Natal?** Pedidos feitos até 22/12 ficam prontos antes do Natal (e até 29/12 para o Réveillon). Mas quanto antes você pedir, mais tempo sobra para ajustes e para preparar a entrega.
 - **Preciso baixar algum aplicativo?** Não. A Retrô abre direto no navegador do celular, pelo link ou pelo QR code.
 - **E se a gente estiver junto há pouco tempo?** Funciona do mesmo jeito. A Retrô pode contar os primeiros meses de vocês, e isso costuma emocionar ainda mais.
 - **Minhas fotos ficam públicas?** Não. Só quem tiver o link consegue ver a Retrô.
