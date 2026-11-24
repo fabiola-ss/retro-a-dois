@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import {
+  Fragment,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 import {
   ArrowRight,
   Calendar,
@@ -38,6 +45,105 @@ const CHECKOUT = {
 
 /* ------------------------------------------------------------------ */
 
+const prefersReduced = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/** Fica true (uma vez) quando o elemento entra na tela. */
+function useInView<T extends Element>(threshold = 0.35) {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e?.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { threshold },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [threshold]);
+  return [ref, inView] as const;
+}
+
+/** Texto que se digita sozinho quando aparece na tela. */
+function TypeLine({ text }: { text: string }) {
+  const [ref, inView] = useInView<HTMLSpanElement>(0.6);
+  const [n, setN] = useState(text.length);
+  useEffect(() => {
+    if (!prefersReduced()) setN(0);
+  }, []);
+  useEffect(() => {
+    if (!inView || n >= text.length) return;
+    const t = window.setTimeout(() => setN((v) => v + 1), n === 0 ? 500 : 42);
+    return () => window.clearTimeout(t);
+  }, [inView, n, text.length]);
+  return <span ref={ref}>{text.slice(0, n)}</span>;
+}
+
+/** Preço que sobe de 0 até o valor quando aparece na tela. */
+function CountPrice({ value }: { value: string }) {
+  const target = Math.round(parseFloat(value.replace(",", ".")) * 100);
+  const [ref, inView] = useInView<HTMLSpanElement>(0.5);
+  const [cents, setCents] = useState(target);
+  useEffect(() => {
+    if (!prefersReduced()) setCents(0);
+  }, []);
+  useEffect(() => {
+    if (!inView || prefersReduced()) return;
+    let raf = 0;
+    const start = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / 900);
+      setCents(Math.round(target * (1 - Math.pow(1 - t, 3))));
+      if (t < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, target]);
+  return <span ref={ref}>{(cents / 100).toFixed(2).replace(".", ",")}</span>;
+}
+
+/** Barra fixa no rodapé do celular, que aparece depois do topo da página. */
+function MobileBar() {
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    const targets = ["topo", "planos", "fim"]
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => !!el);
+    const visible = new Map<Element, boolean>();
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) visible.set(e.target, e.isIntersecting);
+      setOn(![...visible.values()].some(Boolean));
+    });
+    targets.forEach((t) => {
+      visible.set(t, false);
+      io.observe(t);
+    });
+    return () => io.disconnect();
+  }, []);
+  return (
+    <div className={`ra-mbar${on ? " on" : ""}`} aria-hidden={!on}>
+      <div className="ra-mbar__txt">
+        <b>A partir de R$ 19,90</b>
+        <span>Pronta em até 24h</span>
+      </div>
+      <a href="#planos" className="ra-btn" tabIndex={on ? 0 : -1}>
+        Quero a minha
+      </a>
+    </div>
+  );
+}
+
+const STRIP = "Pedidos para o Natal até 22/12 • Pronta em até 24h";
+const STRIP_LONG =
+  "Pedidos para o Natal até 22/12 • Pronta em até 24h • A partir de R$ 19,90 • Ajuste grátis + 7 dias de garantia • ";
+
 export function RetroADois() {
   const root = useRef<HTMLDivElement>(null);
 
@@ -61,9 +167,41 @@ export function RetroADois() {
     return () => io.disconnect();
   }, []);
 
+  /* barrinha de progresso de leitura, abaixo do menu */
+  useEffect(() => {
+    const bar = root.current?.querySelector<HTMLElement>(".ra-progress i");
+    if (!bar) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.transform = `scaleX(${max > 0 ? Math.min(1, window.scrollY / max) : 0})`;
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
     <div className="ra" ref={root}>
-      <div className="ra-strip">Pedidos para o Natal até 22/12 • Pronta em até 24h</div>
+      <div className="ra-strip">
+        <span className="ra-strip__static" aria-hidden="true">
+          {STRIP}
+        </span>
+        <span className="ra-strip__marquee" aria-hidden="true">
+          <span>{STRIP_LONG}</span>
+          <span>{STRIP_LONG}</span>
+        </span>
+        <span className="sr-only ra-strip__sr">{STRIP}</span>
+      </div>
       <Nav />
       <main>
         <Hero />
@@ -85,6 +223,7 @@ export function RetroADois() {
         <Shape style={{ top: 60, right: -70 }} />
         <CtaFinal />
       </div>
+      <MobileBar />
     </div>
   );
 }
@@ -95,7 +234,13 @@ function LogoMark() {
   return (
     <svg className="ra-logo__mark" viewBox="0 0 34 34" aria-hidden="true">
       <circle cx="12" cy="17" r="10" fill="#D7263D" />
-      <circle cx="22" cy="17" r="10" fill="#FFD23F" style={{ mixBlendMode: "multiply" }} />
+      <circle
+        cx="22"
+        cy="17"
+        r="10"
+        fill="#FFD23F"
+        style={{ mixBlendMode: "multiply" }}
+      />
     </svg>
   );
 }
@@ -128,17 +273,50 @@ function Nav() {
           Quero a minha
         </a>
       </div>
+      <div className="ra-progress" aria-hidden="true">
+        <i />
+      </div>
     </header>
   );
 }
 
 /* ------------------------------ hero ------------------------------ */
 
-const TILES: { x: string; y: number; bg: string; fg: string; icon: ReactNode }[] = [
-  { x: "9%", y: 90, bg: "#D7263D", fg: "#fff", icon: <Music size={30} strokeWidth={2.4} /> },
-  { x: "23%", y: 10, bg: "#FFD23F", fg: "#1C1416", icon: <Camera size={30} strokeWidth={2.4} /> },
-  { x: "39%", y: 150, bg: "#F7A1B5", fg: "#1C1416", icon: <MapPin size={30} strokeWidth={2.4} /> },
-  { x: "61%", y: 150, bg: "#D7263D", fg: "#fff", icon: <Heart size={30} strokeWidth={2.4} /> },
+const TILES: {
+  x: string;
+  y: number;
+  bg: string;
+  fg: string;
+  icon: ReactNode;
+}[] = [
+  {
+    x: "9%",
+    y: 90,
+    bg: "#D7263D",
+    fg: "#fff",
+    icon: <Music size={30} strokeWidth={2.4} />,
+  },
+  {
+    x: "23%",
+    y: 10,
+    bg: "#FFD23F",
+    fg: "#1C1416",
+    icon: <Camera size={30} strokeWidth={2.4} />,
+  },
+  {
+    x: "39%",
+    y: 150,
+    bg: "#F7A1B5",
+    fg: "#1C1416",
+    icon: <MapPin size={30} strokeWidth={2.4} />,
+  },
+  {
+    x: "61%",
+    y: 150,
+    bg: "#D7263D",
+    fg: "#fff",
+    icon: <Heart size={30} strokeWidth={2.4} />,
+  },
   {
     x: "77%",
     y: 10,
@@ -146,13 +324,32 @@ const TILES: { x: string; y: number; bg: string; fg: string; icon: ReactNode }[]
     fg: "#FFD23F",
     icon: <MessageCircle size={30} strokeWidth={2.4} />,
   },
-  { x: "91%", y: 90, bg: "#FFD23F", fg: "#1C1416", icon: <Calendar size={30} strokeWidth={2.4} /> },
+  {
+    x: "91%",
+    y: 90,
+    bg: "#FFD23F",
+    fg: "#1C1416",
+    icon: <Calendar size={30} strokeWidth={2.4} />,
+  },
 ];
 
-function IsoTile({ bg, fg, icon }: { bg: string; fg: string; icon: ReactNode }) {
+function IsoTile({
+  bg,
+  fg,
+  icon,
+}: {
+  bg: string;
+  fg: string;
+  icon: ReactNode;
+}) {
   return (
     <div className="ra-tile__float">
-      <svg viewBox="0 0 200 150" width="100%" aria-hidden="true" style={{ display: "block" }}>
+      <svg
+        viewBox="0 0 200 150"
+        width="100%"
+        aria-hidden="true"
+        style={{ display: "block" }}
+      >
         <polygon points="100,20 190,66 100,112 10,66" fill="#FFFDF9" />
         <polygon points="10,66 100,112 100,132 10,86" fill="#E9DCCB" />
         <polygon points="100,112 190,66 190,86 100,132" fill="#F3EADD" />
@@ -179,20 +376,40 @@ function IsoTile({ bg, fg, icon }: { bg: string; fg: string; icon: ReactNode }) 
   );
 }
 
+const HERO_WORDS =
+  "Transforme o ano de vocês numa retrospectiva que dá vontade de assistir".split(
+    " ",
+  );
+
 function Hero() {
   return (
     <section className="ra-hero" id="topo" data-reveal>
       <div className="ra-wrap">
-        <h1 className="ra-h1 ra-rise">
-          Transforme o ano de vocês numa retrospectiva que dá vontade de assistir{" "}
-          <span className="ra-mark">mil vezes.</span>
+        <h1 className="ra-h1 ra-words">
+          {HERO_WORDS.map((w, k) => (
+            <Fragment key={k}>
+              <span className="ra-word" style={{ "--w": k } as CSSProperties}>
+                {w}
+              </span>{" "}
+            </Fragment>
+          ))}
+          <span
+            className="ra-word"
+            style={{ "--w": HERO_WORDS.length } as CSSProperties}
+          >
+            <span className="ra-mark">mil vezes.</span>
+          </span>
         </h1>
         <p className="ra-lead ra-rise" style={{ "--i": 1 } as CSSProperties}>
-          A Retrô a Dois é uma retrospectiva interativa do casal, com as fotos, as músicas e os
-          momentos que só vocês dois entendem. Você conta a história, a gente monta, e seu amor
-          recebe um link + QR code pra abrir no celular.
+          A Retrô a Dois é uma retrospectiva interativa do casal, com as fotos,
+          as músicas e os momentos que só vocês dois entendem. Você conta a
+          história, a gente monta, e seu amor recebe um link + QR code pra abrir
+          no celular.
         </p>
-        <div className="ra-hero__cta ra-rise" style={{ "--i": 2 } as CSSProperties}>
+        <div
+          className="ra-hero__cta ra-rise"
+          style={{ "--i": 2 } as CSSProperties}
+        >
           <a href="#planos" className="ra-btn">
             QUERO A RETRÔ DE NÓS DOIS <ArrowRight size={20} strokeWidth={2.6} />
           </a>
@@ -203,8 +420,14 @@ function Hero() {
       </div>
       <div className="ra-tiles" aria-hidden="true">
         {TILES.map((t, i) => (
-          <div key={i} className="ra-tile" style={{ left: t.x, top: t.y }}>
-            <IsoTile bg={t.bg} fg={t.fg} icon={t.icon} />
+          <div
+            key={i}
+            className="ra-tile"
+            style={{ left: t.x, top: t.y, "--i": i } as CSSProperties}
+          >
+            <div className="ra-tile__pop">
+              <IsoTile bg={t.bg} fg={t.fg} icon={t.icon} />
+            </div>
           </div>
         ))}
       </div>
@@ -214,14 +437,55 @@ function Hero() {
 
 /* -------------------------- identificação -------------------------- */
 
-const ORBIT: { a: number; r: number; bg: string; fg: string; icon: ReactNode; label: string }[] = [
-  { a: -90, r: 50, bg: "#F7A1B5", fg: "#1C1416", icon: <Sparkles size={28} />, label: "Perfume" },
-  { a: -10, r: 50, bg: "#FFD23F", fg: "#1C1416", icon: <Watch size={28} />, label: "Relógio" },
-  { a: 75, r: 50, bg: "#1C1416", fg: "#FBF6EF", icon: <Shirt size={28} />, label: "Camiseta" },
-  { a: 160, r: 50, bg: "#D7263D", fg: "#fff", icon: <Ticket size={28} />, label: "Vale-presente" },
+const ORBIT: {
+  a: number;
+  r: number;
+  bg: string;
+  fg: string;
+  icon: ReactNode;
+  label: string;
+}[] = [
+  {
+    a: -90,
+    r: 50,
+    bg: "#F7A1B5",
+    fg: "#1C1416",
+    icon: <Sparkles size={28} />,
+    label: "Perfume",
+  },
+  {
+    a: -10,
+    r: 50,
+    bg: "#FFD23F",
+    fg: "#1C1416",
+    icon: <Watch size={28} />,
+    label: "Relógio",
+  },
+  {
+    a: 75,
+    r: 50,
+    bg: "#1C1416",
+    fg: "#FBF6EF",
+    icon: <Shirt size={28} />,
+    label: "Camiseta",
+  },
+  {
+    a: 160,
+    r: 50,
+    bg: "#D7263D",
+    fg: "#fff",
+    icon: <Ticket size={28} />,
+    label: "Vale-presente",
+  },
 ];
 
-function Orbit({ children, items }: { children: ReactNode; items: typeof ORBIT }) {
+function Orbit({
+  children,
+  items,
+}: {
+  children: ReactNode;
+  items: typeof ORBIT;
+}) {
   return (
     <>
       <div className="ra-orbit__ring" />
@@ -235,10 +499,16 @@ function Orbit({ children, items }: { children: ReactNode; items: typeof ORBIT }
             <div
               key={i}
               className="ra-orbit__item"
-              style={{ left: `${50 + o.r * Math.cos(rad)}%`, top: `${50 + o.r * Math.sin(rad)}%` }}
+              style={{
+                left: `${50 + o.r * Math.cos(rad)}%`,
+                top: `${50 + o.r * Math.sin(rad)}%`,
+              }}
             >
               <div>
-                <span className="ra-orbit__dot" style={{ background: o.bg, color: o.fg }}>
+                <span
+                  className="ra-orbit__dot"
+                  style={{ background: o.bg, color: o.fg }}
+                >
                   {o.icon}
                 </span>
                 {o.label && <span className="ra-orbit__label">{o.label}</span>}
@@ -258,11 +528,16 @@ function Identificacao() {
         <div className="ra-ident">
           <div data-reveal>
             <h2 id="ident-t" className="ra-h2 ra-rise">
-              Todo fim de ano é a <span className="ra-mark">mesma coisa,</span> né?
+              Todo fim de ano é a <span className="ra-mark">mesma coisa,</span>{" "}
+              né?
             </h2>
-            <p className="ra-lead ra-rise" style={{ "--i": 1 } as CSSProperties}>
-              Você quer dar um presente que tenha significado. Mas aí entra no shopping e só
-              encontra perfume, relógio, camiseta… coisa que qualquer pessoa poderia dar.
+            <p
+              className="ra-lead ra-rise"
+              style={{ "--i": 1 } as CSSProperties}
+            >
+              Você quer dar um presente que tenha significado. Mas aí entra no
+              shopping e só encontra perfume, relógio, camiseta… coisa que
+              qualquer pessoa poderia dar.
             </p>
             <ul className="ra-questions">
               {[
@@ -270,7 +545,11 @@ function Identificacao() {
                 "Já ficou sem ideia e apelou pro vale-presente?",
                 "Já sentiu que o presente não mostrou nem metade do que você sente?",
               ].map((q, i) => (
-                <li key={q} className="ra-rise" style={{ "--i": i + 2 } as CSSProperties}>
+                <li
+                  key={q}
+                  className="ra-rise"
+                  style={{ "--i": i + 2 } as CSSProperties}
+                >
                   <HelpCircle size={22} strokeWidth={2.4} />
                   {q}
                 </li>
@@ -293,11 +572,13 @@ function Identificacao() {
           </p>
           <div className="ra-rise" style={{ "--i": 1 } as CSSProperties}>
             <p className="ra-lead">
-              E em 2026 vocês viveram muita coisa: aquela viagem, aquela briga boba, aquele dia que
-              ninguém esquece, a música que tocou mil vezes no carro.
+              E em 2026 vocês viveram muita coisa: aquela viagem, aquela briga
+              boba, aquele dia que ninguém esquece, a música que tocou mil vezes
+              no carro.
             </p>
             <p className="ra-lead">
-              Tudo isso está espalhado no rolo da câmera, esperando alguém juntar.
+              Tudo isso está espalhado no rolo da câmera, esperando alguém
+              juntar.
             </p>
           </div>
         </div>
@@ -374,7 +655,11 @@ function Scene({ kind }: { kind: SceneKind }) {
         <path d="M0 62 Q30 40 60 58 T100 52 V100 H0Z" fill="#D7263D" />
         <path d="M0 76 Q40 60 100 74 V100 H0Z" fill="#B81E32" />
         <path d="M44 100 L52 66 L56 66 L68 100Z" fill="#1C1416" />
-        <path d="M54 72 L55 78 M56 84 L57.5 92" stroke="#FFD23F" strokeWidth="2" />
+        <path
+          d="M54 72 L55 78 M56 84 L57.5 92"
+          stroke="#FFD23F"
+          strokeWidth="2"
+        />
       </svg>
     );
   return (
@@ -385,7 +670,10 @@ function Scene({ kind }: { kind: SceneKind }) {
       <path d="M20 100 Q22 66 38 64 Q54 66 56 100Z" fill="#1C1416" />
       <circle cx="62" cy="48" r="10" fill="#D7263D" />
       <path d="M44 100 Q46 64 62 62 Q78 64 80 100Z" fill="#D7263D" />
-      <path d="M50 30 l4 -4 a3 3 0 0 1 4 4 l-8 8 l-8 -8 a3 3 0 0 1 4 -4Z" fill="#D7263D" />
+      <path
+        d="M50 30 l4 -4 a3 3 0 0 1 4 4 l-8 8 l-8 -8 a3 3 0 0 1 4 -4Z"
+        fill="#D7263D"
+      />
     </svg>
   );
 }
@@ -393,7 +681,15 @@ function Scene({ kind }: { kind: SceneKind }) {
 /* --------------------------- como funciona --------------------------- */
 
 function QrDrawing({ size = 64 }: { size?: number }) {
-  const cells = ["1110111", "1010101", "1110111", "0001000", "1101011", "0110110", "1011101"];
+  const cells = [
+    "1110111",
+    "1010101",
+    "1110111",
+    "0001000",
+    "1101011",
+    "0110110",
+    "1011101",
+  ];
   return (
     <svg
       width={size}
@@ -407,7 +703,14 @@ function QrDrawing({ size = 64 }: { size?: number }) {
           .split("")
           .map((c, x) =>
             c === "1" ? (
-              <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill="#1C1416" />
+              <rect
+                key={`${x}-${y}`}
+                x={x}
+                y={y}
+                width="1"
+                height="1"
+                fill="#1C1416"
+              />
             ) : null,
           ),
       )}
@@ -425,17 +728,26 @@ function ComoFunciona() {
       <div className="ra-wrap">
         <div data-reveal>
           <span className="ra-pill ra-rise">Como funciona</span>
-          <h2 id="cf-t" className="ra-h2 ra-rise" style={{ "--i": 1 } as CSSProperties}>
+          <h2
+            id="cf-t"
+            className="ra-h2 ra-rise"
+            style={{ "--i": 1 } as CSSProperties}
+          >
             Conheça a Retrô a Dois
           </h2>
           <p className="ra-lead ra-rise" style={{ "--i": 2 } as CSSProperties}>
-            Sabe aquelas retrospectivas de fim de ano que mostram suas músicas mais ouvidas? Imagina
-            uma dessas, só que sobre o amor de vocês. Capítulo por capítulo, com fotos, frases e
-            “estatísticas” que só vocês dois vão entender.
+            Sabe aquelas retrospectivas de fim de ano que mostram suas músicas
+            mais ouvidas? Imagina uma dessas, só que sobre o amor de vocês.
+            Capítulo por capítulo, com fotos, frases e “estatísticas” que só
+            vocês dois vão entender.
           </p>
         </div>
 
-        <ol className="ra-steps" data-reveal style={{ listStyle: "none", padding: 0 }}>
+        <ol
+          className="ra-steps"
+          data-reveal
+          style={{ listStyle: "none", padding: 0 }}
+        >
           <li className="ra-step ra-rise">
             <div className="ra-step__ui" data-ui aria-hidden="true">
               <div className="ra-ui-win">
@@ -444,9 +756,11 @@ function ComoFunciona() {
                   <i />
                   <i />
                 </div>
-                <div className="ra-ui-q">Qual foi a música do ano de vocês?</div>
+                <div className="ra-ui-q">
+                  Qual foi a música do ano de vocês?
+                </div>
                 <div className="ra-ui-field">
-                  Aquela que tocou a viagem inteira
+                  <TypeLine text="Aquela que tocou a viagem inteira" />
                   <span className="ra-ui-caret" />
                 </div>
                 <div className="ra-ui-photos">
@@ -465,10 +779,12 @@ function ComoFunciona() {
                 </div>
               </div>
             </div>
-            <h3 className="ra-h3">Escolha seu plano e conte a história de vocês</h3>
+            <h3 className="ra-h3">
+              Escolha seu plano e conte a história de vocês
+            </h3>
             <p>
-              Leva uns 10 minutos: você manda as fotos e responde perguntas divertidas sobre o ano
-              de vocês.
+              Leva uns 10 minutos: você manda as fotos e responde perguntas
+              divertidas sobre o ano de vocês.
             </p>
           </li>
 
@@ -481,21 +797,30 @@ function ComoFunciona() {
                 <span>retroadois.com/ana-e-leo</span>
               </div>
               <div className="ra-ui-row">
-                <span className="ra-ui-row__ic" style={{ background: "#D7263D", color: "#fff" }}>
+                <span
+                  className="ra-ui-row__ic"
+                  style={{ background: "#D7263D", color: "#fff" }}
+                >
                   <Send size={16} />
                 </span>
                 Enviado no WhatsApp
                 <span className="ra-ui-toggle" />
               </div>
               <div className="ra-ui-row">
-                <span className="ra-ui-row__ic" style={{ background: "#FFD23F" }}>
+                <span
+                  className="ra-ui-row__ic"
+                  style={{ background: "#FFD23F" }}
+                >
                   <Mail size={16} />
                 </span>
                 Enviado no e-mail
                 <span className="ra-ui-toggle" />
               </div>
               <div className="ra-ui-row">
-                <span className="ra-ui-row__ic" style={{ background: "#F7A1B5" }}>
+                <span
+                  className="ra-ui-row__ic"
+                  style={{ background: "#F7A1B5" }}
+                >
                   <QrCode size={16} />
                 </span>
                 QR code gerado
@@ -516,11 +841,23 @@ function ComoFunciona() {
                     <i />
                     <i />
                   </div>
-                  <div style={{ marginTop: "auto", fontSize: 12, opacity: 0.9 }}>Retrô a Dois</div>
-                  <div style={{ fontWeight: 700, fontSize: 19, lineHeight: 1.1 }}>
+                  <div
+                    style={{ marginTop: "auto", fontSize: 12, opacity: 0.9 }}
+                  >
+                    Retrô a Dois
+                  </div>
+                  <div
+                    style={{ fontWeight: 700, fontSize: 19, lineHeight: 1.1 }}
+                  >
                     2026 foi o ano de Ana e Leo
                   </div>
-                  <div style={{ borderRadius: 10, overflow: "hidden", height: 110 }}>
+                  <div
+                    style={{
+                      borderRadius: 10,
+                      overflow: "hidden",
+                      height: 110,
+                    }}
+                  >
                     <Scene kind="casal" />
                   </div>
                 </div>
@@ -530,7 +867,9 @@ function ComoFunciona() {
               </div>
             </div>
             <h3 className="ra-h3">Seu amor abre e se emociona</h3>
-            <p>Pelo link ou pelo QR code, direto no celular, sem baixar nada.</p>
+            <p>
+              Pelo link ou pelo QR code, direto no celular, sem baixar nada.
+            </p>
           </li>
         </ol>
 
@@ -546,7 +885,13 @@ function ComoFunciona() {
 
 /* ------------------------- o que tem dentro ------------------------- */
 
-const CAPITULOS: { t: string; d: string; icon: ReactNode; bg: string; fg: string }[] = [
+const CAPITULOS: {
+  t: string;
+  d: string;
+  icon: ReactNode;
+  bg: string;
+  fg: string;
+}[] = [
   {
     t: "“2026 foi o ano de [nome] e [nome]”",
     d: "A abertura, com a foto favorita do casal.",
@@ -616,8 +961,13 @@ function OQueTemDentro() {
       <div className="ra-wrap">
         <div data-reveal>
           <span className="ra-pill ra-rise">O que tem dentro</span>
-          <h2 id="cap-t" className="ra-h2 ra-rise" style={{ "--i": 1 } as CSSProperties}>
-            O ano de vocês, contado <span className="ra-mark">capítulo por capítulo</span>
+          <h2
+            id="cap-t"
+            className="ra-h2 ra-rise"
+            style={{ "--i": 1 } as CSSProperties}
+          >
+            O ano de vocês, contado{" "}
+            <span className="ra-mark">capítulo por capítulo</span>
           </h2>
         </div>
 
@@ -660,7 +1010,9 @@ function OQueTemDentro() {
               </span>
               <div>
                 <b>Carta final</b>
-                <span>A sua mensagem de amor, pra fechar com chave de ouro.</span>
+                <span>
+                  A sua mensagem de amor, pra fechar com chave de ouro.
+                </span>
               </div>
             </li>
           </ul>
@@ -675,7 +1027,11 @@ function OQueTemDentro() {
 
 /* ------------------------------ prévia ------------------------------ */
 
-type Slide = { bg: string; fg: string; render: (a: string, b: string) => ReactNode };
+type Slide = {
+  bg: string;
+  fg: string;
+  render: (a: string, b: string) => ReactNode;
+};
 
 const SLIDES: Slide[] = [
   {
@@ -720,7 +1076,9 @@ const SLIDES: Slide[] = [
     render: () => (
       <>
         <p className="ra-slide__kicker">A música do ano de vocês foi…</p>
-        <p className="ra-slide__title">Aquela que tocou a viagem inteira no carro</p>
+        <p className="ra-slide__title">
+          Aquela que tocou a viagem inteira no carro
+        </p>
         <div className="ra-player">
           <div className="ra-player__art">
             <Scene kind="estrada" />
@@ -729,7 +1087,10 @@ const SLIDES: Slide[] = [
             <div style={{ fontSize: 14, fontWeight: 600 }}>Tocando agora</div>
             <div className="ra-player__wave">
               {[14, 22, 10, 18, 22, 8, 16].map((h, i) => (
-                <i key={i} style={{ height: h, animationDelay: `${i * 110}ms` }} />
+                <i
+                  key={i}
+                  style={{ height: h, animationDelay: `${i * 110}ms` }}
+                />
               ))}
             </div>
           </div>
@@ -743,7 +1104,9 @@ const SLIDES: Slide[] = [
     render: () => (
       <>
         <p className="ra-slide__kicker">O lugar mais marcante</p>
-        <div style={{ borderRadius: 18, overflow: "hidden", aspectRatio: "4 / 3" }}>
+        <div
+          style={{ borderRadius: 18, overflow: "hidden", aspectRatio: "4 / 3" }}
+        >
           <Scene kind="praia" />
         </div>
         <p className="ra-slide__title">A praia onde o celular caiu no mar</p>
@@ -787,11 +1150,24 @@ function Previa() {
   const [b, setB] = useState("Leo");
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [dir, setDir] = useState(1);
+  const [touched, setTouched] = useState(false);
+
+  const go = (step: number) => {
+    setDir(step);
+    setTouched(true);
+    setI((n) => (n + step + SLIDES.length) % SLIDES.length);
+    if (typeof navigator !== "undefined" && "vibrate" in navigator)
+      navigator.vibrate?.(8);
+  };
 
   useEffect(() => {
     if (paused) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const t = window.setTimeout(() => setI((n) => (n + 1) % SLIDES.length), SLIDE_MS);
+    const t = window.setTimeout(() => {
+      setDir(1);
+      setI((n) => (n + 1) % SLIDES.length);
+    }, SLIDE_MS);
     return () => window.clearTimeout(t);
   }, [i, paused]);
 
@@ -807,10 +1183,14 @@ function Previa() {
             Veja como seu amor vai <span className="ra-mark">receber</span>
           </h2>
           <p className="ra-lead ra-rise" style={{ "--i": 1 } as CSSProperties}>
-            Escreva os dois nomes e assista a uma Retrô de exemplo. A de vocês vem com as suas
-            fotos, a música de vocês e as histórias que você contar.
+            Escreva os dois nomes e assista a uma Retrô de exemplo. A de vocês
+            vem com as suas fotos, a música de vocês e as histórias que você
+            contar.
           </p>
-          <div className="ra-demo__form ra-rise" style={{ "--i": 2 } as CSSProperties}>
+          <div
+            className="ra-demo__form ra-rise"
+            style={{ "--i": 2 } as CSSProperties}
+          >
             <div className="ra-field">
               <label htmlFor="ra-a">Seu nome</label>
               <input
@@ -835,18 +1215,42 @@ function Previa() {
               />
             </div>
           </div>
-          <p className="ra-note ra-demo__hint ra-rise" style={{ "--i": 3 } as CSSProperties}>
-            Toque na lateral da tela para avançar ou voltar. Exemplo com ilustrações; a sua Retrô
-            usa as fotos de vocês.
+          <p
+            className="ra-note ra-demo__hint ra-rise"
+            style={{ "--i": 3 } as CSSProperties}
+          >
+            Toque na lateral da tela para avançar ou voltar. Exemplo com
+            ilustrações; a sua Retrô usa as fotos de vocês.
           </p>
         </div>
 
         <div className="ra-demo__stage">
           <Orbit
             items={[
-              { a: -40, r: 46, bg: "#FFD23F", fg: "#1C1416", icon: <Music size={26} />, label: "" },
-              { a: 40, r: 46, bg: "#F7A1B5", fg: "#1C1416", icon: <Heart size={26} />, label: "" },
-              { a: 150, r: 46, bg: "#D7263D", fg: "#fff", icon: <Camera size={26} />, label: "" },
+              {
+                a: -40,
+                r: 46,
+                bg: "#FFD23F",
+                fg: "#1C1416",
+                icon: <Music size={26} />,
+                label: "",
+              },
+              {
+                a: 40,
+                r: 46,
+                bg: "#F7A1B5",
+                fg: "#1C1416",
+                icon: <Heart size={26} />,
+                label: "",
+              },
+              {
+                a: 150,
+                r: 46,
+                bg: "#D7263D",
+                fg: "#fff",
+                icon: <Camera size={26} />,
+                label: "",
+              },
               {
                 a: 215,
                 r: 46,
@@ -874,29 +1278,53 @@ function Previa() {
                   style={{ "--dur": `${SLIDE_MS}ms` } as CSSProperties}
                 >
                   {SLIDES.map((_, k) => (
-                    <i key={k} className={k < i ? "done" : k === i ? "now" : ""}>
+                    <i
+                      key={k}
+                      className={k < i ? "done" : k === i ? "now" : ""}
+                    >
                       <b key={k === i ? `n${i}` : `o${k}`} />
                     </i>
                   ))}
                 </div>
-                <div className="ra-slide" key={i} aria-live="polite">
+                <div
+                  className={`ra-slide${dir < 0 ? " ra-slide--back" : ""}`}
+                  key={i}
+                  aria-live="polite"
+                >
                   {s.render(nameA, nameB)}
                 </div>
                 <div className="ra-slide__tap">
                   <button
                     type="button"
                     aria-label="Capítulo anterior"
-                    onClick={() => setI((n) => (n - 1 + SLIDES.length) % SLIDES.length)}
+                    onClick={() => go(-1)}
                   />
                   <button
                     type="button"
                     aria-label="Próximo capítulo"
-                    onClick={() => setI((n) => (n + 1) % SLIDES.length)}
+                    onClick={() => go(1)}
                   />
                 </div>
+                {!touched && (
+                  <span className="ra-taphint" aria-hidden="true">
+                    <i />
+                    toque
+                  </span>
+                )}
               </div>
             </div>
           </Orbit>
+          <div className="ra-hearts" aria-hidden="true">
+            {[0, 1, 2, 3, 4, 5].map((k) => (
+              <Heart
+                key={k}
+                size={16 + (k % 3) * 6}
+                fill="currentColor"
+                strokeWidth={0}
+                style={{ "--h": k } as CSSProperties}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -979,7 +1407,11 @@ function Planos() {
       <div className="ra-wrap">
         <div data-reveal style={{ position: "relative", zIndex: 1 }}>
           <span className="ra-pill ra-rise">Planos</span>
-          <h2 id="pl-t" className="ra-h2 ra-rise" style={{ "--i": 1 } as CSSProperties}>
+          <h2
+            id="pl-t"
+            className="ra-h2 ra-rise"
+            style={{ "--i": 1 } as CSSProperties}
+          >
             Escolha o tamanho da surpresa
           </h2>
         </div>
@@ -996,19 +1428,31 @@ function Planos() {
               <h3 className="ra-plan__tag">{p.nome}</h3>
               <p className="ra-plan__price">
                 <small>R$</small>
-                {p.preco}
+                <CountPrice value={p.preco} />
               </p>
               <p className="ra-plan__sub">{p.sub}</p>
               <ul className="ra-plan__list">
-                {p.features.map((f) => (
-                  <li key={f.t} className={f.on ? "" : "off"}>
+                {p.features.map((f, fi) => (
+                  <li
+                    key={f.t}
+                    className={f.on ? "" : "off"}
+                    style={{ "--f": fi } as CSSProperties}
+                  >
                     {f.on ? (
-                      <Check size={18} strokeWidth={3} color={p.star ? "#FFD23F" : "#F7A1B5"} />
+                      <Check
+                        size={18}
+                        strokeWidth={3}
+                        color={p.star ? "#FFD23F" : "#F7A1B5"}
+                      />
                     ) : (
                       <Minus size={18} strokeWidth={3} />
                     )}
                     <span>
-                      {f.on ? "" : <span className="sr-only">Não inclui: </span>}
+                      {f.on ? (
+                        ""
+                      ) : (
+                        <span className="sr-only">Não inclui: </span>
+                      )}
                       {f.t}
                     </span>
                   </li>
@@ -1022,10 +1466,12 @@ function Planos() {
         </div>
         <div className="ra-plans-foot" data-reveal>
           <p className="ra-rise">
-            Por menos que uma pizza, você dá um presente que ninguém mais no mundo poderia dar.
+            Por menos que uma pizza, você dá um presente que ninguém mais no
+            mundo poderia dar.
           </p>
           <p className="ra-note ra-rise" style={{ "--i": 1 } as CSSProperties}>
-            Tem pet? No checkout você pode adicionar a Retrô do seu bichinho por + R$ 19,90.
+            Tem pet? No checkout você pode adicionar a Retrô do seu bichinho por
+            + R$ 19,90.
           </p>
         </div>
       </div>
@@ -1038,7 +1484,12 @@ function Planos() {
 const ABERTURA = new Date(2027, 11, 25, 0, 0, 0);
 
 function useCountdown(target: Date) {
-  const [left, setLeft] = useState<{ d: number; h: number; m: number; s: number } | null>(null);
+  const [left, setLeft] = useState<{
+    d: number;
+    h: number;
+    m: number;
+    s: number;
+  } | null>(null);
   useEffect(() => {
     const tick = () => {
       const ms = Math.max(0, target.getTime() - Date.now());
@@ -1066,7 +1517,11 @@ function Capsula() {
     { v: left ? pad(left.s) : "—", l: "seg" },
   ];
   return (
-    <section className="ra-sec" style={{ paddingTop: 0 }} aria-labelledby="cap2-t">
+    <section
+      className="ra-sec"
+      style={{ paddingTop: 0 }}
+      aria-labelledby="cap2-t"
+    >
       <div className="ra-wrap ra-capsule">
         <div data-reveal>
           <span className="ra-pill ra-rise">Cápsula do tempo</span>
@@ -1075,22 +1530,26 @@ function Capsula() {
             className="ra-h2 ra-rise"
             style={{ "--i": 1, marginTop: 20 } as CSSProperties}
           >
-            Um presente que continua emocionando em <span className="ra-mark">2027</span>
+            Um presente que continua emocionando em{" "}
+            <span className="ra-mark">2027</span>
           </h2>
           <p className="ra-lead ra-rise" style={{ "--i": 2 } as CSSProperties}>
-            No plano Inesquecível, o último capítulo da Retrô é uma cápsula do tempo. Você escreve
-            uma mensagem (ou grava um áudio) que fica trancada até a data que você escolher.
+            No plano Inesquecível, o último capítulo da Retrô é uma cápsula do
+            tempo. Você escreve uma mensagem (ou grava um áudio) que fica
+            trancada até a data que você escolher.
           </p>
           <p className="ra-lead ra-rise" style={{ "--i": 3 } as CSSProperties}>
-            Até lá, seu amor só vê um cadeado e uma contagem regressiva. E no dia certo, a mensagem
-            se abre. Isso é presente que não acaba no dia 25.
+            Até lá, seu amor só vê um cadeado e uma contagem regressiva. E no
+            dia certo, a mensagem se abre. Isso é presente que não acaba no dia
+            25.
           </p>
           <a
             href={CHECKOUT.inesquecivel}
             className="ra-btn ra-rise"
             style={{ "--i": 4 } as CSSProperties}
           >
-            QUERO A VERSÃO INESQUECÍVEL <ArrowRight size={20} strokeWidth={2.6} />
+            QUERO A VERSÃO INESQUECÍVEL{" "}
+            <ArrowRight size={20} strokeWidth={2.6} />
           </a>
         </div>
         <div className="ra-count" data-reveal>
@@ -1098,7 +1557,9 @@ function Capsula() {
             <span className="ra-count__lock" aria-hidden="true">
               <Lock size={36} strokeWidth={2.4} />
             </span>
-            <p className="ra-count__label">Uma mensagem escrita hoje, que abre no Natal de 2027:</p>
+            <p className="ra-count__label">
+              Uma mensagem escrita hoje, que abre no Natal de 2027:
+            </p>
             <div
               className="ra-count__nums"
               role="timer"
@@ -1106,13 +1567,16 @@ function Capsula() {
             >
               {nums.map((n) => (
                 <div key={n.l} className="ra-count__num">
-                  <b>{n.v}</b>
+                  <b key={n.v}>{n.v}</b>
                   <span>{n.l}</span>
                 </div>
               ))}
             </div>
             <p className="ra-count__msg">
-              <Clock size={16} style={{ verticalAlign: "-3px", marginRight: 6 }} />
+              <Clock
+                size={16}
+                style={{ verticalAlign: "-3px", marginRight: 6 }}
+              />
               Abre em 25/12/2027, às 00h00
             </p>
           </div>
@@ -1134,8 +1598,9 @@ function GarantiaPrazo() {
           </span>
           <h2 className="ra-h2">Ajuste grátis e 7 dias de garantia</h2>
           <p>
-            Se a sua Retrô não ficar do jeito que você imaginou, a gente ajusta sem custo. E se
-            ainda assim não gostar, você tem 7 dias para pedir seu dinheiro de volta. Simples assim.
+            Se a sua Retrô não ficar do jeito que você imaginou, a gente ajusta
+            sem custo. E se ainda assim não gostar, você tem 7 dias para pedir
+            seu dinheiro de volta. Simples assim.
           </p>
         </div>
         <div
@@ -1148,6 +1613,7 @@ function GarantiaPrazo() {
           <h2 className="ra-h2">Prazo para pedir</h2>
           <div className="ra-dates">
             <div className="ra-date">
+              <i className="ra-date__dot" aria-hidden="true" />
               <b>22/12</b>
               <span>Último dia para receber antes do Natal</span>
             </div>
@@ -1178,7 +1644,10 @@ const FAQ = [
     q: "E se a gente estiver junto há pouco tempo?",
     a: "Funciona do mesmo jeito. A Retrô pode contar os primeiros meses de vocês, e isso costuma emocionar ainda mais.",
   },
-  { q: "Minhas fotos ficam públicas?", a: "Não. Só quem tiver o link consegue ver a Retrô." },
+  {
+    q: "Minhas fotos ficam públicas?",
+    a: "Não. Só quem tiver o link consegue ver a Retrô.",
+  },
   {
     q: "Posso dar para alguém que mora longe?",
     a: "Pode. Você manda o link por WhatsApp ou escolhe o dia em que a Retrô vai abrir (no plano Inesquecível).",
@@ -1192,7 +1661,12 @@ const FAQ = [
 
 function Faq() {
   return (
-    <section className="ra-sec" style={{ paddingTop: 0 }} id="duvidas" aria-labelledby="faq-t">
+    <section
+      className="ra-sec"
+      style={{ paddingTop: 0 }}
+      id="duvidas"
+      aria-labelledby="faq-t"
+    >
       <div className="ra-wrap ra-faq">
         <div className="ra-faq__head" data-reveal>
           <h2 id="faq-t" className="ra-h2 ra-rise">
@@ -1243,30 +1717,64 @@ function Shape({ style }: { style: CSSProperties }) {
   );
 }
 
+function Letters({
+  text,
+  start,
+  em,
+}: {
+  text: string;
+  start: number;
+  em?: boolean;
+}) {
+  const chars = [...text].map((c, k) => (
+    <span
+      key={k}
+      className="ra-ch"
+      aria-hidden="true"
+      style={{ "--c": start + k } as CSSProperties}
+    >
+      {c}
+    </span>
+  ));
+  return em ? <em>{chars}</em> : <span className="ra-wordgroup">{chars}</span>;
+}
+
 function CtaFinal() {
   return (
-    <section className="ra-sec" style={{ paddingBottom: 0 }} aria-labelledby="fim-t">
+    <section
+      className="ra-sec"
+      id="fim"
+      style={{ paddingBottom: 0 }}
+      aria-labelledby="fim-t"
+    >
       <div className="ra-wrap">
         <div className="ra-final" data-reveal>
           <h2 id="fim-t" className="ra-h2 ra-rise">
             Esse ano merece ser <span className="ra-mark">lembrado</span>
           </h2>
           <p className="ra-lead ra-rise" style={{ "--i": 1 } as CSSProperties}>
-            Daqui a alguns anos, ninguém vai lembrar do perfume que ganhou em 2026. Mas seu amor vai
-            lembrar do dia em que abriu a Retrô de vocês e viu o ano inteiro passar na tela.
+            Daqui a alguns anos, ninguém vai lembrar do perfume que ganhou em
+            2026. Mas seu amor vai lembrar do dia em que abriu a Retrô de vocês
+            e viu o ano inteiro passar na tela.
           </p>
-          <a href="#planos" className="ra-giant ra-rise" style={{ "--i": 2 } as CSSProperties}>
+          <a
+            href="#planos"
+            className="ra-giant ra-rise"
+            style={{ "--i": 2 } as CSSProperties}
+          >
             <i aria-hidden="true" />
             QUERO DAR ESSE PRESENTE
             <i aria-hidden="true" />
           </a>
           <p className="ra-note ra-rise" style={{ "--i": 3 } as CSSProperties}>
-            A partir de R$ 19,90 · Pronta em até 24h · Ajuste grátis + 7 dias de garantia
+            A partir de R$ 19,90 · Pronta em até 24h · Ajuste grátis + 7 dias de
+            garantia
           </p>
         </div>
-        <footer className="ra-foot">
-          <p className="ra-foot__name">
-            Retrô <em>a</em> Dois
+        <footer className="ra-foot" data-reveal>
+          <p className="ra-foot__name" aria-label="Retrô a Dois">
+            <Letters text="Retrô" start={0} /> <Letters text="a" start={5} em />{" "}
+            <Letters text="Dois" start={6} />
           </p>
           <div className="ra-foot__meta">
             <p>
@@ -1274,7 +1782,9 @@ function CtaFinal() {
               <a href="#planos">Planos</a>
               <a href="#duvidas">Dúvidas</a>
             </p>
-            <p style={{ marginTop: 10 }}>© 2026 Retrô a Dois · Pix ou cartão de crédito</p>
+            <p style={{ marginTop: 10 }}>
+              © 2026 Retrô a Dois · Pix ou cartão de crédito
+            </p>
           </div>
         </footer>
       </div>
