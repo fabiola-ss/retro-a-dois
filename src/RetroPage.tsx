@@ -393,6 +393,73 @@ const HERO_WORDS =
     " ",
   );
 
+/* "mil vezes." vira uma contagem que se escreve sozinha, uma vez só */
+const CONTAGEM = ["10 vezes.", "100 vezes.", "mil vezes.", "infinitas vezes."];
+const CONTAGEM_FINAL = CONTAGEM[CONTAGEM.length - 1]!;
+
+function HeroCount() {
+  const [text, setText] = useState(CONTAGEM_FINAL);
+  const [typing, setTyping] = useState(false);
+
+  useEffect(() => {
+    if (prefersReduced()) return;
+    let cancelled = false;
+    const timers: number[] = [];
+    const wait = (ms: number) =>
+      new Promise<void>((r) => {
+        timers.push(window.setTimeout(r, ms));
+      });
+
+    (async () => {
+      setText("");
+      setTyping(true);
+      await wait(1500);
+      let current = "";
+      for (let w = 0; w < CONTAGEM.length; w++) {
+        const word = CONTAGEM[w]!;
+        /* apaga só até a parte em comum: "10" vira "100" sem apagar tudo */
+        let common = 0;
+        while (common < current.length && current[common] === word[common])
+          common++;
+        for (let i = current.length; i > common; i--) {
+          if (cancelled) return;
+          current = current.slice(0, i - 1);
+          setText(current);
+          await wait(38);
+        }
+        if (current.length && common === 0) await wait(180);
+        for (let i = common + 1; i <= word.length; i++) {
+          if (cancelled) return;
+          current = word.slice(0, i);
+          setText(current);
+          await wait(75);
+        }
+        if (w < CONTAGEM.length - 1) await wait(900);
+      }
+      await wait(1200);
+      if (!cancelled) setTyping(false);
+    })();
+
+    return () => {
+      cancelled = true;
+      timers.forEach((t) => window.clearTimeout(t));
+    };
+  }, []);
+
+  return (
+    <span className="ra-count-word">
+      <span className="ra-count-word__ghost" aria-hidden="true">
+        <span className="ra-mark">{CONTAGEM_FINAL}</span>
+      </span>
+      <span className="ra-count-word__live" aria-hidden="true">
+        {text && <span className="ra-mark">{text}</span>}
+        {typing && <i className="ra-caret" />}
+      </span>
+      <span className="sr-only">{CONTAGEM_FINAL}</span>
+    </span>
+  );
+}
+
 function Hero() {
   return (
     <section className="ra-hero" id="topo" data-reveal>
@@ -409,7 +476,7 @@ function Hero() {
             className="ra-word"
             style={{ "--w": HERO_WORDS.length } as CSSProperties}
           >
-            <span className="ra-mark">mil vezes.</span>
+            <HeroCount />
           </span>
         </h1>
         <p className="ra-lead ra-rise" style={{ "--i": 1 } as CSSProperties}>

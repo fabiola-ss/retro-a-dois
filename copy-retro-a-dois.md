@@ -15,7 +15,9 @@ Faltam N dias para o Natal · Entrega em até 48h (faixa discreta, clara e parad
 
 ## 1. Hero
 
-**Headline:** Transforme o ano de vocês numa retrospectiva que dá vontade de assistir mil vezes.
+**Headline:** Transforme o ano de vocês numa retrospectiva que dá vontade de assistir infinitas vezes.
+
+(Animação: o trecho em amarelo se escreve sozinho uma vez: "10 vezes." → "100 vezes." → "mil vezes." → para em "infinitas vezes.")
 
 **Subheadline:** A Retrô a Dois é uma retrospectiva interativa do casal, com as fotos, as músicas e os momentos que só vocês dois entendem. Você conta a história, a gente monta, e seu amor recebe um link + QR code pra abrir no celular.
 

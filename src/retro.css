@@ -3043,3 +3043,40 @@
   white-space: normal;
   text-align: center;
 }
+
+/* contagem da headline: espaço reservado para a palavra mais longa,
+   para o texto em volta não pular enquanto escreve */
+.ra-count-word {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.ra-count-word__ghost {
+  visibility: hidden;
+}
+
+.ra-count-word__live {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+}
+
+.ra .ra-count-word .ra-mark {
+  background-size: 100% 100%;
+  transition: none;
+}
+
+.ra-caret {
+  display: inline-block;
+  width: 0.08em;
+  min-width: 2px;
+  height: 0.85em;
+  margin-left: 0.06em;
+  vertical-align: -0.06em;
+  background: var(--cereja);
+  border-radius: 2px;
+  animation: ra-blink 0.9s steps(1) infinite;
+}
