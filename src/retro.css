@@ -36,16 +36,12 @@
   box-sizing: border-box;
 }
 
-.ra h1,
-.ra h2,
-.ra h3,
-.ra p,
-.ra ul,
-.ra ol {
+/* reset com especificidade zero: não derruba as margens das classes */
+:where(.ra) :where(h1, h2, h3, p, ul, ol) {
   margin: 0;
 }
 
-.ra a {
+:where(.ra) :where(a) {
   color: inherit;
 }
 
@@ -2608,5 +2604,160 @@
   }
   .ra-strip {
     white-space: normal;
+  }
+}
+
+/* =====================================================================
+   AJUSTES DO CELULAR (rodada 2)
+   ===================================================================== */
+
+.ra-logo {
+  white-space: nowrap;
+}
+
+.ra-tile__label {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .ra-logo {
+    font-size: 19px;
+    gap: 8px;
+  }
+  .ra-logo__mark {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* primeira dobra: os ícones viram uma fileira organizada, com legenda */
+  .ra-tiles {
+    height: auto;
+    margin: 48px auto 0;
+    padding: 0 var(--gutter);
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    max-width: 480px;
+  }
+  .ra .ra-tile {
+    position: relative;
+    left: auto !important;
+    top: auto !important;
+    transform: none;
+    width: 23%;
+  }
+  .ra-tile:nth-child(1) {
+    order: 2;
+  }
+  .ra-tile:nth-child(2) {
+    order: 1;
+  }
+  .ra-tile:nth-child(3) {
+    order: 3;
+  }
+  .ra-tile:nth-child(4) {
+    order: 4;
+  }
+  /* sobem e descem em onda, da esquerda para a direita */
+  .ra-tile:nth-child(2) .ra-tile__float {
+    animation-delay: 0s;
+  }
+  .ra-tile:nth-child(1) .ra-tile__float {
+    animation-delay: -0.5s;
+  }
+  .ra-tile:nth-child(3) .ra-tile__float {
+    animation-delay: -1s;
+  }
+  .ra-tile:nth-child(4) .ra-tile__float {
+    animation-delay: -1.5s;
+  }
+  .ra-tile__float {
+    position: relative;
+    animation-duration: 3.2s;
+  }
+  .ra-tile__label {
+    display: block;
+    margin-top: 6px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--tinta);
+  }
+}
+
+/* planos: no celular viram um carrossel de arrastar para o lado */
+.ra-plans-dots {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .ra-plans {
+    display: flex;
+    grid-template-columns: none;
+    gap: 14px;
+    max-width: none;
+    margin-left: calc(var(--gutter) * -1);
+    margin-right: calc(var(--gutter) * -1);
+    padding: 0 var(--gutter) 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 var(--gutter);
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ra-plans::-webkit-scrollbar {
+    display: none;
+  }
+  .ra-plan {
+    flex: 0 0 84%;
+    scroll-snap-align: center;
+  }
+  .ra-plan--star {
+    order: 0;
+  }
+  .ra-plans-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 22px;
+    position: relative;
+    z-index: 1;
+  }
+  .ra-plans-dots button {
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: var(--noite-3);
+    cursor: pointer;
+    transition:
+      width 300ms var(--ease),
+      background-color 300ms ease;
+  }
+  .ra-plans-dots button[aria-current="true"] {
+    width: 28px;
+    background: var(--amarelo);
+  }
+  .ra-plans-swipe {
+    font-size: 15px;
+    color: #cbbcb4;
+    margin-left: 6px;
+  }
+  .ra-plans-swipe svg {
+    vertical-align: -3px;
+    animation: ra-nudge 1.6s ease-in-out infinite;
+  }
+}
+
+@keyframes ra-nudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(6px);
   }
 }

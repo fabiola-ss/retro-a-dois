@@ -288,6 +288,7 @@ const TILES: {
   bg: string;
   fg: string;
   icon: ReactNode;
+  label?: string;
 }[] = [
   {
     x: "9%",
@@ -295,6 +296,7 @@ const TILES: {
     bg: "#D7263D",
     fg: "#fff",
     icon: <Music size={30} strokeWidth={2.4} />,
+    label: "Música",
   },
   {
     x: "23%",
@@ -302,6 +304,7 @@ const TILES: {
     bg: "#FFD23F",
     fg: "#1C1416",
     icon: <Camera size={30} strokeWidth={2.4} />,
+    label: "Fotos",
   },
   {
     x: "39%",
@@ -309,6 +312,7 @@ const TILES: {
     bg: "#F7A1B5",
     fg: "#1C1416",
     icon: <MapPin size={30} strokeWidth={2.4} />,
+    label: "Lugares",
   },
   {
     x: "61%",
@@ -316,6 +320,7 @@ const TILES: {
     bg: "#D7263D",
     fg: "#fff",
     icon: <Heart size={30} strokeWidth={2.4} />,
+    label: "Carta",
   },
   {
     x: "77%",
@@ -427,6 +432,7 @@ function Hero() {
           >
             <div className="ra-tile__pop">
               <IsoTile bg={t.bg} fg={t.fg} icon={t.icon} />
+              {t.label && <span className="ra-tile__label">{t.label}</span>}
             </div>
           </div>
         ))}
@@ -1397,6 +1403,52 @@ const PLANOS: {
 ];
 
 function Planos() {
+  const track = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(1);
+
+  const centerOn = (k: number, smooth: boolean) => {
+    const el = track.current;
+    const card = el?.children[k] as HTMLElement | undefined;
+    if (!el || !card) return;
+    el.scrollTo({
+      left: card.offsetLeft - (el.clientWidth - card.clientWidth) / 2,
+      behavior: smooth ? "smooth" : "auto",
+    });
+  };
+
+  /* no celular, começa com a Completa no meio e as outras aparecendo nas pontas */
+  useEffect(() => {
+    const el = track.current;
+    if (!el || el.scrollWidth <= el.clientWidth) return;
+    const first = el.children[1] as HTMLElement | undefined;
+    if (first)
+      el.scrollLeft =
+        first.offsetLeft - (el.clientWidth - first.clientWidth) / 2;
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const mid = el.scrollLeft + el.clientWidth / 2;
+        let best = 0;
+        let dist = Infinity;
+        Array.from(el.children).forEach((c, k) => {
+          const card = c as HTMLElement;
+          const d = Math.abs(card.offsetLeft + card.clientWidth / 2 - mid);
+          if (d < dist) {
+            dist = d;
+            best = k;
+          }
+        });
+        setActive(best);
+      });
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      el.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
     <section
       className="ra-sec ra-center"
@@ -1415,7 +1467,7 @@ function Planos() {
             Escolha o tamanho da surpresa
           </h2>
         </div>
-        <div className="ra-plans" data-reveal>
+        <div className="ra-plans" data-reveal ref={track}>
           {PLANOS.map((p, k) => (
             <article
               key={p.id}
@@ -1463,6 +1515,20 @@ function Planos() {
               </a>
             </article>
           ))}
+        </div>
+        <div className="ra-plans-dots">
+          {PLANOS.map((p, k) => (
+            <button
+              key={p.id}
+              type="button"
+              aria-label={`Ver plano ${p.nome.split(" ·")[0]}`}
+              aria-current={active === k}
+              onClick={() => centerOn(k, true)}
+            />
+          ))}
+          <span className="ra-plans-swipe" aria-hidden="true">
+            arraste <ArrowRight size={16} />
+          </span>
         </div>
         <div className="ra-plans-foot" data-reveal>
           <p className="ra-rise">
