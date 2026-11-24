@@ -2761,3 +2761,84 @@
     transform: translateX(6px);
   }
 }
+
+/* perguntas da identificação: baralho no celular */
+.ra-qdots {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .ra-qwrap.is-deck .ra-questions {
+    display: grid;
+    gap: 0;
+    padding-bottom: 26px;
+  }
+  .ra-qwrap.is-deck .ra-questions li {
+    grid-area: 1 / 1;
+    min-height: 118px;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    background: var(--papel);
+    transform-origin: 50% 100%;
+    transition:
+      transform 650ms var(--spring),
+      opacity 450ms ease,
+      background-color 300ms ease;
+  }
+  .ra-qwrap.is-deck .ra-questions li[data-pos="0"] {
+    z-index: 3;
+    background: var(--amarelo);
+    transform: none;
+    opacity: 1;
+  }
+  .ra-qwrap.is-deck .ra-questions li[data-pos="0"] svg {
+    color: var(--tinta);
+  }
+  .ra-qwrap.is-deck .ra-questions li[data-pos="1"] {
+    z-index: 2;
+    transform: translateY(13px) scale(0.94);
+    background: var(--creme-3);
+    opacity: 1;
+  }
+  .ra-qwrap.is-deck .ra-questions li[data-pos="2"] {
+    z-index: 1;
+    transform: translateY(26px) scale(0.88);
+    background: var(--creme-2);
+    opacity: 1;
+  }
+  /* o texto das cartas de trás fica escondido, só a pilha aparece */
+  .ra-qwrap.is-deck .ra-questions li:not([data-pos="0"]) {
+    color: transparent;
+  }
+  .ra-qwrap.is-deck .ra-questions li:not([data-pos="0"]) svg {
+    opacity: 0;
+  }
+  .ra-qwrap.is-deck .ra-questions li:active {
+    transform: scale(0.98);
+  }
+
+  .ra-qdots {
+    display: flex;
+    gap: 8px;
+    margin-top: 18px;
+  }
+  .ra-qdots button {
+    position: relative;
+    width: 28px;
+    height: 6px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: var(--creme-3);
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .ra-qdots button i {
+    position: absolute;
+    inset: 0;
+    background: var(--cereja);
+    transform-origin: left;
+    animation: ra-fill var(--dur) linear forwards;
+  }
+}

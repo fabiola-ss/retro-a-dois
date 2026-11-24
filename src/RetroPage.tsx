@@ -527,6 +527,85 @@ function Orbit({
   );
 }
 
+const PERGUNTAS = [
+  "Você já deu presente que foi esquecido no fundo do armário?",
+  "Já ficou sem ideia e apelou pro vale-presente?",
+  "Já sentiu que o presente não mostrou nem metade do que você sente?",
+];
+
+const DECK_MS = 3500;
+
+/** No celular, as perguntas viram um baralho: uma por vez, a próxima surge por cima. */
+function QuestionDeck() {
+  const [ref, inView] = useInView<HTMLDivElement>(0.5);
+  const [deck, setDeck] = useState(false);
+  const [q, setQ] = useState(0);
+
+  useEffect(() => {
+    if (prefersReduced()) return;
+    const mq = window.matchMedia("(max-width: 760px)");
+    const sync = () => setDeck(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    if (!deck || !inView) return;
+    const t = window.setTimeout(
+      () => setQ((n) => (n + 1) % PERGUNTAS.length),
+      DECK_MS,
+    );
+    return () => window.clearTimeout(t);
+  }, [deck, inView, q]);
+
+  const n = PERGUNTAS.length;
+  return (
+    <div
+      ref={ref}
+      className={`ra-qwrap ra-rise${deck ? " is-deck" : ""}`}
+      style={{ "--i": 2 } as CSSProperties}
+    >
+      <ul className="ra-questions">
+        {PERGUNTAS.map((text, k) => {
+          const pos = (k - q + n) % n;
+          return (
+            <li
+              key={text}
+              data-pos={deck ? pos : undefined}
+              aria-hidden={deck && pos !== 0 ? true : undefined}
+              onClick={deck ? () => setQ((v) => (v + 1) % n) : undefined}
+            >
+              <HelpCircle size={22} strokeWidth={2.4} />
+              {text}
+            </li>
+          );
+        })}
+      </ul>
+      {deck && (
+        <div className="ra-qdots">
+          {PERGUNTAS.map((text, k) => (
+            <button
+              key={text}
+              type="button"
+              aria-label={`Pergunta ${k + 1} de ${n}`}
+              aria-current={q === k}
+              onClick={() => setQ(k)}
+            >
+              {q === k && (
+                <i
+                  key={q}
+                  style={{ "--dur": `${DECK_MS}ms` } as CSSProperties}
+                />
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Identificacao() {
   return (
     <section className="ra-sec" aria-labelledby="ident-t">
@@ -545,22 +624,7 @@ function Identificacao() {
               shopping e só encontra perfume, relógio, camiseta… coisa que
               qualquer pessoa poderia dar.
             </p>
-            <ul className="ra-questions">
-              {[
-                "Você já deu presente que foi esquecido no fundo do armário?",
-                "Já ficou sem ideia e apelou pro vale-presente?",
-                "Já sentiu que o presente não mostrou nem metade do que você sente?",
-              ].map((q, i) => (
-                <li
-                  key={q}
-                  className="ra-rise"
-                  style={{ "--i": i + 2 } as CSSProperties}
-                >
-                  <HelpCircle size={22} strokeWidth={2.4} />
-                  {q}
-                </li>
-              ))}
-            </ul>
+            <QuestionDeck />
           </div>
           <div className="ra-orbit" aria-hidden="true">
             <Orbit items={ORBIT}>
