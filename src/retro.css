@@ -2915,3 +2915,116 @@
     margin-top: 28px;
   }
 }
+
+/* =====================================================================
+   CELULAR MAIS LEVE (rodada 3): títulos menores e pesos mais finos,
+   para um visual mais delicado. O computador não muda.
+   ===================================================================== */
+
+@media (max-width: 760px) {
+  .ra {
+    font-size: 17px;
+  }
+
+  .ra .ra-hero .ra-h1 {
+    font-size: 29px;
+    line-height: 1.12;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  .ra .ra-h2,
+  .ra .ra-capsule .ra-h2 {
+    font-size: 26px;
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .ra .ra-promise__card .ra-h2 {
+    font-size: 24px;
+  }
+
+  .ra .ra-h3 {
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  .ra .ra-lead {
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  .ra .ra-truth__big {
+    font-size: 22px;
+    line-height: 1.3;
+    font-weight: 500;
+  }
+
+  .ra .ra-questions li {
+    font-size: 17px;
+    font-weight: 400;
+  }
+
+  .ra .ra-btn,
+  .ra .ra-mbar .ra-btn {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .ra .ra-nav .ra-btn {
+    font-weight: 500;
+  }
+
+  .ra .ra-logo {
+    font-weight: 600;
+  }
+
+  .ra .ra-strip {
+    font-weight: 500;
+  }
+
+  .ra .ra-pill,
+  .ra .ra-plan__tag,
+  .ra .ra-tile__label,
+  .ra .ra-field label {
+    font-weight: 500;
+  }
+
+  .ra .ra-plan__price {
+    font-size: 42px;
+    font-weight: 600;
+  }
+
+  .ra .ra-plans-foot p:first-child {
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .ra .ra-slide__title {
+    font-weight: 600;
+  }
+
+  .ra .ra-count__num b,
+  .ra .ra-date b {
+    font-weight: 600;
+  }
+
+  .ra .ra-faq summary {
+    font-size: 17px;
+    font-weight: 500;
+  }
+
+  .ra .ra-giant {
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  .ra .ra-foot__name {
+    font-weight: 700;
+  }
+
+  .ra .ra-mbar__txt b {
+    font-weight: 600;
+  }
+}
