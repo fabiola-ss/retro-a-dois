@@ -46,6 +46,8 @@ E em 2026 vocês viveram muita coisa: aquela viagem, aquela briga boba, a músic
 
 Escreva os dois nomes e assista a uma Retrô de exemplo, capítulo por capítulo. A de vocês ainda tem o momento mais caótico do ano, o mês mais feliz, o que vem em 2027 e a sua carta final.
 
+**Botão:** VER A RETRÔ COMPLETA DE EXEMPLO (abre /exemplo/, a Retrô completa da Ana e do Leo, em 12 capítulos)
+
 (Campos: Seu nome & Nome do seu amor. Celular com a Retrô de exemplo: abertura, 365 dias juntos, a música do ano, o lugar mais marcante, a frase que mais se repetiu, cápsula trancada.)
 
 ## 4. Como funciona

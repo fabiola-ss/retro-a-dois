@@ -4,6 +4,8 @@ Página de vendas da Retrô a Dois, a retrospectiva interativa do casal.
 
 Link publicado: https://fabiola-ss.github.io/retro-a-dois/
 
+Retrô de exemplo: https://fabiola-ss.github.io/retro-a-dois/exemplo/
+
 ## Onde fica cada coisa
 
 | Arquivo | O que tem |
@@ -11,6 +13,7 @@ Link publicado: https://fabiola-ss.github.io/retro-a-dois/
 | `src/RetroPage.tsx` | Todo o conteúdo da página: textos, planos, perguntas frequentes. |
 | `src/retro.css` | Cores, fontes e layout. |
 | `src/index.html` | Título e descrição da página (o que aparece no Google e ao compartilhar o link). |
+| `src/exemplo/` | A Retrô completa de exemplo (Ana e Leo). O conteúdo fica em `src/exemplo/dados.ts`; os desenhos em `src/exemplo/arte.tsx`. |
 | `docs/` | A versão publicada, gerada pelo build. Não edite à mão. |
 | `copy-retro-a-dois.md` | A copy da página, para consulta. |
 

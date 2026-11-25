@@ -3080,3 +3080,21 @@
   border-radius: 2px;
   animation: ra-blink 0.9s steps(1) infinite;
 }
+
+/* botão para a Retrô completa de exemplo */
+.ra .ra-demo__full {
+  margin-top: 28px;
+  background: var(--tinta);
+}
+
+.ra .ra-demo__full:hover {
+  background: var(--cereja);
+}
+
+@media (max-width: 520px) {
+  .ra .ra-demo__full {
+    white-space: normal;
+    text-align: center;
+    width: 100%;
+  }
+}
