@@ -2496,3 +2496,32 @@ ol.rx-top li {
 .rx-resp__aviso {
   font-size: 14px;
 }
+
+/* créditos: o rolo para com só o "Continua em 2027…" no meio,
+   sem deixar linhas cortadas, e fica abaixo dos botões do topo */
+.rx-creditos {
+  padding-top: 110px;
+}
+
+.rx-rolo {
+  height: min(420px, 48vh);
+}
+
+.rx-continua {
+  margin-top: 60vh;
+}
+
+@keyframes rx-rola {
+  from {
+    transform: translateY(min(420px, 48vh));
+  }
+  to {
+    transform: translateY(calc(-100% + min(420px, 48vh) / 2 + 60px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rx-continua {
+    margin-top: 0;
+  }
+}
