@@ -69,7 +69,7 @@ Exemplo com ilustrações; a de vocês usa as fotos de vocês.
 | | Básica | Completa ⭐ mais escolhida | Inesquecível |
 |---|---|---|---|
 | Preço | R$ 19,90 | R$ 29,90 | R$ 49,90 |
-| Fotos | até 5 | até 20 | até 20 |
+| Fotos | até 5 | até 30 | até 40 |
 | Capítulos | 6 | 22 | 29 |
 | Abertura, números (com contador ao vivo), música, lugar, frase, carta | ✓ | ✓ | ✓ |
 | Responder à Retrô (texto ou áudio, pelo WhatsApp) | ✓ | ✓ | ✓ |

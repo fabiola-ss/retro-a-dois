@@ -3263,3 +3263,85 @@
   padding: 6px;
   border-radius: 40px;
 }
+
+/* mini celular do "Como funciona", no visual atual da Retrô */
+.ra-ui-phone__screen--retro {
+  background: var(--amarelo);
+  color: var(--tinta);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+  padding: 26px 10px 14px;
+  position: relative;
+}
+
+.ra-ui-phone__barra {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  right: 14px;
+  height: 6px;
+  border-radius: 99px;
+  background: rgba(23, 17, 15, 0.25);
+  overflow: hidden;
+}
+
+.ra-ui-phone__barra i {
+  display: block;
+  height: 100%;
+  width: 18%;
+  background: #fff;
+  border-radius: 99px;
+  animation: ra-mini-progresso 6s linear infinite;
+  transform-origin: left;
+}
+
+@keyframes ra-mini-progresso {
+  from {
+    transform: scaleX(0.3);
+  }
+  to {
+    transform: scaleX(5.5);
+  }
+}
+
+.ra-ui-phone__kicker {
+  font-size: 9px;
+  font-weight: 500;
+  margin-top: 18px;
+}
+
+.ra-ui-phone__nomes {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.ra-ui-phone__nomes em {
+  font-style: normal;
+  font-family: "Caveat", cursive;
+  color: var(--cereja);
+}
+
+.ra-ui-phone__polaroid {
+  width: 96px;
+  background: #fff;
+  padding: 5px 5px 0;
+  transform: rotate(-4deg);
+  box-shadow: 0 6px 14px rgba(23, 17, 15, 0.18);
+  margin-top: 6px;
+}
+
+.ra-ui-phone__polaroid div {
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.ra-ui-phone__polaroid span {
+  display: block;
+  font-family: "Caveat", cursive;
+  font-size: 12px;
+  padding: 3px 0 5px;
+}

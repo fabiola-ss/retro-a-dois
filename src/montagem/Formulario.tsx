@@ -25,8 +25,8 @@ import {
 
 const PLANOS: Record<Plano, { nome: string; fotos: number }> = {
   basica: { nome: "Básica", fotos: 5 },
-  completa: { nome: "Completa", fotos: 20 },
-  inesquecivel: { nome: "Inesquecível", fotos: 20 },
+  completa: { nome: "Completa", fotos: 30 },
+  inesquecivel: { nome: "Inesquecível", fotos: 40 },
 };
 
 type Espaco =

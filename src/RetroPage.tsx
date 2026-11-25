@@ -30,6 +30,8 @@ import {
   X,
 } from "lucide-react";
 
+import { Ilustracao } from "./exemplo/arte";
+
 /* Links de checkout: troque pelos links reais de cada plano. */
 const CHECKOUT = {
   basica: "#planos",
@@ -887,31 +889,19 @@ function ComoFunciona() {
           <li className="ra-step ra-rise" style={{ "--i": 2 } as CSSProperties}>
             <div className="ra-step__ui" data-ui aria-hidden="true">
               <div className="ra-ui-phone">
-                <div className="ra-ui-phone__screen">
-                  <div className="ra-ui-phone__bars">
-                    <i />
-                    <i />
-                    <i />
+                <div className="ra-ui-phone__screen ra-ui-phone__screen--retro">
+                  <div className="ra-ui-phone__barra">
                     <i />
                   </div>
-                  <div
-                    style={{ marginTop: "auto", fontSize: 12, opacity: 0.9 }}
-                  >
-                    Retrô a Dois
-                  </div>
-                  <div
-                    style={{ fontWeight: 700, fontSize: 19, lineHeight: 1.1 }}
-                  >
-                    2026 foi o ano de Ana e Leo
-                  </div>
-                  <div
-                    style={{
-                      borderRadius: 10,
-                      overflow: "hidden",
-                      height: 110,
-                    }}
-                  >
-                    <Scene kind="casal" />
+                  <span className="ra-ui-phone__kicker">2026 foi o ano de</span>
+                  <span className="ra-ui-phone__nomes">
+                    Ana <em>&amp;</em> Leo
+                  </span>
+                  <div className="ra-ui-phone__polaroid">
+                    <div>
+                      <Ilustracao cena="casal" />
+                    </div>
+                    <span>nós dois</span>
                   </div>
                 </div>
               </div>
@@ -1132,7 +1122,7 @@ const PLANOS: {
     star: true,
     cta: "QUERO A COMPLETA",
     features: [
-      { t: "Até 20 fotos", on: true },
+      { t: "Até 30 fotos", on: true },
       {
         t: "22 capítulos, com mês a mês, mapa do ano, previsão do tempo do amor, cardápio do casal, motivos para te amar, quiz, prêmios e playlist",
         on: true,
@@ -1152,7 +1142,7 @@ const PLANOS: {
     icon: <InfinityIcon size={30} color="#D7263D" strokeWidth={2.6} />,
     cta: "QUERO A INESQUECÍVEL",
     features: [
-      { t: "Tudo da Completa, com 29 capítulos", on: true },
+      { t: "Tudo da Completa, com 29 capítulos e até 40 fotos", on: true },
       { t: "Jogo da memória, contrato do amor e vídeos do casal", on: true },
       { t: "Carta em áudio, com a sua voz", on: true },
       { t: "Vales-presente de raspadinha", on: true },
