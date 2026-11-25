@@ -2123,3 +2123,376 @@ ol.rx-top li {
     transform: translateY(110vh) rotate(160deg);
   }
 }
+
+/* =====================================================================
+   CONTADOR AO VIVO, PLAYLIST, CARTA EM ÁUDIO E RESPONDER
+   ===================================================================== */
+
+.rx-aovivo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.rx-aovivo__rotulo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.rx-aovivo__rotulo i {
+  position: relative;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--cereja);
+}
+
+.rx-aovivo__rotulo i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--cereja);
+  animation: rx-ao-vivo 1.4s ease-out infinite;
+}
+
+@keyframes rx-ao-vivo {
+  to {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+.rx-aovivo__nums {
+  display: flex;
+  gap: 6px;
+}
+
+.rx-aovivo__nums span {
+  min-width: 62px;
+  padding: 8px 6px 6px;
+  border-radius: 12px;
+  background: var(--tinta);
+  color: #cbbcb4;
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.rx-aovivo__nums b {
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 600;
+  color: var(--creme);
+  font-variant-numeric: tabular-nums;
+  animation: rx-vira 400ms var(--ease);
+}
+
+/* ---------- playlist (fita cassete) ---------- */
+
+.rx-playlist {
+  background: var(--noite-3);
+  color: var(--creme);
+}
+
+.rx-fita {
+  position: relative;
+  width: 250px;
+  height: 150px;
+  border-radius: 14px;
+  background: var(--cereja);
+  box-shadow: inset 0 0 0 8px var(--cereja-2);
+}
+
+.rx-fita__etiqueta {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  top: 16px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: var(--creme);
+  color: var(--tinta);
+  font-family: var(--mao);
+  font-size: 20px;
+  line-height: 1;
+}
+
+.rx-fita__rolo {
+  position: absolute;
+  top: 66px;
+  left: 50px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    var(--creme) 0 20deg,
+    var(--noite) 20deg 60deg
+  );
+  box-shadow: 0 0 0 6px var(--noite);
+}
+
+.rx-fita__rolo.dir {
+  left: auto;
+  right: 50px;
+}
+
+.rx-fita__rolo.gira {
+  animation: rx-gira 2s linear infinite;
+}
+
+.rx-faixas {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rx-faixas li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: rgba(251, 246, 239, 0.08);
+  text-align: left;
+}
+
+.rx-faixas__n {
+  width: 28px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--amarelo);
+  text-align: center;
+  flex: none;
+}
+
+.rx-faixas__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.rx-faixas__info b {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.rx-faixas__info small {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.rx-faixas__info em {
+  font-style: normal;
+  font-family: var(--mao);
+  font-size: 19px;
+  color: var(--rosa);
+}
+
+.rx-faixas a {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--cereja);
+  color: #fff;
+  flex: none;
+}
+
+/* ---------- carta em áudio ---------- */
+
+.rx-audio {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 22px;
+  background: var(--papel);
+  text-align: left;
+}
+
+.rx-audio__play {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 0;
+  flex: none;
+  display: grid;
+  place-items: center;
+  background: var(--cereja);
+  color: #fff;
+  cursor: pointer;
+}
+
+.rx-audio__onda {
+  flex: 1;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.rx-audio__onda i {
+  flex: 1;
+  height: var(--h);
+  border-radius: 2px;
+  background: var(--creme-3);
+  transition: background-color 200ms ease;
+}
+
+.rx-audio__onda i.tocou {
+  background: var(--cereja);
+}
+
+.rx-audio__info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  flex: none;
+}
+
+.rx-audio__info b {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.rx-audio__info small {
+  font-size: 12px;
+  opacity: 0.65;
+}
+
+.rx-audio__plano {
+  position: absolute;
+  top: -10px;
+  right: 14px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--amarelo);
+  color: var(--tinta);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ---------- responder ---------- */
+
+.rx-responder {
+  background: var(--rosa-2);
+}
+
+.rx-resp {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.rx-resp__rotulo {
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.rx-resp textarea {
+  width: 100%;
+  border: 2px solid var(--creme-3);
+  border-radius: 18px;
+  padding: 14px 16px;
+  background: var(--papel);
+  font-family: var(--mao);
+  font-size: 22px;
+  line-height: 1.25;
+  color: var(--tinta);
+  resize: none;
+}
+
+.rx-resp textarea:focus {
+  outline: none;
+  border-color: var(--cereja);
+}
+
+.rx-resp .rx-btn {
+  justify-content: center;
+}
+
+.rx-resp__voz {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.rx-resp__mic {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 0;
+  display: grid;
+  place-items: center;
+  background: var(--tinta);
+  color: #fff;
+  cursor: pointer;
+}
+
+.rx-resp__mic.gravando {
+  background: var(--cereja);
+  animation: rx-pulsa 1.2s ease-in-out infinite;
+}
+
+@keyframes rx-pulsa {
+  50% {
+    box-shadow: 0 0 0 12px rgba(215, 38, 61, 0.2);
+  }
+}
+
+.rx-resp__rec {
+  color: var(--cereja);
+  font-weight: 500;
+}
+
+.rx-resp__pronto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.rx-resp__pronto > div {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.rx-resp__pronto audio {
+  height: 40px;
+}
+
+.rx-resp__apagar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 0;
+  display: grid;
+  place-items: center;
+  background: var(--papel);
+  cursor: pointer;
+}
+
+.rx-resp__aviso {
+  font-size: 14px;
+}

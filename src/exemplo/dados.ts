@@ -9,6 +9,9 @@ export const RETRO = {
   para: "Leo",
   ano: 2026,
   juntosDesde: "14/02/2022",
+  juntosDesdeData: new Date(2022, 1, 14, 20, 0, 0),
+  /* WhatsApp de quem deu o presente, para receber a resposta (vazio = escolher contato) */
+  whatsappDe: "",
   anoJuntos: "o 4º ano juntos",
 
   numeros: [
@@ -26,6 +29,34 @@ export const RETRO = {
     spotify:
       "https://open.spotify.com/search/Velha%20Inf%C3%A2ncia%20Tribalistas",
   },
+
+  playlist: [
+    {
+      titulo: "Velha Infância",
+      artista: "Tribalistas",
+      momento: "a estrada inteira até o Rosa",
+    },
+    {
+      titulo: "Trem-Bala",
+      artista: "Ana Vilela",
+      momento: "a primeira noite na casa nova",
+    },
+    {
+      titulo: "Ainda Bem",
+      artista: "Marisa Monte",
+      momento: "o jantar surpresa de julho",
+    },
+    {
+      titulo: "Sutilmente",
+      artista: "Skank",
+      momento: "o karaokê no aniversário da Ana",
+    },
+    {
+      titulo: "Do Seu Lado",
+      artista: "Jota Quest",
+      momento: "a que o Leo canta errado",
+    },
+  ],
 
   lugar: {
     nome: "Praia do Rosa",
@@ -225,6 +256,10 @@ export const RETRO = {
     "2026 foi nosso. Que 2027 seja ainda mais.",
     "Te amo.",
   ],
+
+  /* áudio gravado por quem deu o presente (ex.: "./audio-carta.m4a").
+     Vazio no exemplo: uma voz do próprio aparelho lê a carta. */
+  cartaAudio: "" as string,
 
   capsula: { abre: new Date(2027, 11, 25, 0, 0, 0), abreTexto: "25/12/2027" },
 

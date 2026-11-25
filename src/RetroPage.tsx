@@ -1326,6 +1326,7 @@ const PLANOS: {
         on: true,
       },
       { t: "Carta final curta", on: true },
+      { t: "Contador ao vivo e resposta pelo WhatsApp", on: true },
       { t: "Link + QR code por 1 ano", on: true },
       { t: "Trilha sonora", on: false },
       { t: "Quiz, prêmios e linha do tempo", on: false },
@@ -1343,7 +1344,7 @@ const PLANOS: {
     features: [
       { t: "Até 20 fotos", on: true },
       {
-        t: "15 capítulos, com linha do tempo, quiz do casal, prêmios do ano, top 5, antes e depois e mural",
+        t: "16 capítulos, com linha do tempo, playlist do ano, quiz do casal, prêmios, top 5, antes e depois e mural",
         on: true,
       },
       { t: "Trilha sonora e modo \u201cassistir sozinho\u201d", on: true },
@@ -1361,7 +1362,8 @@ const PLANOS: {
     icon: <InfinityIcon size={30} color="#D7263D" strokeWidth={2.6} />,
     cta: "QUERO A INESQUECÍVEL",
     features: [
-      { t: "Tudo da Completa, com 19 capítulos", on: true },
+      { t: "Tudo da Completa, com 20 capítulos", on: true },
+      { t: "Carta em áudio, com a sua voz", on: true },
       { t: "Vales-presente de raspadinha", on: true },
       { t: "Recados de amigos e família", on: true },
       { t: "Cápsula do tempo", on: true },

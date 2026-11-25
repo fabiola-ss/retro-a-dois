@@ -4,6 +4,7 @@
 
 type Trilha = {
   ligar: () => void;
+  abaixar: (sim: boolean) => void;
   desligar: () => void;
   ligada: () => boolean;
 };
@@ -101,6 +102,15 @@ export function criarTrilha(): Trilha {
       master.gain.cancelScheduledValues(ctx.currentTime);
       master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
       master.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6);
+    },
+    abaixar(sim: boolean) {
+      if (!on || !ctx || !master) return;
+      master.gain.cancelScheduledValues(ctx.currentTime);
+      master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
+      master.gain.linearRampToValueAtTime(
+        sim ? 0.18 : 0.9,
+        ctx.currentTime + 0.5,
+      );
     },
     ligada: () => on,
   };

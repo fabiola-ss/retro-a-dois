@@ -32,6 +32,7 @@ import {
   Top5,
   Vales,
 } from "./extras";
+import { CartaAudio, JuntosAoVivo, Playlist, Responder } from "./novos";
 import { criarTrilha } from "./trilha";
 
 const reduz = () =>
@@ -48,11 +49,13 @@ const DURACAO: Record<string, number> = {
   "rx-comeco": 9000,
   "rx-carta": 16000,
   "rx-frase": 8500,
-  "rx-quiz": 15000,
-  "rx-premios": 7000,
-  "rx-recados": 9000,
-  "rx-vales": 6000,
-  "rx-pergunta": 6500,
+  "rx-quiz-ch": 15000,
+  "rx-premios-ch": 7000,
+  "rx-recados-ch": 9000,
+  "rx-vales-ch": 6000,
+  "rx-pergunta-ch": 6500,
+  "rx-playlist": 7000,
+  "rx-responder": 6000,
 };
 
 export function RetroExemplo() {
@@ -86,6 +89,14 @@ export function RetroExemplo() {
   }, []);
 
   useEffect(() => () => trilha.current.desligar(), []);
+
+  /* a trilha abaixa enquanto a carta em áudio toca */
+  useEffect(() => {
+    const ouvir = (e: Event) =>
+      trilha.current.abaixar((e as CustomEvent<boolean>).detail);
+    window.addEventListener("rx-voz", ouvir);
+    return () => window.removeEventListener("rx-voz", ouvir);
+  }, []);
 
   const irPara = (k: number) => {
     const el = scroller.current;
@@ -135,6 +146,11 @@ export function RetroExemplo() {
       classe: "rx-musica",
       plano: null,
       conteudo: (on) => <Musica on={on} tocando={som} />,
+    },
+    {
+      classe: "rx-playlist",
+      plano: "Completa",
+      conteudo: (on) => <Playlist on={on} />,
     },
     { classe: "rx-lugar", plano: null, conteudo: (on) => <Lugar on={on} /> },
     {
@@ -195,6 +211,7 @@ export function RetroExemplo() {
       plano: "Inesquecível",
       conteudo: () => <Pergunta pedido={pedido} auto={auto} />,
     },
+    { classe: "rx-responder", plano: null, conteudo: () => <Responder /> },
     {
       classe: "rx-creditos",
       plano: null,
@@ -414,7 +431,9 @@ function Contador({
 function Numeros({ on }: { on: boolean }) {
   return (
     <>
-      <p className="rx-kicker rx-a">Desde {RETRO.juntosDesde}</p>
+      <div className="rx-a">
+        <JuntosAoVivo />
+      </div>
       <h2 className="rx-titulo rx-a" style={{ "--d": 1 } as CSSProperties}>
         Esse foi <span className="rx-mark">{RETRO.anoJuntos}</span>
       </h2>
@@ -844,6 +863,7 @@ function Carta({ on }: { on: boolean }) {
           {RETRO.de}
         </p>
       </div>
+      <CartaAudio />
     </>
   );
 }
