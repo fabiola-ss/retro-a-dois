@@ -160,7 +160,7 @@ const FALTAM = diasParaAData();
 const FALTAM_TXT = FALTAM
   ? `Faltam ${FALTAM.dias} ${FALTAM.dias === 1 ? "dia" : "dias"} para o ${FALTAM.data}`
   : "";
-const STRIP = [FALTAM_TXT, "Entrega em até 48h"].filter(Boolean).join(" · ");
+const STRIP = [FALTAM_TXT, "Entrega em 48h"].filter(Boolean).join(" · ");
 
 export function RetroADois() {
   const root = useRef<HTMLDivElement>(null);
@@ -463,6 +463,8 @@ function HeroCount() {
 }
 
 function Hero() {
+  const celular = useCelular();
+  const [aberta, setAberta] = useState(false);
   return (
     <section className="ra-hero" id="topo" data-reveal>
       <div className="ra-wrap">
@@ -482,10 +484,8 @@ function Hero() {
           </span>
         </h1>
         <p className="ra-lead ra-rise" style={{ "--i": 1 } as CSSProperties}>
-          A Retrô a Dois é uma retrospectiva interativa do casal, com as fotos,
-          as músicas e os momentos que só vocês dois entendem. Você conta a
-          história, a gente monta, e seu amor recebe um link + QR code pra abrir
-          no celular.
+          A retrospectiva do casal, com as fotos, as músicas e os momentos de
+          vocês.
         </p>
         <div
           className="ra-hero__cta ra-rise"
@@ -494,25 +494,32 @@ function Hero() {
           <a href="#planos" className="ra-btn">
             QUERO A RETRÔ DE NÓS DOIS <ArrowRight size={20} strokeWidth={2.6} />
           </a>
-          <p className="ra-note">
-            A partir de R$ 19,90 · Pronta em até 48h · Sem precisar baixar nada
-          </p>
+          <p className="ra-note">A partir de R$ 19,90 · Sem baixar nada</p>
         </div>
       </div>
-      <div className="ra-tiles" aria-hidden="true">
-        {TILES.map((t, i) => (
-          <div
-            key={i}
-            className="ra-tile"
-            style={{ left: t.x, top: t.y, "--i": i } as CSSProperties}
-          >
-            <div className="ra-tile__pop">
-              <IsoTile bg={t.bg} fg={t.fg} icon={t.icon} />
-              {t.label && <span className="ra-tile__label">{t.label}</span>}
+      {celular ? (
+        <div
+          className="ra-hero__phone ra-rise"
+          style={{ "--i": 3 } as CSSProperties}
+        >
+          <CelularDemo aberta={aberta} setAberta={setAberta} />
+        </div>
+      ) : (
+        <div className="ra-tiles" aria-hidden="true">
+          {TILES.map((t, i) => (
+            <div
+              key={i}
+              className="ra-tile"
+              style={{ left: t.x, top: t.y, "--i": i } as CSSProperties}
+            >
+              <div className="ra-tile__pop">
+                <IsoTile bg={t.bg} fg={t.fg} icon={t.icon} />
+                {t.label && <span className="ra-tile__label">{t.label}</span>}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
@@ -933,9 +940,31 @@ function ComoFunciona() {
 
 /* ------------------------------ prévia ------------------------------ */
 
-function Previa() {
-  const [aberta, setAberta] = useState(false);
-  const tela = useRef<HTMLDivElement>(null);
+/** true em telas de celular (até 760px). */
+function useCelular() {
+  const [sim, setSim] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 760px)").matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 760px)");
+    const f = () => setSim(mq.matches);
+    mq.addEventListener("change", f);
+    return () => mq.removeEventListener("change", f);
+  }, []);
+  return sim;
+}
+
+/** Celular com a Retrô de verdade rodando sozinha; ao tocar, abre em tela cheia. */
+function CelularDemo({
+  aberta,
+  setAberta,
+}: {
+  aberta: boolean;
+  setAberta: (v: boolean) => void;
+}) {
+  const tela = useRef<HTMLSpanElement>(null);
   const [tam, setTam] = useState({ escala: 0.7, altura: 844 });
 
   /* a Retrô roda num "celular" de 390px de largura, reduzido para caber na moldura */
@@ -960,7 +989,64 @@ function Previa() {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", esc);
     };
-  }, [aberta]);
+  }, [aberta, setAberta]);
+
+  return (
+    <>
+      <button
+        type="button"
+        className="ra-phone ra-phone--real"
+        onClick={() => setAberta(true)}
+        aria-label="Assistir a Retrô de exemplo em tela cheia"
+      >
+        <span className="ra-phone__screen" ref={tela}>
+          <iframe
+            src="./exemplo/?demo"
+            title="Retrô de exemplo rodando sozinha"
+            loading="lazy"
+            tabIndex={-1}
+            aria-hidden="true"
+            style={{
+              transform: `scale(${tam.escala})`,
+              height: `${tam.altura}px`,
+            }}
+          />
+          <span className="ra-phone__toque">
+            <Maximize2 size={14} /> Toque para assistir em tela cheia
+          </span>
+        </span>
+      </button>
+      {aberta && (
+        <div
+          className="ra-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Retrô de exemplo"
+        >
+          <iframe
+            src="./exemplo/"
+            title="Retrô de exemplo"
+            allow="autoplay; microphone"
+          />
+          <button
+            type="button"
+            className="ra-modal__fechar"
+            onClick={() => setAberta(false)}
+            aria-label="Fechar e voltar para a página"
+          >
+            <X size={22} />
+          </button>
+        </div>
+      )}
+    </>
+  );
+}
+
+/* no celular, a Retrô rodando aparece no topo da página; esta seção é só do computador */
+function Previa() {
+  const celular = useCelular();
+  const [aberta, setAberta] = useState(false);
+  if (celular) return null;
 
   return (
     <section
@@ -995,54 +1081,9 @@ function Previa() {
         </div>
 
         <div className="ra-demo__stage">
-          <button
-            type="button"
-            className="ra-phone ra-phone--real"
-            onClick={() => setAberta(true)}
-            aria-label="Assistir a Retrô de exemplo em tela cheia"
-          >
-            <span className="ra-phone__screen" ref={tela}>
-              <iframe
-                src="./exemplo/?demo"
-                title="Retrô de exemplo rodando sozinha"
-                loading="lazy"
-                tabIndex={-1}
-                aria-hidden="true"
-                style={{
-                  transform: `scale(${tam.escala})`,
-                  height: `${tam.altura}px`,
-                }}
-              />
-              <span className="ra-phone__toque">
-                <Maximize2 size={14} /> Toque para assistir em tela cheia
-              </span>
-            </span>
-          </button>
+          <CelularDemo aberta={aberta} setAberta={setAberta} />
         </div>
       </div>
-
-      {aberta && (
-        <div
-          className="ra-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Retrô de exemplo"
-        >
-          <iframe
-            src="./exemplo/"
-            title="Retrô de exemplo"
-            allow="autoplay; microphone"
-          />
-          <button
-            type="button"
-            className="ra-modal__fechar"
-            onClick={() => setAberta(false)}
-            aria-label="Fechar e voltar para a página"
-          >
-            <X size={22} />
-          </button>
-        </div>
-      )}
     </section>
   );
 }

@@ -11,7 +11,7 @@ Pendências: links de checkout dos 3 planos (por enquanto os botões usam link p
 
 ## Faixa no topo
 
-Faltam N dias para o Natal · Entrega em até 48h (faixa discreta, clara e parada; N é calculado automaticamente)
+Faltam N dias para o Natal · Entrega em 48h (faixa discreta, clara e parada; N é calculado automaticamente)
 
 ## 1. Hero
 
@@ -19,12 +19,12 @@ Faltam N dias para o Natal · Entrega em até 48h (faixa discreta, clara e parad
 
 (Animação: o trecho em amarelo se escreve sozinho uma vez: "10 vezes." → "100 vezes." → "mil vezes." → para em "infinitas vezes.")
 
-**Subheadline:** A Retrô a Dois é uma retrospectiva interativa do casal, com as fotos, as músicas e os momentos que só vocês dois entendem. Você conta a história, a gente monta, e seu amor recebe um link + QR code pra abrir no celular.
+**Subheadline:** A retrospectiva do casal, com as fotos, as músicas e os momentos de vocês.
 
 **Botão:** QUERO A RETRÔ DE NÓS DOIS
-**Abaixo do botão:** A partir de R$ 19,90 · Pronta em até 48h · Sem precisar baixar nada
+**Abaixo do botão:** A partir de R$ 19,90 · Sem baixar nada
 
-Ícones: Fotos · Música · Lugares · Carta
+No celular: abaixo do botão, o celular com a Retrô de exemplo rodando sozinha (toque abre em tela cheia). No computador: ícones Fotos · Música · Lugares · Carta, e a prévia fica numa seção própria.
 
 ## 2. Identificação
 

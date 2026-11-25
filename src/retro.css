@@ -3209,3 +3209,51 @@
   color: #fff;
   cursor: pointer;
 }
+
+/* =====================================================================
+   PRIMEIRA DOBRA MAIS LIMPA NO CELULAR
+   ===================================================================== */
+
+.ra-hero__phone {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-top: 44px;
+  padding: 0 var(--gutter);
+}
+
+.ra-hero__phone::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 8%;
+  bottom: -4%;
+  border-radius: 50%;
+  background: var(--creme-2);
+}
+
+.ra-hero__phone .ra-phone {
+  position: relative;
+  width: min(280px, 72vw);
+}
+
+@media (max-width: 760px) {
+  .ra .ra-nav .ra-btn {
+    display: none;
+  }
+  .ra .ra-hero .ra-lead {
+    margin-top: 22px;
+  }
+  .ra .ra-hero__cta {
+    margin-top: 28px;
+  }
+}
+
+@media (max-width: 400px) {
+  .ra .ra-strip {
+    font-size: 13px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
