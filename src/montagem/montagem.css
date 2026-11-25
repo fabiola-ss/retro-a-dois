@@ -670,3 +670,9 @@ textarea {
   color: var(--cereja);
   font-weight: 600;
 }
+
+.mf-fotos__add span {
+  text-align: center;
+  line-height: 1.15;
+  padding: 0 4px;
+}

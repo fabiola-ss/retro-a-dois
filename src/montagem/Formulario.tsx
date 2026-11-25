@@ -156,7 +156,7 @@ function FotoEspaco({
         {cabe > 0 && (
           <label className="mf-fotos__add">
             <ImagePlus size={22} />
-            <span>Adicionar</span>
+            <span>Escolher da galeria</span>
             <input
               type="file"
               accept="image/*"
