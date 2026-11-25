@@ -1,6 +1,7 @@
 /* Transforma as respostas do formulário no formato da Retrô (o mesmo do exemplo). */
 
 import type { Plano, Retro } from "../exemplo/dados";
+import type { Tema } from "../exemplo/temas";
 
 export const MESES_NOME = [
   "Janeiro",
@@ -64,6 +65,7 @@ export type Form = {
   previsao: { mes: string; tempo: string; texto: string }[];
   contrato: string; // uma promessa por linha
   videoLegendas: string[];
+  tema: Tema;
 };
 
 export const ANO = 2026;
@@ -140,6 +142,7 @@ export const formVazio = (plano: Plano): Form => ({
   ],
   contrato: "",
   videoLegendas: ["", "", ""],
+  tema: "classico",
 });
 
 /** Endereços das fotos já enviadas, por espaço do formulário. */
@@ -201,6 +204,7 @@ export function montarRetro(f: Form, fotos: Fotos): Retro {
   return {
     ehExemplo: false,
     temPedido: f.extras.pedido,
+    tema: nivel >= 1 ? f.tema : "classico",
     plano: f.plano,
     fotoFavorita: fotos.favorita ?? "casal",
     de: f.de.trim(),

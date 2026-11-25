@@ -77,6 +77,7 @@ Exemplo com ilustrações; a de vocês usa as fotos de vocês.
 | Playlist do ano (5 músicas), top 5, quiz do casal (com "vocês concordaram em…"), prêmios do ano, mural, sonhos para 2027 | — | ✓ | ✓ |
 | O ano mês a mês, mapa do ano, previsão do tempo do amor, primeiras vezes, cardápio do casal, motivos para te amar | — | ✓ | ✓ |
 | Trilha sonora e modo "assistir sozinho" | — | ✓ | ✓ |
+| 5 temas de cores (Clássico, Romântico, Noite estrelada, Praia, Minimal) | — (só Clássico) | ✓ | ✓ |
 | Carta final | curta | longa ou vídeo | longa ou vídeo |
 | Cartão para postar nos stories | — | ✓ | ✓ |
 | Link + QR code | 1 ano | para sempre | para sempre |

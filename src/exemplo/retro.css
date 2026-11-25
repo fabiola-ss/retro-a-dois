@@ -3170,3 +3170,192 @@ ol.rx-top li {
   background: var(--amarelo);
   color: var(--tinta);
 }
+
+/* =====================================================================
+   TEMAS DE CORES (Completa e Inesquecível)
+   Cada tema troca as mesmas variáveis que a Retrô inteira usa.
+   ===================================================================== */
+
+:root {
+  --ceu: #bfe3f0;
+  --estrelas: #120d1f;
+  --mesa: #e6d6c0;
+  --bilhete: #fff6c9;
+}
+
+.rx .rx-previsao {
+  background: var(--ceu);
+}
+
+.rx .rx-sonhos,
+.rx .rx-sonho em {
+  background: var(--estrelas);
+}
+
+.rx .rx-mural {
+  background: var(--mesa);
+}
+
+.rx .rx-bilhete,
+.rx .rx-recado:nth-child(2) {
+  background: var(--bilhete);
+}
+
+html[data-tema="romantico"] {
+  --creme: #fdf5f3;
+  --creme-2: #f6e6e4;
+  --creme-3: #ecd3d1;
+  --cereja: #9e2a4b;
+  --cereja-2: #7e1f3a;
+  --amarelo: #f7c6d3;
+  --rosa: #e58fa8;
+  --rosa-2: #fbe4ea;
+  --tinta: #2a1118;
+  --tinta-2: #5a3a44;
+  --noite: #3a1220;
+  --noite-2: #4a1a2b;
+  --noite-3: #5a2235;
+  --papel: #fffbfa;
+  --ceu: #f3d9e0;
+  --estrelas: #2b0d18;
+  --mesa: #ecd3d1;
+  --bilhete: #fde8ee;
+}
+
+html[data-tema="noite"] {
+  --creme: #f4f2ec;
+  --creme-2: #e8e6ef;
+  --creme-3: #d6d4e2;
+  --cereja: #2e4a8c;
+  --cereja-2: #233a70;
+  --amarelo: #f2c94c;
+  --rosa: #9db4e8;
+  --rosa-2: #e6ecf8;
+  --tinta: #111827;
+  --tinta-2: #3b4257;
+  --noite: #0e1630;
+  --noite-2: #162042;
+  --noite-3: #1e2a52;
+  --papel: #fbfaf7;
+  --ceu: #d9e2f5;
+  --estrelas: #080d1f;
+  --mesa: #d6d4e2;
+  --bilhete: #fbf1d0;
+}
+
+html[data-tema="praia"] {
+  --creme: #fbf5ea;
+  --creme-2: #f3e6d0;
+  --creme-3: #e8d5b5;
+  --cereja: #d9573a;
+  --cereja-2: #bb4429;
+  --amarelo: #a8e6e2;
+  --rosa: #f4a28c;
+  --rosa-2: #fdebe3;
+  --tinta: #102a33;
+  --tinta-2: #3a5560;
+  --noite: #0f3d4c;
+  --noite-2: #154d5e;
+  --noite-3: #1b5c70;
+  --papel: #fffdf8;
+  --ceu: #c6ecef;
+  --estrelas: #0a2a35;
+  --mesa: #e8d5b5;
+  --bilhete: #fff3d6;
+}
+
+html[data-tema="minimal"] {
+  --creme: #ffffff;
+  --creme-2: #f4f2ee;
+  --creme-3: #e6e1d8;
+  --cereja: #1c1c1c;
+  --cereja-2: #000000;
+  --amarelo: #e8e2d6;
+  --rosa: #c9bfb0;
+  --rosa-2: #f2eee7;
+  --tinta: #161616;
+  --tinta-2: #555049;
+  --noite: #161616;
+  --noite-2: #222222;
+  --noite-3: #2e2e2e;
+  --papel: #ffffff;
+  --ceu: #eceae5;
+  --estrelas: #111111;
+  --mesa: #e6e1d8;
+  --bilhete: #f6f2ea;
+}
+
+/* seletor de tema na Retrô de exemplo (tela do envelope) */
+.rx-temas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.rx-temas__lista {
+  display: flex;
+  gap: 10px;
+}
+
+.rx-temas button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: none;
+  transition: transform 200ms var(--ease);
+}
+
+.rx-temas button[aria-pressed="true"] {
+  border-color: #fff;
+  transform: scale(1.12);
+}
+
+.rx-temas button i {
+  display: block;
+}
+
+.rx-temas small {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+/* Minimal: nas telas escuras, os destaques ficam claros para não sumirem */
+html[data-tema="minimal"]
+  :is(
+    .rx-musica,
+    .rx-playlist,
+    .rx-capsula,
+    .rx-creditos,
+    .rx-quiz-ch,
+    .rx-premios-ch,
+    .rx-videos-ch,
+    .rx-sonhos,
+    .rx-cardapio
+  ) {
+  --cereja: #f2eee7;
+  --cereja-2: #e6e1d8;
+}
+
+html[data-tema="minimal"]
+  :is(
+    .rx-musica,
+    .rx-playlist,
+    .rx-capsula,
+    .rx-creditos,
+    .rx-quiz-ch,
+    .rx-premios-ch,
+    .rx-videos-ch,
+    .rx-sonhos,
+    .rx-cardapio
+  )
+  :is(.rx-btn, .rx-cadeado, .rx-faixas a) {
+  color: #161616;
+}

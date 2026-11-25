@@ -44,6 +44,7 @@ import {
   Videos,
 } from "./mais";
 import { CartaAudio, JuntosAoVivo, Playlist, Responder } from "./novos";
+import { aplicarTema, TEMAS, type Tema } from "./temas";
 import { criarTrilha } from "./trilha";
 
 const reduz = () =>
@@ -164,6 +165,20 @@ export function RetroExemplo() {
   const demo =
     typeof window !== "undefined" &&
     new URLSearchParams(window.location.search).has("demo");
+  /* tema de cores: Básica sempre no Clássico; no exemplo dá para trocar (?tema=…) */
+  const [tema, setTema] = useState<Tema>(() => {
+    const t =
+      typeof window !== "undefined"
+        ? new URLSearchParams(window.location.search).get("tema")
+        : null;
+    return RETRO.ehExemplo && TEMAS.some((x) => x.id === t)
+      ? (t as Tema)
+      : RETRO.tema;
+  });
+  useEffect(() => {
+    aplicarTema(RETRO.plano === "basica" ? "classico" : tema);
+  }, [tema]);
+
   const comTrilha = RETRO.plano !== "basica" && !demo;
 
   const abrir = () => {
@@ -197,7 +212,14 @@ export function RetroExemplo() {
     {
       classe: "rx-envelope",
       plano: null,
-      conteudo: () => <Envelope aberto={aberto} onAbrir={abrir} />,
+      conteudo: () => (
+        <Envelope
+          aberto={aberto}
+          onAbrir={abrir}
+          tema={tema}
+          setTema={RETRO.ehExemplo && !demo ? setTema : undefined}
+        />
+      ),
     },
     {
       classe: "rx-abertura",
@@ -449,9 +471,13 @@ export function RetroExemplo() {
 function Envelope({
   aberto,
   onAbrir,
+  tema,
+  setTema,
 }: {
   aberto: boolean;
   onAbrir: () => void;
+  tema: Tema;
+  setTema?: (t: Tema) => void;
 }) {
   return (
     <>
@@ -490,6 +516,28 @@ function Envelope({
           ? "Abrindo…"
           : "Toque no envelope para abrir · use o som ligado"}
       </p>
+      {setTema && !aberto && (
+        <div className="rx-temas">
+          <small>Veja em outro tema de cores</small>
+          <div className="rx-temas__lista">
+            {TEMAS.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                aria-label={`Tema ${t.nome}`}
+                aria-pressed={tema === t.id}
+                title={t.nome}
+                onClick={() => setTema(t.id)}
+              >
+                {t.cores.map((c) => (
+                  <i key={c} style={{ background: c }} />
+                ))}
+              </button>
+            ))}
+          </div>
+          <small>{TEMAS.find((t) => t.id === tema)?.nome}</small>
+        </div>
+      )}
     </>
   );
 }

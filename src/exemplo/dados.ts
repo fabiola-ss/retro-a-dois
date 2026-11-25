@@ -3,6 +3,7 @@
    monta um objeto assim, e a página /r/ o carrega com usarRetro(). */
 
 import type { Cena } from "./arte";
+import type { Tema } from "./temas";
 
 export type Plano = "basica" | "completa" | "inesquecivel";
 
@@ -10,6 +11,7 @@ export const EXEMPLO = {
   ehExemplo: true as boolean,
   plano: "inesquecivel" as Plano,
   fotoFavorita: "casal" as Cena,
+  tema: "classico" as Tema,
   /* comprou o extra do pedido de namoro/casamento */
   temPedido: false as boolean,
   de: "Ana",

@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import type { Plano } from "../exemplo/dados";
+import { TEMAS } from "../exemplo/temas";
 import { enviarPedido, modoTeste, novoSlug, subirArquivo } from "./backend";
 import {
   ANO,
@@ -554,6 +555,39 @@ export function Formulario() {
             >
               {txt("pet", { placeholder: "Paçoca", max: 30 })}
             </Campo>
+            {nivel >= 1 && (
+              <div className="mf-campo">
+                <span className="mf-rotulo">Tema de cores da Retrô</span>
+                <div className="mf-temas">
+                  {TEMAS.map((t) => (
+                    <button
+                      key={t.id}
+                      type="button"
+                      className={f.tema === t.id ? "on" : ""}
+                      onClick={() => muda("tema", t.id)}
+                      aria-pressed={f.tema === t.id}
+                    >
+                      <span className="mf-temas__cores" aria-hidden="true">
+                        {t.cores.map((c) => (
+                          <i key={c} style={{ background: c }} />
+                        ))}
+                      </span>
+                      {t.nome}
+                    </button>
+                  ))}
+                </div>
+                <small className="mf-dica">
+                  Quer ver como fica?{" "}
+                  <a
+                    href={`../exemplo/?tema=${f.tema}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Abrir o exemplo neste tema
+                  </a>
+                </small>
+              </div>
+            )}
             <div className="mf-campo">
               <span className="mf-rotulo">
                 Você comprou algum extra no checkout?
