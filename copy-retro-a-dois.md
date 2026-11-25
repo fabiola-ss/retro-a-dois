@@ -44,9 +44,9 @@ E em 2026 vocês viveram muita coisa: aquela viagem, aquela briga boba, a músic
 
 **Veja como seu amor vai receber**
 
-Escreva os dois nomes e assista a uma Retrô de exemplo, capítulo por capítulo. A de vocês ainda tem o momento mais caótico do ano, o mês mais feliz, o que vem em 2027 e a sua carta final.
+Escreva os dois nomes e assista a uma Retrô de exemplo, capítulo por capítulo. A completa ainda tem quiz do casal, prêmios do ano, vales-presente de raspadinha e a sua carta final.
 
-**Botão:** VER A RETRÔ COMPLETA DE EXEMPLO (abre /exemplo/, a Retrô completa da Ana e do Leo, em 12 capítulos)
+**Botão:** VER A RETRÔ COMPLETA DE EXEMPLO (abre /exemplo/, a Retrô completa da Ana e do Leo, com todos os 19 capítulos do plano Inesquecível)
 
 (Campos: Seu nome & Nome do seu amor. Celular com a Retrô de exemplo: abertura, 365 dias juntos, a música do ano, o lugar mais marcante, a frase que mais se repetiu, cápsula trancada.)
 
@@ -64,17 +64,26 @@ Escreva os dois nomes e assista a uma Retrô de exemplo, capítulo por capítulo
 
 **Escolha o tamanho da surpresa**
 
-|  | Básica | Completa ⭐ mais escolhida | Inesquecível |
+| | Básica | Completa ⭐ mais escolhida | Inesquecível |
 |---|---|---|---|
 | Preço | R$ 19,90 | R$ 29,90 | R$ 49,90 |
 | Fotos | até 5 | até 20 | até 20 |
-| Capítulos | 6 | 12+ | 12+ |
-| Trilha sonora | — | ✓ | ✓ |
+| Capítulos | 6 | 15 | 19 |
+| Abertura, números, música, lugar, frase, carta | ✓ | ✓ | ✓ |
+| Linha do tempo, antes e depois, mês mais feliz, momento caótico | — | ✓ | ✓ |
+| Top 5, quiz do casal, prêmios do ano, mural, sonhos para 2027 | — | ✓ | ✓ |
+| Trilha sonora e modo "assistir sozinho" | — | ✓ | ✓ |
 | Carta final | curta | longa ou vídeo | longa ou vídeo |
+| Cartão para postar nos stories | — | ✓ | ✓ |
 | Link + QR code | 1 ano | para sempre | para sempre |
+| Vales-presente de raspadinha | — | — | ✓ |
+| Recados de amigos e família | — | — | ✓ |
 | Cápsula do tempo | — | — | ✓ |
+| Pergunta final surpresa | — | — | ✓ |
 | Abre no dia que você escolher | — | — | ✓ |
 | Convite com QR para imprimir | — | — | ✓ |
+
+**Extra (preço a definir):** final com pedido de namoro ou de casamento. Exemplo em /exemplo/?pedido
 
 Por menos que uma pizza, você dá um presente que ninguém mais no mundo poderia dar.
 Tem pet? No checkout você pode adicionar a Retrô do seu bichinho por + R$ 19,90.

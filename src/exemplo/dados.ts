@@ -90,6 +90,128 @@ export const RETRO = {
     { cena: "casal" as Cena, legenda: "a gente" },
   ],
 
+  comeco: [
+    {
+      data: "março de 2021",
+      titulo: "O primeiro encontro",
+      texto: "Um café que virou jantar, que virou cinco horas de conversa.",
+      cena: "cafe" as Cena,
+    },
+    {
+      data: "setembro de 2021",
+      titulo: "O primeiro \u201ceu te amo\u201d",
+      texto: "Dito sem querer, no meio de um filme. Ninguém lembra do filme.",
+      cena: "sofa" as Cena,
+    },
+    {
+      data: "fevereiro de 2022",
+      titulo: "Começamos a namorar",
+      texto: "No dia 14, porque a Ana achava clichê e o Leo achava perfeito.",
+      cena: "jantar" as Cena,
+    },
+    {
+      data: "março de 2026",
+      titulo: "A casa nova",
+      texto: "Um sofá, duas escovas de dente e o Paçoca.",
+      cena: "mudanca" as Cena,
+    },
+  ],
+
+  antesDepois: {
+    antes: { cena: "cidade" as Cena, legenda: "2021" },
+    depois: { cena: "casal" as Cena, legenda: "2026" },
+    frase: "Cinco anos depois, o mesmo sorriso. O cabelo do Leo, nem tanto.",
+  },
+
+  top5: {
+    titulo: "Os apelidos mais usados",
+    itens: [
+      { nome: "Mozão", vezes: 1840 },
+      { nome: "Vida", vezes: 1210 },
+      { nome: "Neném", vezes: 760 },
+      { nome: "Paçoquinha (era do cachorro)", vezes: 410 },
+      { nome: "Ei, você", vezes: 95 },
+    ],
+  },
+
+  quiz: [
+    {
+      pergunta: "Quem dorme primeiro no filme?",
+      resposta: "Leo",
+      piada: "Em 9 de cada 10 filmes. O décimo era de terror.",
+    },
+    {
+      pergunta: "Quem esquece onde deixou a chave?",
+      resposta: "Ana",
+      piada: "Ela sempre está na bolsa. Sempre.",
+    },
+    {
+      pergunta: "Quem pede desculpa primeiro?",
+      resposta: "Leo",
+      piada: "Mas é a Ana que manda o meme que faz as pazes.",
+    },
+    {
+      pergunta: "Quem escolhe o restaurante?",
+      resposta: "Ana",
+      piada: "Depois de 40 minutos de \u201ctanto faz\u201d.",
+    },
+  ],
+
+  premios: [
+    {
+      categoria: "Melhor cozinheiro",
+      vencedor: "Leo",
+      motivo: "pela lasanha que quase deu certo",
+    },
+    {
+      categoria: "Pior DJ do carro",
+      vencedor: "Ana",
+      motivo: "312 vezes a mesma música",
+    },
+    {
+      categoria: "Maior drama por um mosquito",
+      vencedor: "Os dois",
+      motivo: "às 3h da manhã, de chinelo na mão",
+    },
+    {
+      categoria: "Melhor companhia",
+      vencedor: "Paçoca",
+      motivo: "foi ele que adotou vocês",
+    },
+  ],
+
+  recados: [
+    {
+      de: "Júlia",
+      quem: "irmã da Ana",
+      texto:
+        "Vocês são o casal mais caótico e mais lindo que eu conheço. Obrigada por me deixarem segurar vela em todas as viagens.",
+    },
+    {
+      de: "Rafa",
+      quem: "melhor amigo do Leo",
+      texto: "Leo, nunca te vi tão feliz. Ana, cuida dele. E do Paçoca.",
+    },
+    {
+      de: "Dona Célia",
+      quem: "mãe do Leo",
+      texto:
+        "Que essa casa nova seja cheia de amor. E de netos! Mas sem pressa.",
+    },
+  ],
+
+  vales: [
+    { titulo: "Um café na cama", detalhe: "com pão de queijo" },
+    { titulo: "Uma massagem", detalhe: "de 20 minutos, sem reclamar" },
+    { titulo: "Um jantar", detalhe: "no restaurante que você escolher" },
+  ],
+
+  pergunta: {
+    texto: "Quer passar 2027 comigo?",
+    pedido: "Leo, quer casar comigo?",
+    resposta: "Eu sabia.",
+  },
+
   sonhos: [
     "Conhecer a neve juntos",
     "Acertar a receita da lasanha",

@@ -1143,8 +1143,8 @@ function Previa() {
           </h2>
           <p className="ra-lead ra-rise" style={{ "--i": 1 } as CSSProperties}>
             Escreva os dois nomes e assista a uma Retrô de exemplo, capítulo por
-            capítulo. A de vocês ainda tem o momento mais caótico do ano, o mês
-            mais feliz, o que vem em 2027 e a sua carta final.
+            capítulo. A completa ainda tem quiz do casal, prêmios do ano,
+            vales-presente de raspadinha e a sua carta final.
           </p>
           <div
             className="ra-demo__form ra-rise"
@@ -1321,11 +1321,15 @@ const PLANOS: {
     cta: "QUERO A BÁSICA",
     features: [
       { t: "Até 5 fotos", on: true },
-      { t: "6 capítulos", on: true },
+      {
+        t: "6 capítulos: abertura, números, música, lugar, frase e carta",
+        on: true,
+      },
       { t: "Carta final curta", on: true },
       { t: "Link + QR code por 1 ano", on: true },
       { t: "Trilha sonora", on: false },
-      { t: "Cápsula do tempo", on: false },
+      { t: "Quiz, prêmios e linha do tempo", on: false },
+      { t: "Vales-presente e cápsula do tempo", on: false },
     ],
   },
   {
@@ -1338,11 +1342,15 @@ const PLANOS: {
     cta: "QUERO A COMPLETA",
     features: [
       { t: "Até 20 fotos", on: true },
-      { t: "12+ capítulos", on: true },
-      { t: "Trilha sonora", on: true },
+      {
+        t: "15 capítulos, com linha do tempo, quiz do casal, prêmios do ano, top 5, antes e depois e mural",
+        on: true,
+      },
+      { t: "Trilha sonora e modo \u201cassistir sozinho\u201d", on: true },
       { t: "Carta final longa ou em vídeo", on: true },
+      { t: "Cartão para postar nos stories", on: true },
       { t: "Link + QR code para sempre", on: true },
-      { t: "Cápsula do tempo", on: false },
+      { t: "Vales-presente e cápsula do tempo", on: false },
     ],
   },
   {
@@ -1353,10 +1361,11 @@ const PLANOS: {
     icon: <InfinityIcon size={30} color="#D7263D" strokeWidth={2.6} />,
     cta: "QUERO A INESQUECÍVEL",
     features: [
-      { t: "Até 20 fotos e 12+ capítulos", on: true },
-      { t: "Trilha sonora e carta longa ou em vídeo", on: true },
-      { t: "Link + QR code para sempre", on: true },
+      { t: "Tudo da Completa, com 19 capítulos", on: true },
+      { t: "Vales-presente de raspadinha", on: true },
+      { t: "Recados de amigos e família", on: true },
       { t: "Cápsula do tempo", on: true },
+      { t: "Pergunta final surpresa", on: true },
       { t: "Abre no dia que você escolher", on: true },
       { t: "Convite com QR para imprimir", on: true },
     ],
@@ -1499,6 +1508,13 @@ function Planos() {
           <p className="ra-note ra-rise" style={{ "--i": 1 } as CSSProperties}>
             Tem pet? No checkout você pode adicionar a Retrô do seu bichinho por
             + R$ 19,90.
+          </p>
+          <p className="ra-note ra-rise" style={{ "--i": 2 } as CSSProperties}>
+            Vai fazer um pedido de namoro ou de casamento? A Retrô também pode
+            terminar com o pedido.{" "}
+            <a href="./exemplo/?pedido" className="ra-link">
+              Veja como fica
+            </a>
           </p>
         </div>
       </div>

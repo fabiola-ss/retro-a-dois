@@ -3098,3 +3098,10 @@
     width: 100%;
   }
 }
+
+.ra .ra-link {
+  color: var(--amarelo);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

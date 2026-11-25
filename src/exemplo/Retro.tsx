@@ -12,6 +12,8 @@ import {
   ArrowUp,
   ExternalLink,
   Lock,
+  Pause,
+  Play,
   RotateCcw,
   Volume2,
   VolumeX,
@@ -19,6 +21,17 @@ import {
 
 import { CasalG, Ilustracao, Polaroid } from "./arte";
 import { RETRO } from "./dados";
+import {
+  AntesDepois,
+  Comeco,
+  Compartilhar,
+  Pergunta,
+  Premios,
+  Quiz,
+  Recados,
+  Top5,
+  Vales,
+} from "./extras";
 import { criarTrilha } from "./trilha";
 
 const reduz = () =>
@@ -27,6 +40,21 @@ const reduz = () =>
 
 /* ------------------------------------------------------------------ */
 
+type Plano = "Completa" | "Inesquecível" | null;
+
+/* tempo de cada capítulo no modo "assistir sozinho" (ms) */
+const DURACAO: Record<string, number> = {
+  "rx-abertura": 6000,
+  "rx-comeco": 9000,
+  "rx-carta": 16000,
+  "rx-frase": 8500,
+  "rx-quiz": 15000,
+  "rx-premios": 7000,
+  "rx-recados": 9000,
+  "rx-vales": 6000,
+  "rx-pergunta": 6500,
+};
+
 export function RetroExemplo() {
   const scroller = useRef<HTMLDivElement>(null);
   const trilha = useRef(criarTrilha());
@@ -34,6 +62,10 @@ export function RetroExemplo() {
   const [ativo, setAtivo] = useState(0);
   const [vistos, setVistos] = useState<Set<number>>(() => new Set([0]));
   const [som, setSom] = useState(false);
+  const [auto, setAuto] = useState(false);
+  const pedido =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).has("pedido");
 
   useEffect(() => {
     const el = scroller.current;
@@ -78,32 +110,126 @@ export function RetroExemplo() {
     setSom(!som);
   };
 
-  const capitulos: { classe: string; conteudo: (on: boolean) => ReactNode }[] =
-    [
-      {
-        classe: "rx-envelope",
-        conteudo: () => <Envelope aberto={aberto} onAbrir={abrir} />,
-      },
-      { classe: "rx-abertura", conteudo: (on) => <Abertura on={on} /> },
-      { classe: "rx-numeros", conteudo: (on) => <Numeros on={on} /> },
-      {
-        classe: "rx-musica",
-        conteudo: (on) => <Musica on={on} tocando={som} />,
-      },
-      { classe: "rx-lugar", conteudo: (on) => <Lugar on={on} /> },
-      { classe: "rx-mes", conteudo: (on) => <MesFeliz on={on} /> },
-      { classe: "rx-caos", conteudo: (on) => <Caos on={on} /> },
-      { classe: "rx-frase", conteudo: (on) => <Frase on={on} /> },
-      { classe: "rx-mural", conteudo: (on) => <Mural on={on} /> },
-      { classe: "rx-sonhos", conteudo: (on) => <Sonhos on={on} /> },
-      { classe: "rx-carta", conteudo: (on) => <Carta on={on} /> },
-      { classe: "rx-capsula", conteudo: (on) => <Capsula on={on} /> },
-      {
-        classe: "rx-creditos",
-        conteudo: (on) => <Creditos on={on} onDeNovo={() => irPara(1)} />,
-      },
-    ];
+  const capitulos: {
+    classe: string;
+    plano: Plano;
+    conteudo: (on: boolean) => ReactNode;
+  }[] = [
+    {
+      classe: "rx-envelope",
+      plano: null,
+      conteudo: () => <Envelope aberto={aberto} onAbrir={abrir} />,
+    },
+    {
+      classe: "rx-abertura",
+      plano: null,
+      conteudo: (on) => <Abertura on={on} />,
+    },
+    { classe: "rx-comeco", plano: "Completa", conteudo: () => <Comeco /> },
+    {
+      classe: "rx-numeros",
+      plano: null,
+      conteudo: (on) => <Numeros on={on} />,
+    },
+    {
+      classe: "rx-musica",
+      plano: null,
+      conteudo: (on) => <Musica on={on} tocando={som} />,
+    },
+    { classe: "rx-lugar", plano: null, conteudo: (on) => <Lugar on={on} /> },
+    {
+      classe: "rx-antesdepois",
+      plano: "Completa",
+      conteudo: (on) => <AntesDepois on={on} />,
+    },
+    {
+      classe: "rx-mes",
+      plano: "Completa",
+      conteudo: (on) => <MesFeliz on={on} />,
+    },
+    {
+      classe: "rx-caos",
+      plano: "Completa",
+      conteudo: (on) => <Caos on={on} />,
+    },
+    { classe: "rx-frase", plano: null, conteudo: (on) => <Frase on={on} /> },
+    { classe: "rx-top", plano: "Completa", conteudo: (on) => <Top5 on={on} /> },
+    {
+      classe: "rx-quiz-ch",
+      plano: "Completa",
+      conteudo: () => <Quiz auto={auto} />,
+    },
+    {
+      classe: "rx-premios-ch",
+      plano: "Completa",
+      conteudo: (on) => <Premios on={on} auto={auto} />,
+    },
+    {
+      classe: "rx-mural",
+      plano: "Completa",
+      conteudo: (on) => <Mural on={on} />,
+    },
+    {
+      classe: "rx-recados-ch",
+      plano: "Inesquecível",
+      conteudo: () => <Recados />,
+    },
+    {
+      classe: "rx-sonhos",
+      plano: "Completa",
+      conteudo: (on) => <Sonhos on={on} />,
+    },
+    { classe: "rx-carta", plano: null, conteudo: (on) => <Carta on={on} /> },
+    {
+      classe: "rx-vales-ch",
+      plano: "Inesquecível",
+      conteudo: () => <Vales auto={auto} />,
+    },
+    {
+      classe: "rx-capsula",
+      plano: "Inesquecível",
+      conteudo: (on) => <Capsula on={on} />,
+    },
+    {
+      classe: "rx-pergunta-ch",
+      plano: "Inesquecível",
+      conteudo: () => <Pergunta pedido={pedido} auto={auto} />,
+    },
+    {
+      classe: "rx-creditos",
+      plano: null,
+      conteudo: (on) => <Creditos on={on} onDeNovo={() => irPara(1)} />,
+    },
+  ];
   const total = capitulos.length - 1;
+
+  /* modo "assistir sozinho": avança no ritmo de cada capítulo */
+  useEffect(() => {
+    if (!auto || !aberto) return;
+    if (ativo >= total) {
+      setAuto(false);
+      return;
+    }
+    const classe = capitulos[ativo]?.classe ?? "";
+    const t = window.setTimeout(
+      () => irPara(ativo + 1),
+      DURACAO[classe] ?? 5500,
+    );
+    return () => window.clearTimeout(t);
+  });
+
+  /* qualquer toque ou rolagem da pessoa desliga o modo automático */
+  useEffect(() => {
+    if (!auto) return;
+    const el = scroller.current;
+    const parar = () => setAuto(false);
+    el?.addEventListener("wheel", parar, { passive: true });
+    el?.addEventListener("touchstart", parar, { passive: true });
+    return () => {
+      el?.removeEventListener("wheel", parar);
+      el?.removeEventListener("touchstart", parar);
+    };
+  }, [auto]);
 
   return (
     <div className={`rx${aberto ? " is-aberto" : ""}`}>
@@ -114,16 +240,40 @@ export function RetroExemplo() {
               <i key={k} className={k + 1 <= ativo ? "cheio" : ""} />
             ))}
           </div>
-          <button
-            type="button"
-            className="rx-som"
-            onClick={alternarSom}
-            aria-label={
-              som ? "Desligar a trilha sonora" : "Ligar a trilha sonora"
-            }
-          >
-            {som ? <Volume2 size={20} /> : <VolumeX size={20} />}
-          </button>
+          <div className="rx-controles">
+            <button
+              type="button"
+              className={`rx-som${auto ? " ligado" : ""}`}
+              onClick={() => setAuto(!auto)}
+              aria-label={
+                auto
+                  ? "Pausar o modo assistir sozinho"
+                  : "Assistir sozinho, como um filme"
+              }
+              aria-pressed={auto}
+            >
+              {auto ? <Pause size={18} /> : <Play size={18} />}
+            </button>
+            <button
+              type="button"
+              className="rx-som"
+              onClick={alternarSom}
+              aria-label={
+                som ? "Desligar a trilha sonora" : "Ligar a trilha sonora"
+              }
+            >
+              {som ? <Volume2 size={20} /> : <VolumeX size={20} />}
+            </button>
+          </div>
+          {ativo === 1 && !auto && (
+            <button
+              type="button"
+              className="rx-autodica"
+              onClick={() => setAuto(true)}
+            >
+              <Play size={14} /> Assistir sozinho, como um filme
+            </button>
+          )}
         </>
       )}
 
@@ -136,6 +286,13 @@ export function RetroExemplo() {
             aria-label={`Capítulo ${k} de ${total}`}
           >
             <div className="rx-in">{c.conteudo(vistos.has(k))}</div>
+            {c.plano && (
+              <span
+                className={`rx-plano${c.plano === "Inesquecível" ? " top" : ""}`}
+              >
+                Plano {c.plano}
+              </span>
+            )}
             {aberto && k > 0 && k < total && (
               <button
                 type="button"
@@ -757,9 +914,12 @@ function Creditos({ on, onDeNovo }: { on: boolean; onDeNovo: () => void }) {
           <p className="rx-continua">Continua em {RETRO.ano + 1}…</p>
         </div>
       </div>
-      <button type="button" className="rx-btn" onClick={onDeNovo}>
-        <RotateCcw size={16} /> Assistir de novo
-      </button>
+      <div className="rx-fim-botoes">
+        <Compartilhar />
+        <button type="button" className="rx-btn" onClick={onDeNovo}>
+          <RotateCcw size={16} /> Assistir de novo
+        </button>
+      </div>
       <a className="rx-assinatura-marca" href="../">
         <span>
           <Ilustracao cena="casal" />
