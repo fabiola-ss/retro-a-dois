@@ -250,6 +250,148 @@ export const EXEMPLO = {
     resposta: "Eu sabia.",
   },
 
+  mesAMes: [
+    {
+      mes: "Janeiro",
+      frase: "Réveillon na casa da Júlia e a promessa de viajar mais.",
+      cena: "natal" as Cena,
+    },
+    {
+      mes: "Fevereiro",
+      frase: "Quatro anos de namoro e um jantar que acabou em pizza.",
+      cena: "jantar" as Cena,
+    },
+    {
+      mes: "Março",
+      frase: "A mudança. A geladeira. O sofá. A gente sobreviveu.",
+      cena: "mudanca" as Cena,
+    },
+    {
+      mes: "Abril",
+      frase: "O Paçoca chegou e virou o dono da casa.",
+      cena: "pacoca" as Cena,
+    },
+    {
+      mes: "Maio",
+      frase: "Maratona de série no sofá novo, todo fim de semana.",
+      cena: "sofa" as Cena,
+    },
+    {
+      mes: "Junho",
+      frase: "Festa junina, quentão e o Leo dançando quadrilha.",
+      cena: "cafe" as Cena,
+    },
+    {
+      mes: "Julho",
+      frase: "Praia do Rosa e o aniversário da Ana.",
+      cena: "praia" as Cena,
+    },
+    {
+      mes: "Agosto",
+      frase: "Volta à rotina, com saudade do mar.",
+      cena: "cidade" as Cena,
+    },
+    {
+      mes: "Setembro",
+      frase: "Primavera e piquenique no parque.",
+      cena: "casal" as Cena,
+    },
+    {
+      mes: "Outubro",
+      frase: "A lasanha que quase deu certo.",
+      cena: "aniversario" as Cena,
+    },
+    {
+      mes: "Novembro",
+      frase: "Planejando o Natal e a viagem de 2027.",
+      cena: "estrada" as Cena,
+    },
+    {
+      mes: "Dezembro",
+      frase: "E chegou a hora de lembrar de tudo isso.",
+      cena: "praia-por-do-sol" as Cena,
+    },
+  ],
+
+  motivos: [
+    "o jeito que você canta errado no carro",
+    "o seu café de domingo",
+    "você rir das minhas piadas sem graça",
+    "você segurar minha mão no avião",
+    "o seu abraço depois de um dia ruim",
+    "você lembrar do meu pedido no delivery",
+    "o jeito que você fala com o Paçoca",
+    "você me esperar mesmo quando eu digo 'já tô chegando'",
+    "a sua paciência com a minha bagunça",
+    "você ser a minha casa, em qualquer lugar",
+    "o seu cheiro no moletom que eu roubei",
+    "você acreditar em mim antes de eu mesma acreditar",
+  ],
+
+  primeiras: [
+    "Primeira viagem só nós dois",
+    "Primeiro apartamento juntos",
+    "Primeiro Natal com a família dele",
+    "Primeira planta que não morreu",
+    "Primeira briga por causa do ar-condicionado",
+    "Primeiro bichinho da família",
+  ],
+
+  mapa: {
+    lugares: [
+      "São Paulo",
+      "Campos do Jordão",
+      "Praia do Rosa",
+      "Florianópolis",
+      "Paraty",
+    ],
+    km: 2340,
+  },
+
+  cardapio: {
+    restaurante: "o japonês da esquina",
+    prato: "lasanha (quase) perfeita do Leo",
+    delivery: "pizza de calabresa, sem cebola para a Ana",
+    sobremesa: "brigadeiro de panela no sofá",
+    drink: "café passado às 7h da manhã",
+  },
+
+  previsao: [
+    {
+      mes: "Fevereiro",
+      tempo: "sol",
+      texto: "Ensolarado, com pancadas de ciúme no fim da tarde.",
+    },
+    {
+      mes: "Março",
+      tempo: "tempestade",
+      texto: "Tempestade de caixas de mudança. Alerta de sofá preso na porta.",
+    },
+    {
+      mes: "Julho",
+      tempo: "arcoiris",
+      texto: "Céu limpo na Praia do Rosa. Índice de felicidade: máximo.",
+    },
+    {
+      mes: "Outubro",
+      tempo: "nublado",
+      texto: "Nublado com chance de lasanha queimada.",
+    },
+  ],
+
+  contrato: [
+    "Lavar a louça às terças e quintas, sem reclamar.",
+    "Não dar spoiler da série que estamos vendo juntos.",
+    "Dividir a última fatia de pizza, sempre.",
+    "Uma viagem nova por ano, nem que seja para a cidade vizinha.",
+    "Dizer 'eu te amo' antes de dormir, mesmo brigados.",
+  ],
+
+  videos: [
+    { src: "../videos/praia.mp4", legenda: "o primeiro mergulho no Rosa" },
+    { src: "../videos/pacoca.mp4", legenda: "o Paçoca conhecendo a casa" },
+  ] as { src: string; legenda: string }[],
+
   sonhos: [
     "Conhecer a neve juntos",
     "Acertar a receita da lasanha",

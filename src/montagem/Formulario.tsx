@@ -37,7 +37,8 @@ type Espaco =
   | "antes"
   | "depois"
   | "mural"
-  | `comeco${number}`;
+  | `comeco${number}`
+  | `mesames${number}`;
 type Arquivos = Partial<Record<Espaco, File[]>>;
 
 const RASCUNHO = "retro-a-dois:rascunho";
@@ -273,6 +274,7 @@ export function Formulario() {
   });
   const [arq, setArq] = useState<Arquivos>({});
   const [audio, setAudio] = useState<Blob | null>(null);
+  const [videos, setVideos] = useState<File[]>([]);
   const [etapa, setEtapa] = useState(0);
   const [erro, setErro] = useState("");
   const [enviando, setEnviando] = useState("");
@@ -378,7 +380,14 @@ export function Formulario() {
     setErro("");
     try {
       const slug = novoSlug(`${f.de}-e-${f.para}`);
-      const fotos: Fotos = { lugar: [], mes: [], mural: [], comeco: [] };
+      const fotos: Fotos = {
+        lugar: [],
+        mes: [],
+        mural: [],
+        comeco: [],
+        mesAMes: [],
+        videos: [],
+      };
       const todos = Object.entries(arq).flatMap(([k, l]) =>
         (l ?? []).map((a, i) => ({ k, a, i })),
       );
@@ -395,7 +404,15 @@ export function Formulario() {
         else if (k === "lugar" || k === "mes" || k === "mural")
           fotos[k].push(url);
         else if (k.startsWith("comeco")) fotos.comeco[Number(k.slice(6))] = url;
+        else if (k.startsWith("mesames"))
+          fotos.mesAMes[Number(k.slice(7))] = url;
       }
+      if (nivel >= 2)
+        for (const [i, v] of videos.entries()) {
+          setEnviando(`Enviando vídeo ${i + 1} de ${videos.length}…`);
+          const ext = v.name.split(".").pop()?.toLowerCase() || "mp4";
+          fotos.videos.push(await subirArquivo(slug, `video-${i}.${ext}`, v));
+        }
       if (audio && nivel >= 2) {
         setEnviando("Enviando o áudio…");
         const ext = audio.type.includes("mp4")
@@ -994,6 +1011,147 @@ export function Formulario() {
                     </Campo>
                   ))}
                 </Bloco>
+                <Bloco titulo="O ano mês a mês" plano="Completa">
+                  <p className="mf-dica">
+                    Uma frase (e, se quiser, uma foto) para cada mês. Pode pular
+                    os meses que quiser.
+                  </p>
+                  {MESES_NOME.map((m, k) => (
+                    <div className="mf-item" key={m}>
+                      <Campo rotulo={m}>
+                        {txt(`mesAMes.${k}`, {
+                          placeholder:
+                            k === 0 ? "Réveillon na casa da Júlia…" : "",
+                          max: 90,
+                        })}
+                      </Campo>
+                      <FotoEspaco
+                        rotulo="Foto do mês (opcional)"
+                        max={1}
+                        arquivos={espaco(`mesames${k}`)}
+                        onMudar={mudaEspaco(`mesames${k}`)}
+                        restante={restante}
+                      />
+                    </div>
+                  ))}
+                </Bloco>
+                <Bloco titulo="O mapa do ano" plano="Completa">
+                  <Campo
+                    rotulo="Lugares que vocês visitaram"
+                    dica="Um por linha, na ordem em que foram. De 2 a 7 lugares."
+                  >
+                    {txt("mapaLugares", {
+                      area: true,
+                      max: 300,
+                      placeholder: "São Paulo\nCampos do Jordão\nPraia do Rosa",
+                    })}
+                  </Campo>
+                  <Campo rotulo="Quantos km percorreram juntos (mais ou menos)">
+                    {txt("mapaKm", { placeholder: "2.340", max: 7 })}
+                  </Campo>
+                </Bloco>
+                <Bloco titulo="A previsão do tempo do amor" plano="Completa">
+                  {f.previsao.map((pv, k) => (
+                    <div className="mf-item" key={k}>
+                      <div className="mf-dupla">
+                        <Campo rotulo="Mês">
+                          <select
+                            value={pv.mes}
+                            onChange={(e) =>
+                              muda(`previsao.${k}.mes`, e.target.value)
+                            }
+                          >
+                            <option value="">Escolha</option>
+                            {MESES_NOME.map((m) => (
+                              <option key={m}>{m}</option>
+                            ))}
+                          </select>
+                        </Campo>
+                        <Campo rotulo="Tempo">
+                          <select
+                            value={pv.tempo}
+                            onChange={(e) =>
+                              muda(`previsao.${k}.tempo`, e.target.value)
+                            }
+                          >
+                            <option value="sol">Sol</option>
+                            <option value="nublado">Nublado</option>
+                            <option value="chuva">Chuva</option>
+                            <option value="tempestade">Tempestade</option>
+                            <option value="arcoiris">Arco-íris</option>
+                          </select>
+                        </Campo>
+                      </div>
+                      <Campo rotulo="A previsão">
+                        {txt(`previsao.${k}.texto`, {
+                          placeholder:
+                            [
+                              "Ensolarado, com pancadas de ciúme.",
+                              "Tempestade de caixas de mudança.",
+                              "Céu limpo na praia. Felicidade máxima.",
+                            ][k] ?? "",
+                          max: 90,
+                        })}
+                      </Campo>
+                    </div>
+                  ))}
+                  {f.previsao.length < 5 && (
+                    <button
+                      type="button"
+                      className="mf-btn mf-btn--leve"
+                      onClick={() =>
+                        muda("previsao", [
+                          ...f.previsao,
+                          { mes: "", tempo: "sol", texto: "" },
+                        ])
+                      }
+                    >
+                      + Outro mês
+                    </button>
+                  )}
+                </Bloco>
+                <Bloco titulo="Primeiras vezes do ano" plano="Completa">
+                  <Campo rotulo="Uma por linha" dica="Até 8.">
+                    {txt("primeiras", {
+                      area: true,
+                      max: 400,
+                      placeholder:
+                        "Primeira viagem só nós dois\nPrimeiro Natal com a família dele",
+                    })}
+                  </Campo>
+                </Bloco>
+                <Bloco titulo="O cardápio do casal" plano="Completa">
+                  <Campo rotulo="Restaurante favorito">
+                    {txt("cardapio.restaurante", {
+                      placeholder: "o japonês da esquina",
+                      max: 50,
+                    })}
+                  </Campo>
+                  <Campo rotulo="Prato da casa">
+                    {txt("cardapio.prato", {
+                      placeholder: "a lasanha (quase) perfeita",
+                      max: 50,
+                    })}
+                  </Campo>
+                  <Campo rotulo="Delivery mais pedido">
+                    {txt("cardapio.delivery", {
+                      placeholder: "pizza de calabresa",
+                      max: 50,
+                    })}
+                  </Campo>
+                  <Campo rotulo="Sobremesa">
+                    {txt("cardapio.sobremesa", {
+                      placeholder: "brigadeiro de panela",
+                      max: 50,
+                    })}
+                  </Campo>
+                  <Campo rotulo="Drink da casa">
+                    {txt("cardapio.drink", {
+                      placeholder: "café passado às 7h",
+                      max: 50,
+                    })}
+                  </Campo>
+                </Bloco>
               </>
             )}
           </>
@@ -1013,6 +1171,21 @@ export function Formulario() {
                 })}
               </Campo>
             </Bloco>
+            {nivel >= 1 && (
+              <Bloco titulo="Motivos para te amar" plano="Completa">
+                <Campo
+                  rotulo="Um motivo por linha"
+                  dica="Viram bilhetinhos num pote. De 5 a 20."
+                >
+                  {txt("motivos", {
+                    area: true,
+                    max: 1500,
+                    placeholder:
+                      "o jeito que você canta errado no carro\no seu café de domingo",
+                  })}
+                </Campo>
+              </Bloco>
+            )}
             {f.extras.pedido && nivel < 2 && (
               <Bloco titulo="O seu pedido" plano="Extra">
                 <Campo
@@ -1034,6 +1207,68 @@ export function Formulario() {
                     a carta.
                   </p>
                   <GravarAudio audio={audio} onMudar={setAudio} />
+                </Bloco>
+                <Bloco titulo="Contrato do amor" plano="Inesquecível">
+                  <Campo
+                    rotulo="Promessas para o próximo ano"
+                    dica="Uma por linha, até 6. Seu amor assina com o dedo."
+                  >
+                    {txt("contrato", {
+                      area: true,
+                      max: 500,
+                      placeholder:
+                        "Lavar a louça às terças\nNão dar spoiler da série",
+                    })}
+                  </Campo>
+                </Bloco>
+                <Bloco titulo="Vídeos curtos" plano="Inesquecível">
+                  <p className="mf-dica">
+                    Até 3 vídeos de até 15 segundos (máx. 30 MB cada). Aparecem
+                    como cenas na Retrô.
+                  </p>
+                  {videos.map((v, k) => (
+                    <div className="mf-item" key={v.name + k}>
+                      <div className="mf-video">
+                        <span>{v.name}</span>
+                        <button
+                          type="button"
+                          className="mf-btn mf-btn--leve"
+                          onClick={() =>
+                            setVideos(videos.filter((_, i) => i !== k))
+                          }
+                        >
+                          <X size={14} /> Remover
+                        </button>
+                      </div>
+                      <Campo rotulo="Legenda">
+                        {txt(`videoLegendas.${k}`, {
+                          placeholder: "o primeiro mergulho",
+                          max: 40,
+                        })}
+                      </Campo>
+                    </div>
+                  ))}
+                  {videos.length < 3 && (
+                    <label className="mf-btn mf-btn--leve">
+                      + Adicionar vídeo
+                      <input
+                        type="file"
+                        accept="video/*"
+                        hidden
+                        onChange={(e) => {
+                          const v = e.target.files?.[0];
+                          e.target.value = "";
+                          if (!v) return;
+                          if (v.size > 30 * 1024 * 1024)
+                            return setErro(
+                              "Esse vídeo passou de 30 MB. Tente um trecho mais curto.",
+                            );
+                          setErro("");
+                          setVideos([...videos, v]);
+                        }}
+                      />
+                    </label>
+                  )}
                 </Bloco>
                 <Bloco
                   titulo="Recados de amigos e família"

@@ -49,6 +49,21 @@ export type Form = {
   capsula: { mensagem: string; abre: string }; // AAAA-MM-DD
   pergunta: string;
   extras: { pet: boolean; pedido: boolean };
+  mesAMes: string[]; // 12 frases
+  motivos: string; // um por linha
+  primeiras: string; // uma por linha
+  mapaLugares: string; // um por linha
+  mapaKm: string;
+  cardapio: {
+    restaurante: string;
+    prato: string;
+    delivery: string;
+    sobremesa: string;
+    drink: string;
+  };
+  previsao: { mes: string; tempo: string; texto: string }[];
+  contrato: string; // uma promessa por linha
+  videoLegendas: string[];
 };
 
 export const ANO = 2026;
@@ -106,6 +121,25 @@ export const formVazio = (plano: Plano): Form => ({
   capsula: { mensagem: "", abre: `${ANO + 1}-12-25` },
   pergunta: `Quer passar ${ANO + 1} comigo?`,
   extras: { pet: false, pedido: false },
+  mesAMes: Array.from({ length: 12 }, () => ""),
+  motivos: "",
+  primeiras: "",
+  mapaLugares: "",
+  mapaKm: "",
+  cardapio: {
+    restaurante: "",
+    prato: "",
+    delivery: "",
+    sobremesa: "",
+    drink: "",
+  },
+  previsao: [
+    { mes: "", tempo: "sol", texto: "" },
+    { mes: "", tempo: "tempestade", texto: "" },
+    { mes: "", tempo: "arcoiris", texto: "" },
+  ],
+  contrato: "",
+  videoLegendas: ["", "", ""],
 });
 
 /** Endereços das fotos já enviadas, por espaço do formulário. */
@@ -119,9 +153,16 @@ export type Fotos = {
   mural: string[];
   comeco: (string | undefined)[];
   audio?: string;
+  mesAMes: (string | undefined)[];
+  videos: string[];
 };
 
 const br = (iso: string) => (iso ? iso.split("-").reverse().join("/") : "");
+const linhas = (t: string) =>
+  t
+    .split(/\n+/)
+    .map((l) => l.trim())
+    .filter(Boolean);
 const num = (v: string) => Number(String(v).replace(/\D/g, "")) || 0;
 
 export function montarRetro(f: Form, fotos: Fotos): Retro {
@@ -275,6 +316,52 @@ export function montarRetro(f: Form, fotos: Fotos): Retro {
               quem: r.quem.trim(),
               texto: r.texto.trim(),
             }))
+        : [],
+    mesAMes:
+      nivel >= 1
+        ? MESES_NOME.map((mes, k) => ({
+            mes,
+            frase: (f.mesAMes[k] ?? "").trim(),
+            cena: fotos.mesAMes[k] ?? "",
+          }))
+            .filter((m) => m.frase || m.cena)
+            .map((m) => ({ ...m, cena: m.cena || "casal" }))
+        : [],
+    motivos: nivel >= 1 ? linhas(f.motivos).slice(0, 20) : [],
+    primeiras: nivel >= 1 ? linhas(f.primeiras).slice(0, 8) : [],
+    mapa: {
+      lugares: nivel >= 1 ? linhas(f.mapaLugares).slice(0, 7) : [],
+      km: num(f.mapaKm),
+    },
+    cardapio:
+      nivel >= 1
+        ? {
+            restaurante: f.cardapio.restaurante.trim(),
+            prato: f.cardapio.prato.trim(),
+            delivery: f.cardapio.delivery.trim(),
+            sobremesa: f.cardapio.sobremesa.trim(),
+            drink: f.cardapio.drink.trim(),
+          }
+        : {
+            restaurante: "",
+            prato: "",
+            delivery: "",
+            sobremesa: "",
+            drink: "",
+          },
+    previsao:
+      nivel >= 1
+        ? f.previsao
+            .filter((p) => p.mes && p.texto.trim())
+            .map((p) => ({ ...p, texto: p.texto.trim() }))
+        : [],
+    contrato: nivel >= 2 ? linhas(f.contrato).slice(0, 6) : [],
+    videos:
+      nivel >= 2
+        ? fotos.videos.map((src, k) => ({
+            src,
+            legenda: (f.videoLegendas[k] ?? "").trim(),
+          }))
         : [],
     sonhos: nivel >= 1 ? f.sonhos.map((s) => s.trim()).filter(Boolean) : [],
     carta: f.carta

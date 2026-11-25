@@ -32,6 +32,17 @@ import {
   Top5,
   Vales,
 } from "./extras";
+import {
+  Cardapio,
+  Contrato,
+  MapaDoAno,
+  Memoria,
+  MesAMes,
+  Motivos,
+  Previsao,
+  PrimeirasVezes,
+  Videos,
+} from "./mais";
 import { CartaAudio, JuntosAoVivo, Playlist, Responder } from "./novos";
 import { criarTrilha } from "./trilha";
 
@@ -55,6 +66,15 @@ const DURACAO: Record<string, number> = {
   "rx-vales-ch": 6000,
   "rx-pergunta-ch": 6500,
   "rx-playlist": 7000,
+  "rx-mesames": 9000,
+  "rx-mapa-ch": 7000,
+  "rx-previsao": 7000,
+  "rx-primeiras": 6500,
+  "rx-cardapio": 7000,
+  "rx-memoria": 9000,
+  "rx-videos-ch": 8000,
+  "rx-motivos": 9000,
+  "rx-contrato-ch": 7000,
   "rx-responder": 6000,
 };
 
@@ -77,6 +97,16 @@ const TEM: Record<string, () => boolean> = {
   "rx-vales-ch": () => RETRO.vales.length > 0,
   "rx-capsula": () => !!RETRO.capsula.abreTexto,
   "rx-musica": () => !!RETRO.musica.titulo,
+  "rx-mesames": () => RETRO.mesAMes.length > 0,
+  "rx-mapa-ch": () => RETRO.mapa.lugares.length > 1,
+  "rx-previsao": () => RETRO.previsao.length > 0,
+  "rx-primeiras": () => RETRO.primeiras.length > 0,
+  "rx-cardapio": () => Object.values(RETRO.cardapio).some(Boolean),
+  "rx-memoria": () =>
+    new Set([RETRO.fotoFavorita, ...RETRO.mural.map((m) => m.cena)]).size >= 3,
+  "rx-videos-ch": () => RETRO.videos.length > 0,
+  "rx-motivos": () => RETRO.motivos.length > 0,
+  "rx-contrato-ch": () => RETRO.contrato.length > 0,
 };
 
 export function RetroExemplo() {
@@ -190,7 +220,13 @@ export function RetroExemplo() {
       plano: "Completa",
       conteudo: (on) => <Playlist on={on} />,
     },
+    { classe: "rx-mesames", plano: "Completa", conteudo: () => <MesAMes /> },
     { classe: "rx-lugar", plano: null, conteudo: (on) => <Lugar on={on} /> },
+    {
+      classe: "rx-mapa-ch",
+      plano: "Completa",
+      conteudo: (on) => <MapaDoAno on={on} />,
+    },
     {
       classe: "rx-antesdepois",
       plano: "Completa",
@@ -201,13 +237,20 @@ export function RetroExemplo() {
       plano: "Completa",
       conteudo: (on) => <MesFeliz on={on} />,
     },
+    { classe: "rx-previsao", plano: "Completa", conteudo: () => <Previsao /> },
     {
       classe: "rx-caos",
       plano: "Completa",
       conteudo: (on) => <Caos on={on} />,
     },
     { classe: "rx-frase", plano: null, conteudo: (on) => <Frase on={on} /> },
+    {
+      classe: "rx-primeiras",
+      plano: "Completa",
+      conteudo: (on) => <PrimeirasVezes on={on} />,
+    },
     { classe: "rx-top", plano: "Completa", conteudo: (on) => <Top5 on={on} /> },
+    { classe: "rx-cardapio", plano: "Completa", conteudo: () => <Cardapio /> },
     {
       classe: "rx-quiz-ch",
       plano: "Completa",
@@ -224,14 +267,34 @@ export function RetroExemplo() {
       conteudo: (on) => <Mural on={on} />,
     },
     {
+      classe: "rx-memoria",
+      plano: "Inesquecível",
+      conteudo: () => <Memoria auto={auto} />,
+    },
+    {
+      classe: "rx-videos-ch",
+      plano: "Inesquecível",
+      conteudo: (on) => <Videos on={on} />,
+    },
+    {
       classe: "rx-recados-ch",
       plano: "Inesquecível",
       conteudo: () => <Recados />,
     },
     {
+      classe: "rx-motivos",
+      plano: "Completa",
+      conteudo: (on) => <Motivos on={on} auto={auto} />,
+    },
+    {
       classe: "rx-sonhos",
       plano: "Completa",
       conteudo: (on) => <Sonhos on={on} />,
+    },
+    {
+      classe: "rx-contrato-ch",
+      plano: "Inesquecível",
+      conteudo: (on) => <Contrato on={on} auto={auto} />,
     },
     { classe: "rx-carta", plano: null, conteudo: (on) => <Carta on={on} /> },
     {

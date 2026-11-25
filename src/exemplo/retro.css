@@ -2541,3 +2541,632 @@ ol.rx-top li {
   color: var(--creme);
   font-size: 18px;
 }
+
+/* =====================================================================
+   MAIS CAPÍTULOS
+   ===================================================================== */
+
+/* ---------- mês a mês ---------- */
+.rx-mesames {
+  background: var(--amarelo);
+}
+
+.rx-meses li {
+  flex-basis: 72%;
+  gap: 12px;
+}
+
+.rx-meses__nome {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--cereja);
+}
+
+.rx-meses li > span:last-child {
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+/* ---------- pote de motivos ---------- */
+.rx-motivos {
+  background: var(--rosa-2);
+}
+
+.rx-pote {
+  position: relative;
+  width: 170px;
+  height: 200px;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  transition: transform 300ms var(--spring);
+}
+
+.rx-pote:active:not(:disabled) {
+  transform: scale(0.94) rotate(-3deg);
+}
+
+.rx-pote__tampa {
+  position: absolute;
+  left: 30px;
+  right: 30px;
+  top: 0;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--cereja);
+}
+
+.rx-pote__vidro {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 22px;
+  bottom: 0;
+  border-radius: 30px 30px 40px 40px;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.9);
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap-reverse;
+  align-content: flex-start;
+  justify-content: center;
+  gap: 4px;
+  padding: 14px 12px;
+}
+
+.rx-pote__vidro i {
+  width: 34px;
+  height: 18px;
+  border-radius: 4px;
+  background: var(--amarelo);
+  transform: rotate(calc((var(--k) * 37deg) - 20deg));
+}
+
+.rx-pote__vidro i:nth-child(3n) {
+  background: var(--rosa);
+}
+
+.rx-pote__vidro i:nth-child(4n) {
+  background: #fff;
+}
+
+.rx-bilhete-area {
+  min-height: 96px;
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.rx-bilhete {
+  max-width: 300px;
+  background: #fff6c9;
+  padding: 16px 18px;
+  border-radius: 4px;
+  font-family: var(--mao);
+  font-size: 24px;
+  line-height: 1.2;
+  box-shadow: 0 8px 18px rgba(23, 17, 15, 0.1);
+  animation: rx-sai-do-pote 600ms var(--spring);
+}
+
+@keyframes rx-sai-do-pote {
+  from {
+    opacity: 0;
+    transform: translateY(-70px) scale(0.3) rotate(-20deg);
+  }
+}
+
+/* ---------- primeiras vezes ---------- */
+.rx-primeiras {
+  background: var(--creme);
+}
+
+.rx-checks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rx-checks li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--papel);
+  border-radius: 16px;
+  padding: 12px 14px;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.rx-checks__box {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  background: var(--creme-2);
+  color: transparent;
+  transition:
+    background-color 300ms ease,
+    color 300ms ease,
+    transform 400ms var(--spring);
+}
+
+.marca .rx-checks__box {
+  background: var(--cereja);
+  color: #fff;
+  transform: scale(1.08);
+  transition-delay: calc(var(--d) * 140ms + 600ms);
+}
+
+/* ---------- mapa do ano ---------- */
+.rx-mapa-ch {
+  background: var(--creme-2);
+}
+
+.rx-mapa2 {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 300 / 260;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.rx-mapa2 svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.rx-mapa2__rota {
+  stroke-dashoffset: 100;
+  stroke-dasharray: 100;
+}
+
+.traca .rx-mapa2__rota {
+  stroke-dashoffset: 0;
+  stroke-dasharray: 100;
+  transition: stroke-dashoffset 2.4s ease 0.8s;
+}
+
+.rx-mapa2__pino {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+}
+
+.traca .rx-mapa2__pino {
+  animation: rx-pino-cai 600ms var(--spring) both;
+  animation-delay: calc(var(--k) * 400ms + 800ms);
+}
+
+@keyframes rx-pino-cai {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -160%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -100%);
+  }
+}
+
+.rx-mapa2__pino i {
+  width: 16px;
+  height: 16px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: var(--cereja);
+  box-shadow:
+    inset 0 0 0 4px var(--cereja),
+    inset 0 0 0 8px #fff;
+}
+
+.rx-mapa2__pino em {
+  order: -1;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--papel);
+  padding: 2px 6px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  white-space: nowrap;
+}
+
+.rx-km {
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+}
+
+.rx-km b {
+  font-size: 44px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--cereja);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- cardápio ---------- */
+.rx-cardapio {
+  background: var(--noite-3);
+}
+
+.rx-cardapio .rx-kicker {
+  color: var(--creme);
+}
+
+.rx-menu {
+  width: 100%;
+  background: var(--papel);
+  border-radius: 6px;
+  padding: 26px 22px 20px;
+  box-shadow:
+    inset 0 0 0 2px var(--creme-3),
+    inset 0 0 0 8px var(--papel),
+    inset 0 0 0 10px var(--creme-3);
+}
+
+.rx-menu__casa {
+  font-family: var(--mao);
+  font-size: 28px;
+  color: var(--cereja);
+}
+
+.rx-menu__nome {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.rx-menu__linha {
+  display: block;
+  width: 60px;
+  height: 3px;
+  margin: 12px auto 16px;
+  border-radius: 2px;
+  background: var(--amarelo);
+}
+
+.rx-menu dl {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rx-menu dt {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cereja);
+}
+
+.rx-menu dd {
+  margin: 2px 0 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.rx-menu__rodape {
+  margin-top: 18px;
+  font-family: var(--mao);
+  font-size: 20px;
+  color: var(--tinta-2);
+}
+
+/* ---------- previsão do tempo ---------- */
+.rx-previsao {
+  background: #bfe3f0;
+}
+
+.rx-tempo {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rx-tempo__card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.75);
+  text-align: left;
+}
+
+.rx-tempo__card b {
+  display: block;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.rx-tempo__card span {
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.rx-tempo__ic {
+  flex: none;
+}
+
+.t-sol .rx-tempo__ic,
+.t-arcoiris .rx-tempo__ic {
+  color: #f2a900;
+  animation: rx-gira 12s linear infinite;
+}
+
+.t-arcoiris .rx-tempo__ic {
+  color: var(--cereja);
+  animation: none;
+}
+
+.t-chuva .rx-tempo__ic,
+.t-nublado .rx-tempo__ic {
+  color: #4fa3c7;
+  animation: rx-sobe 2.4s ease-in-out infinite;
+}
+
+.t-tempestade .rx-tempo__ic {
+  color: var(--tinta-2);
+  animation: rx-treme 0.5s ease-in-out 1s 4;
+}
+
+/* ---------- jogo da memória ---------- */
+.rx-memoria {
+  background: var(--cereja);
+  color: var(--creme);
+}
+
+.rx-memo {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  perspective: 800px;
+}
+
+.rx-memo__carta {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 450ms var(--ease);
+}
+
+.rx-memo__carta.aberta {
+  transform: rotateY(180deg);
+}
+
+.rx-memo__verso,
+.rx-memo__frente {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+.rx-memo__verso {
+  display: grid;
+  place-items: center;
+  background: var(--cereja-2);
+  box-shadow: inset 0 0 0 3px rgba(251, 246, 239, 0.4);
+}
+
+.rx-memo__verso svg {
+  width: 40%;
+}
+
+.rx-memo__frente {
+  transform: rotateY(180deg);
+  background: #fff;
+  border: 3px solid #fff;
+}
+
+.rx-memo__carta.achada .rx-memo__frente {
+  border-color: var(--amarelo);
+}
+
+.rx-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ---------- contrato do amor ---------- */
+.rx-contrato-ch {
+  background: var(--creme-2);
+}
+
+.rx-contrato {
+  width: 100%;
+  background: var(--papel);
+  border-radius: 6px;
+  padding: 24px 20px 18px;
+  text-align: left;
+}
+
+.rx-contrato__tit {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--cereja);
+}
+
+.rx-contrato__partes {
+  text-align: center;
+  font-size: 15px;
+  margin: 6px 0 14px;
+}
+
+.rx-contrato ol {
+  margin: 0;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.rx-assina {
+  position: relative;
+  margin-top: 18px;
+  height: 110px;
+  border-radius: 12px;
+  background: var(--creme);
+}
+
+.rx-assina canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.rx-assina__dica {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--tinta-2);
+  pointer-events: none;
+}
+
+.rx-assina__linha {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 14px;
+  padding-top: 4px;
+  border-top: 2px solid var(--tinta-2);
+  text-align: center;
+  font-size: 12px;
+  color: var(--tinta-2);
+  pointer-events: none;
+}
+
+.rx-assina__selo {
+  right: 10px;
+  bottom: 30px;
+  font-size: 15px;
+  pointer-events: none;
+}
+
+/* ---------- vídeos ---------- */
+.rx-videos-ch {
+  background: var(--noite);
+  color: var(--creme);
+}
+
+.rx-videos {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.rx-video {
+  margin: 0;
+  flex: 1;
+  max-width: 190px;
+  background: #fff;
+  padding: 6px 6px 0;
+  border-radius: 4px;
+  transform: rotate(var(--r));
+}
+
+.rx-video video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 14;
+  object-fit: cover;
+  background: var(--noite-3);
+}
+
+.rx-video figcaption {
+  font-family: var(--mao);
+  font-size: 17px;
+  color: var(--tinta);
+  padding: 6px 2px 8px;
+  line-height: 1.1;
+}
+
+.rx-videos-ch .rx-btn--claro {
+  background: var(--creme);
+  color: var(--tinta);
+}
+
+/* ---------- concordância do quiz ---------- */
+.rx-concorda {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.rx-concorda li {
+  background: rgba(251, 246, 239, 0.1);
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rx-concorda li.igual {
+  box-shadow: inset 3px 0 0 var(--amarelo);
+}
+
+.rx-concorda small {
+  opacity: 0.8;
+}
+
+/* fundos escuros: etiqueta de plano */
+.rx-memoria .rx-plano,
+.rx-videos-ch .rx-plano,
+.rx-cardapio .rx-plano {
+  background: rgba(251, 246, 239, 0.16);
+  color: var(--creme);
+}
+
+.rx-memoria .rx-plano.top,
+.rx-videos-ch .rx-plano.top {
+  background: var(--amarelo);
+  color: var(--tinta);
+}

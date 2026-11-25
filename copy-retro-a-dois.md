@@ -70,16 +70,18 @@ Exemplo com ilustrações; a de vocês usa as fotos de vocês.
 |---|---|---|---|
 | Preço | R$ 19,90 | R$ 29,90 | R$ 49,90 |
 | Fotos | até 5 | até 20 | até 20 |
-| Capítulos | 6 | 16 | 20 |
+| Capítulos | 6 | 22 | 29 |
 | Abertura, números (com contador ao vivo), música, lugar, frase, carta | ✓ | ✓ | ✓ |
 | Responder à Retrô (texto ou áudio, pelo WhatsApp) | ✓ | ✓ | ✓ |
 | Linha do tempo, antes e depois, mês mais feliz, momento caótico | — | ✓ | ✓ |
-| Playlist do ano (5 músicas), top 5, quiz do casal, prêmios do ano, mural, sonhos para 2027 | — | ✓ | ✓ |
+| Playlist do ano (5 músicas), top 5, quiz do casal (com "vocês concordaram em…"), prêmios do ano, mural, sonhos para 2027 | — | ✓ | ✓ |
+| O ano mês a mês, mapa do ano, previsão do tempo do amor, primeiras vezes, cardápio do casal, motivos para te amar | — | ✓ | ✓ |
 | Trilha sonora e modo "assistir sozinho" | — | ✓ | ✓ |
 | Carta final | curta | longa ou vídeo | longa ou vídeo |
 | Cartão para postar nos stories | — | ✓ | ✓ |
 | Link + QR code | 1 ano | para sempre | para sempre |
 | Carta em áudio, com a voz de quem dá o presente | — | — | ✓ |
+| Jogo da memória com as fotos, contrato do amor (assinado com o dedo), vídeos curtos | — | — | ✓ |
 | Vales-presente de raspadinha | — | — | ✓ |
 | Recados de amigos e família | — | — | ✓ |
 | Cápsula do tempo | — | — | ✓ |

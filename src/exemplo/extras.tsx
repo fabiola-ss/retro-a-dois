@@ -153,6 +153,7 @@ export function Quiz({ auto }: { auto: boolean }) {
   const [i, setI] = useState(0);
   const [escolha, setEscolha] = useState<string | null>(null);
   const [acertos, setAcertos] = useState(0);
+  const [respostas, setRespostas] = useState<string[]>([]);
   const fim = i >= q.length;
   const atual = q[Math.min(i, q.length - 1)]!;
 
@@ -160,6 +161,7 @@ export function Quiz({ auto }: { auto: boolean }) {
     if (escolha) return;
     setEscolha(nome);
     if (nome === atual.resposta) setAcertos((v) => v + 1);
+    setRespostas((r) => [...r, nome]);
   };
   const proxima = () => {
     setEscolha(null);
@@ -231,22 +233,38 @@ export function Quiz({ auto }: { auto: boolean }) {
         </div>
       ) : (
         <div className="rx-quiz rx-quiz--fim">
+          <p className="rx-kicker">Vocês dois concordaram em</p>
           <h2 className="rx-titulo">
             {acertos} de {q.length}
           </h2>
           <p className="rx-texto">
             {acertos === q.length
-              ? "Gabaritou. Conhece esse casal de cor."
+              ? "Concordância total. Conhecem um ao outro de cor."
               : acertos >= q.length / 2
-                ? "Nada mal. Mas ainda tem muito para descobrir em 2027."
+                ? "Quase sempre na mesma página. O resto vocês resolvem em 2027."
                 : "Hmm. Vocês precisam de mais cafés de domingo."}
           </p>
+          <ul className="rx-concorda">
+            {q.map((pq, k) => (
+              <li
+                key={pq.pergunta}
+                className={respostas[k] === pq.resposta ? "igual" : ""}
+              >
+                <span>{pq.pergunta}</span>
+                <small>
+                  {RETRO.de}: <b>{pq.resposta}</b> · {RETRO.para}:{" "}
+                  <b>{respostas[k] ?? "—"}</b>
+                </small>
+              </li>
+            ))}
+          </ul>
           <button
             type="button"
             className="rx-btn rx-btn--claro"
             onClick={() => {
               setI(0);
               setAcertos(0);
+              setRespostas([]);
               setEscolha(null);
             }}
           >

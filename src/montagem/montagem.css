@@ -610,3 +610,18 @@ textarea {
   border-radius: 10px;
   padding: 8px 12px;
 }
+
+.mf-video {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  word-break: break-all;
+}
+
+.mf-video .mf-btn {
+  min-height: 36px;
+  padding: 0 12px;
+  font-size: 13px;
+}

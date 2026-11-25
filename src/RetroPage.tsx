@@ -1134,7 +1134,7 @@ const PLANOS: {
     features: [
       { t: "Até 20 fotos", on: true },
       {
-        t: "16 capítulos, com linha do tempo, playlist do ano, quiz do casal, prêmios, top 5, antes e depois e mural",
+        t: "22 capítulos, com mês a mês, mapa do ano, previsão do tempo do amor, cardápio do casal, motivos para te amar, quiz, prêmios e playlist",
         on: true,
       },
       { t: "Trilha sonora e modo \u201cassistir sozinho\u201d", on: true },
@@ -1152,7 +1152,8 @@ const PLANOS: {
     icon: <InfinityIcon size={30} color="#D7263D" strokeWidth={2.6} />,
     cta: "QUERO A INESQUECÍVEL",
     features: [
-      { t: "Tudo da Completa, com 20 capítulos", on: true },
+      { t: "Tudo da Completa, com 29 capítulos", on: true },
+      { t: "Jogo da memória, contrato do amor e vídeos do casal", on: true },
       { t: "Carta em áudio, com a sua voz", on: true },
       { t: "Vales-presente de raspadinha", on: true },
       { t: "Recados de amigos e família", on: true },
