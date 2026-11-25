@@ -3257,3 +3257,9 @@
     padding-right: 10px;
   }
 }
+
+/* moldura do celular mais fina */
+.ra .ra-phone {
+  padding: 6px;
+  border-radius: 40px;
+}
