@@ -40,15 +40,17 @@ Você quer dar um presente que tenha significado. Mas aí entra no shopping e s�
 
 E em 2026 vocês viveram muita coisa: aquela viagem, aquela briga boba, a música que tocou mil vezes no carro. Tudo isso está espalhado no rolo da câmera, esperando alguém juntar.
 
-## 3. Prévia interativa
+## 3. Prévia
 
 **Veja como seu amor vai receber**
 
-Escreva os dois nomes e assista a uma Retrô de exemplo, capítulo por capítulo. A completa ainda tem quiz do casal, prêmios do ano, vales-presente de raspadinha e a sua carta final.
+Esta é uma Retrô de verdade, rodando sozinha aqui no celular. Abra em tela cheia, com som, para ver a experiência completa: do envelope aos créditos finais.
 
-**Botão:** VER A RETRÔ COMPLETA DE EXEMPLO (abre /exemplo/, a Retrô completa da Ana e do Leo, com todos os 20 capítulos do plano Inesquecível)
+**Botão:** ASSISTIR EM TELA CHEIA (abre a Retrô de exemplo por cima da página, com um X para fechar)
 
-(Campos: Seu nome & Nome do seu amor. Celular com a Retrô de exemplo: abertura, 365 dias juntos, a música do ano, o lugar mais marcante, a frase que mais se repetiu, cápsula trancada.)
+Exemplo com ilustrações; a de vocês usa as fotos de vocês.
+
+(No celular da página roda a Retrô completa de exemplo, sozinha e sem som, em loop. Tocar no celular também abre a tela cheia.)
 
 ## 4. Como funciona
 

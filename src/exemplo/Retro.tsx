@@ -130,16 +130,28 @@ export function RetroExemplo() {
       });
   };
 
-  const comTrilha = RETRO.plano !== "basica";
+  /* ?demo: modo vitrine dentro do celular da página de vendas */
+  const demo =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).has("demo");
+  const comTrilha = RETRO.plano !== "basica" && !demo;
 
   const abrir = () => {
     setAberto(true);
+    if (demo) setAuto(true);
     if (comTrilha) {
       trilha.current.ligar();
       setSom(true);
     }
     window.setTimeout(() => irPara(1), reduz() ? 0 : 1300);
   };
+
+  useEffect(() => {
+    if (!demo) return;
+    const t = window.setTimeout(abrir, 1600);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const alternarSom = () => {
     if (som) trilha.current.desligar();
@@ -259,8 +271,13 @@ export function RetroExemplo() {
   useEffect(() => {
     if (!auto || !aberto) return;
     if (ativo >= total) {
-      setAuto(false);
-      return;
+      if (!demo) {
+        setAuto(false);
+        return;
+      }
+      /* na vitrine, recomeça depois dos créditos */
+      const t = window.setTimeout(() => irPara(1), 9000);
+      return () => window.clearTimeout(t);
     }
     const classe = capitulos[ativo]?.classe ?? "";
     const t = window.setTimeout(
@@ -1001,7 +1018,7 @@ function Creditos({ on, onDeNovo }: { on: boolean; onDeNovo: () => void }) {
           <RotateCcw size={16} /> Assistir de novo
         </button>
       </div>
-      <a className="rx-assinatura-marca" href="../">
+      <a className="rx-assinatura-marca" href="../" target="_top">
         <span>
           <Ilustracao cena={RETRO.fotoFavorita} />
         </span>

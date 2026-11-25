@@ -26,6 +26,8 @@ import {
   ShieldCheck,
   Star,
   Mail,
+  Maximize2,
+  X,
 } from "lucide-react";
 
 /* Links de checkout: troque pelos links reais de cada plano. */
@@ -105,7 +107,7 @@ function CountPrice({ value }: { value: string }) {
 function MobileBar() {
   const [on, setOn] = useState(false);
   useEffect(() => {
-    const targets = ["topo", "planos", "fim"]
+    const targets = ["topo", "previa", "planos", "fim"]
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => !!el);
     const visible = new Map<Element, boolean>();
@@ -516,57 +518,6 @@ function Hero() {
 }
 
 /* -------------------------- identificação -------------------------- */
-
-type OrbitItem = {
-  a: number;
-  r: number;
-  bg: string;
-  fg: string;
-  icon: ReactNode;
-  label: string;
-};
-
-function Orbit({
-  children,
-  items,
-}: {
-  children: ReactNode;
-  items: OrbitItem[];
-}) {
-  return (
-    <>
-      <div className="ra-orbit__ring" />
-      <div className="ra-orbit__ring" />
-      <div className="ra-orbit__ring" />
-      {children}
-      <div className="ra-orbit__spin" aria-hidden="true">
-        {items.map((o, i) => {
-          const rad = (o.a * Math.PI) / 180;
-          return (
-            <div
-              key={i}
-              className="ra-orbit__item"
-              style={{
-                left: `${50 + o.r * Math.cos(rad)}%`,
-                top: `${50 + o.r * Math.sin(rad)}%`,
-              }}
-            >
-              <div>
-                <span
-                  className="ra-orbit__dot"
-                  style={{ background: o.bg, color: o.fg }}
-                >
-                  {o.icon}
-                </span>
-                {o.label && <span className="ra-orbit__label">{o.label}</span>}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </>
-  );
-}
 
 const PERGUNTAS = [
   "Você já deu presente que foi esquecido no fundo do armário?",
@@ -982,153 +933,34 @@ function ComoFunciona() {
 
 /* ------------------------------ prévia ------------------------------ */
 
-type Slide = {
-  bg: string;
-  fg: string;
-  render: (a: string, b: string) => ReactNode;
-};
-
-const SLIDES: Slide[] = [
-  {
-    bg: "#D7263D",
-    fg: "#fff",
-    render: (a, b) => (
-      <>
-        <p className="ra-slide__kicker">Retrô a Dois</p>
-        <p className="ra-slide__title">
-          2026 foi o ano de {a} e {b}
-        </p>
-        <div
-          style={{
-            borderRadius: 18,
-            overflow: "hidden",
-            aspectRatio: "1",
-            background: "#fff",
-            padding: 8,
-          }}
-        >
-          <div style={{ height: "100%", borderRadius: 10, overflow: "hidden" }}>
-            <Scene kind="casal" />
-          </div>
-        </div>
-      </>
-    ),
-  },
-  {
-    bg: "#FFD23F",
-    fg: "#1C1416",
-    render: () => (
-      <>
-        <p className="ra-slide__kicker">Neste ano, vocês passaram</p>
-        <p className="ra-slide__huge">365</p>
-        <p className="ra-slide__title">dias juntos. E cada um deles contou.</p>
-      </>
-    ),
-  },
-  {
-    bg: "#17110F",
-    fg: "#FBF6EF",
-    render: () => (
-      <>
-        <p className="ra-slide__kicker">A música do ano de vocês foi…</p>
-        <p className="ra-slide__title">
-          Aquela que tocou a viagem inteira no carro
-        </p>
-        <div className="ra-player">
-          <div className="ra-player__art">
-            <Scene kind="estrada" />
-          </div>
-          <div>
-            <div style={{ fontSize: 14, fontWeight: 600 }}>Tocando agora</div>
-            <div className="ra-player__wave">
-              {[14, 22, 10, 18, 22, 8, 16].map((h, i) => (
-                <i
-                  key={i}
-                  style={{ height: h, animationDelay: `${i * 110}ms` }}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </>
-    ),
-  },
-  {
-    bg: "#F7A1B5",
-    fg: "#1C1416",
-    render: () => (
-      <>
-        <p className="ra-slide__kicker">O lugar mais marcante</p>
-        <div
-          style={{ borderRadius: 18, overflow: "hidden", aspectRatio: "4 / 3" }}
-        >
-          <Scene kind="praia" />
-        </div>
-        <p className="ra-slide__title">A praia onde o celular caiu no mar</p>
-      </>
-    ),
-  },
-  {
-    bg: "#D7263D",
-    fg: "#fff",
-    render: (a) => (
-      <>
-        <p className="ra-slide__kicker">A frase que mais se repetiu</p>
-        <p className="ra-slide__title" style={{ fontSize: 40 }}>
-          “Já tô chegando.”
-        </p>
-        <p className="ra-slide__kicker">Dita por {a}. Nunca era verdade.</p>
-      </>
-    ),
-  },
-  {
-    bg: "#17110F",
-    fg: "#FBF6EF",
-    render: (a, b) => (
-      <>
-        <span className="ra-lock">
-          <Lock size={28} />
-        </span>
-        <p className="ra-slide__title">
-          Uma mensagem de {a} para {b}
-        </p>
-        <p className="ra-slide__kicker">Abre em 25/12/2027</p>
-      </>
-    ),
-  },
-];
-
-const SLIDE_MS = 4200;
-
 function Previa() {
-  const [a, setA] = useState("Ana");
-  const [b, setB] = useState("Leo");
-  const [i, setI] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [dir, setDir] = useState(1);
-  const [touched, setTouched] = useState(false);
+  const [aberta, setAberta] = useState(false);
+  const tela = useRef<HTMLDivElement>(null);
+  const [tam, setTam] = useState({ escala: 0.7, altura: 844 });
 
-  const go = (step: number) => {
-    setDir(step);
-    setTouched(true);
-    setI((n) => (n + step + SLIDES.length) % SLIDES.length);
-    if (typeof navigator !== "undefined" && "vibrate" in navigator)
-      navigator.vibrate?.(8);
-  };
+  /* a Retrô roda num "celular" de 390px de largura, reduzido para caber na moldura */
+  useEffect(() => {
+    const el = tela.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([e]) => {
+      if (!e) return;
+      const escala = e.contentRect.width / 390;
+      setTam({ escala, altura: e.contentRect.height / escala });
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
-    if (paused) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const t = window.setTimeout(() => {
-      setDir(1);
-      setI((n) => (n + 1) % SLIDES.length);
-    }, SLIDE_MS);
-    return () => window.clearTimeout(t);
-  }, [i, paused]);
-
-  const nameA = a.trim() || "Você";
-  const nameB = b.trim() || "seu amor";
-  const s = SLIDES[i] ?? SLIDES[0]!;
+    if (!aberta) return;
+    const esc = (e: KeyboardEvent) => e.key === "Escape" && setAberta(false);
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", esc);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", esc);
+    };
+  }, [aberta]);
 
   return (
     <section
@@ -1142,158 +974,75 @@ function Previa() {
             Veja como seu amor vai <span className="ra-mark">receber</span>
           </h2>
           <p className="ra-lead ra-rise" style={{ "--i": 1 } as CSSProperties}>
-            Escreva os dois nomes e assista a uma Retrô de exemplo, capítulo por
-            capítulo. A completa ainda tem quiz do casal, prêmios do ano,
-            vales-presente de raspadinha e a sua carta final.
+            Esta é uma Retrô de verdade, rodando sozinha aqui no celular. Abra
+            em tela cheia, com som, para ver a experiência completa: do envelope
+            aos créditos finais.
           </p>
-          <div
-            className="ra-demo__form ra-rise"
+          <button
+            type="button"
+            className="ra-btn ra-demo__full ra-rise"
             style={{ "--i": 2 } as CSSProperties}
+            onClick={() => setAberta(true)}
           >
-            <div className="ra-field">
-              <label htmlFor="ra-a">Seu nome</label>
-              <input
-                id="ra-a"
-                value={a}
-                maxLength={14}
-                onChange={(e) => setA(e.target.value)}
-                autoComplete="off"
-              />
-            </div>
-            <span className="ra-demo__amp" aria-hidden="true">
-              &amp;
-            </span>
-            <div className="ra-field">
-              <label htmlFor="ra-b">Nome do seu amor</label>
-              <input
-                id="ra-b"
-                value={b}
-                maxLength={14}
-                onChange={(e) => setB(e.target.value)}
-                autoComplete="off"
-              />
-            </div>
-          </div>
+            ASSISTIR EM TELA CHEIA <ArrowRight size={20} strokeWidth={2.6} />
+          </button>
           <p
             className="ra-note ra-demo__hint ra-rise"
             style={{ "--i": 3 } as CSSProperties}
           >
-            Toque nas laterais da tela para avançar ou voltar. Exemplo com
-            ilustrações; a sua usa as fotos de vocês.
+            Exemplo com ilustrações; a de vocês usa as fotos de vocês.
           </p>
-          <a
-            href="./exemplo/"
-            className="ra-btn ra-demo__full ra-rise"
-            style={{ "--i": 4 } as CSSProperties}
-          >
-            VER A RETRÔ COMPLETA DE EXEMPLO{" "}
-            <ArrowRight size={20} strokeWidth={2.6} />
-          </a>
         </div>
 
         <div className="ra-demo__stage">
-          <Orbit
-            items={[
-              {
-                a: -40,
-                r: 46,
-                bg: "#FFD23F",
-                fg: "#1C1416",
-                icon: <Music size={26} />,
-                label: "",
-              },
-              {
-                a: 40,
-                r: 46,
-                bg: "#F7A1B5",
-                fg: "#1C1416",
-                icon: <Heart size={26} />,
-                label: "",
-              },
-              {
-                a: 150,
-                r: 46,
-                bg: "#D7263D",
-                fg: "#fff",
-                icon: <Camera size={26} />,
-                label: "",
-              },
-              {
-                a: 215,
-                r: 46,
-                bg: "#1C1416",
-                fg: "#FFD23F",
-                icon: <MapPin size={26} />,
-                label: "",
-              },
-            ]}
+          <button
+            type="button"
+            className="ra-phone ra-phone--real"
+            onClick={() => setAberta(true)}
+            aria-label="Assistir a Retrô de exemplo em tela cheia"
           >
-            <div
-              className="ra-phone"
-              onMouseEnter={() => setPaused(true)}
-              onMouseLeave={() => setPaused(false)}
-            >
-              <div
-                className="ra-phone__screen"
-                style={{ background: s.bg, color: s.fg }}
-                role="region"
-                aria-roledescription="carrossel"
-                aria-label="Retrô de exemplo"
-              >
-                <div
-                  className={`ra-phone__bars${paused ? " paused" : ""}`}
-                  style={{ "--dur": `${SLIDE_MS}ms` } as CSSProperties}
-                >
-                  {SLIDES.map((_, k) => (
-                    <i
-                      key={k}
-                      className={k < i ? "done" : k === i ? "now" : ""}
-                    >
-                      <b key={k === i ? `n${i}` : `o${k}`} />
-                    </i>
-                  ))}
-                </div>
-                <div
-                  className={`ra-slide${dir < 0 ? " ra-slide--back" : ""}`}
-                  key={i}
-                  aria-live="polite"
-                >
-                  {s.render(nameA, nameB)}
-                </div>
-                <div className="ra-slide__tap">
-                  <button
-                    type="button"
-                    aria-label="Capítulo anterior"
-                    onClick={() => go(-1)}
-                  />
-                  <button
-                    type="button"
-                    aria-label="Próximo capítulo"
-                    onClick={() => go(1)}
-                  />
-                </div>
-                {!touched && (
-                  <span className="ra-taphint" aria-hidden="true">
-                    <i />
-                    toque
-                  </span>
-                )}
-              </div>
-            </div>
-          </Orbit>
-          <div className="ra-hearts" aria-hidden="true">
-            {[0, 1, 2, 3, 4, 5].map((k) => (
-              <Heart
-                key={k}
-                size={16 + (k % 3) * 6}
-                fill="currentColor"
-                strokeWidth={0}
-                style={{ "--h": k } as CSSProperties}
+            <span className="ra-phone__screen" ref={tela}>
+              <iframe
+                src="./exemplo/?demo"
+                title="Retrô de exemplo rodando sozinha"
+                loading="lazy"
+                tabIndex={-1}
+                aria-hidden="true"
+                style={{
+                  transform: `scale(${tam.escala})`,
+                  height: `${tam.altura}px`,
+                }}
               />
-            ))}
-          </div>
+              <span className="ra-phone__toque">
+                <Maximize2 size={14} /> Toque para assistir em tela cheia
+              </span>
+            </span>
+          </button>
         </div>
       </div>
+
+      {aberta && (
+        <div
+          className="ra-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Retrô de exemplo"
+        >
+          <iframe
+            src="./exemplo/"
+            title="Retrô de exemplo"
+            allow="autoplay; microphone"
+          />
+          <button
+            type="button"
+            className="ra-modal__fechar"
+            onClick={() => setAberta(false)}
+            aria-label="Fechar e voltar para a página"
+          >
+            <X size={22} />
+          </button>
+        </div>
+      )}
     </section>
   );
 }
