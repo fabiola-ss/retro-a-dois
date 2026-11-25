@@ -129,7 +129,9 @@ export function PacocaG({
   );
 }
 
+/** Uma cena ilustrada ou, nas Retrôs de clientes, o endereço de uma foto real. */
 export type Cena =
+  | (string & {})
   | "casal"
   | "praia"
   | "praia-por-do-sol"
@@ -144,7 +146,24 @@ export type Cena =
   | "sofa";
 
 /** Uma "foto" ilustrada. Quando as fotos reais chegarem, entram no lugar disto. */
+export const ehFoto = (cena: string) =>
+  /^(https?:|blob:|data:|\/|\.)/.test(cena);
+
 export function Ilustracao({ cena }: { cena: Cena }) {
+  if (ehFoto(cena))
+    return (
+      <img
+        src={cena}
+        alt=""
+        loading="lazy"
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          display: "block",
+        }}
+      />
+    );
   const casal = (x: number, y: number, s: number) => (
     <CasalG x={x} y={y} s={s} />
   );

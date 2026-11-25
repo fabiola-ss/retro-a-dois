@@ -1,10 +1,17 @@
 /* Conteúdo da Retrô de exemplo (casal fictício).
-   Para montar a Retrô de um cliente, basta trocar os dados deste arquivo
-   (e, quando houver, trocar as cenas ilustradas pelas fotos reais). */
+   As Retrôs dos clientes usam este mesmo formato: o formulário em /montar/
+   monta um objeto assim, e a página /r/ o carrega com usarRetro(). */
 
 import type { Cena } from "./arte";
 
-export const RETRO = {
+export type Plano = "basica" | "completa" | "inesquecivel";
+
+export const EXEMPLO = {
+  ehExemplo: true as boolean,
+  plano: "inesquecivel" as Plano,
+  fotoFavorita: "casal" as Cena,
+  /* comprou o extra do pedido de namoro/casamento */
+  temPedido: false as boolean,
   de: "Ana",
   para: "Leo",
   ano: 2026,
@@ -261,7 +268,11 @@ export const RETRO = {
      Vazio no exemplo: uma voz do próprio aparelho lê a carta. */
   cartaAudio: "" as string,
 
-  capsula: { abre: new Date(2027, 11, 25, 0, 0, 0), abreTexto: "25/12/2027" },
+  capsula: {
+    abre: new Date(2027, 11, 25, 0, 0, 0),
+    abreTexto: "25/12/2027",
+    mensagem: "" as string,
+  },
 
   creditos: [
     ["Estrelando", "Ana e Leo"],
@@ -272,3 +283,12 @@ export const RETRO = {
     ["Direção", "o amor de vocês"],
   ],
 };
+
+export type Retro = typeof EXEMPLO;
+
+/** Os dados que a Retrô está mostrando agora (o exemplo ou a de um cliente). */
+export let RETRO: Retro = EXEMPLO;
+
+export function usarRetro(dados: Retro) {
+  RETRO = dados;
+}

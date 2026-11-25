@@ -110,9 +110,24 @@ export function CartaAudio() {
   const audio = useRef<HTMLAudioElement | null>(null);
   const [tocando, setTocando] = useState(false);
   const [progresso, setProgresso] = useState(0);
-  const tem =
-    !!arquivo || (typeof window !== "undefined" && "speechSynthesis" in window);
-  const duracao = Math.round(texto.split(" ").length / 2.4);
+  /* clientes: só aparece no plano Inesquecível e se houver áudio gravado */
+  const tem = RETRO.ehExemplo
+    ? !!arquivo ||
+      (typeof window !== "undefined" && "speechSynthesis" in window)
+    : !!arquivo && RETRO.plano === "inesquecivel";
+  const [duracao, setDuracao] = useState(() =>
+    Math.round(texto.split(" ").length / 2.4),
+  );
+
+  /* com áudio gravado, mostra a duração real */
+  useEffect(() => {
+    if (!arquivo) return;
+    const a = new Audio(arquivo);
+    a.preload = "metadata";
+    a.onloadedmetadata = () => {
+      if (Number.isFinite(a.duration)) setDuracao(Math.round(a.duration));
+    };
+  }, [arquivo]);
 
   useEffect(
     () => () => {
@@ -193,11 +208,11 @@ export function CartaAudio() {
       <span className="rx-audio__info">
         <b>Áudio de {RETRO.de}</b>
         <small>
-          0:{String(duracao).padStart(2, "0")}
+          {Math.floor(duracao / 60)}:{String(duracao % 60).padStart(2, "0")}
           {!arquivo && " · voz de exemplo"}
         </small>
       </span>
-      <span className="rx-audio__plano">Inesquecível</span>
+      {RETRO.ehExemplo && <span className="rx-audio__plano">Inesquecível</span>}
     </div>
   );
 }
@@ -285,7 +300,7 @@ export function Responder() {
     <>
       <p className="rx-kicker rx-a">Sua vez, {RETRO.para}</p>
       <h2 className="rx-titulo rx-a" style={{ "--d": 1 } as CSSProperties}>
-        Responda para {RETRO.de === "Ana" ? "a" : "o"} {RETRO.de}
+        Responda para {RETRO.de}
       </h2>
       <div className="rx-resp rx-a" style={{ "--d": 2 } as CSSProperties}>
         <label htmlFor="rx-resp-txt" className="rx-resp__rotulo">

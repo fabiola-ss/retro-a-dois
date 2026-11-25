@@ -217,7 +217,7 @@ export function Quiz({ auto }: { auto: boolean }) {
                 <b>
                   {escolha === atual.resposta
                     ? "Acertou!"
-                    : `Foi ${atual.resposta === RETRO.de ? "a" : "o"} ${atual.resposta}.`}
+                    : `Foi: ${atual.resposta}.`}
                 </b>
                 {atual.piada}
               </>

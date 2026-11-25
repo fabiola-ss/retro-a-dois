@@ -14,6 +14,9 @@ export default defineConfig({
       input: {
         main: resolve(import.meta.dirname, "src/index.html"),
         exemplo: resolve(import.meta.dirname, "src/exemplo/index.html"),
+        montar: resolve(import.meta.dirname, "src/montar/index.html"),
+        retro: resolve(import.meta.dirname, "src/r/index.html"),
+        painel: resolve(import.meta.dirname, "src/painel/index.html"),
       },
     },
   },

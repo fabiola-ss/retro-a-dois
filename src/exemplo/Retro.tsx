@@ -19,7 +19,7 @@ import {
   VolumeX,
 } from "lucide-react";
 
-import { CasalG, Ilustracao, Polaroid } from "./arte";
+import { CasalG, ehFoto, Ilustracao, Polaroid } from "./arte";
 import { RETRO } from "./dados";
 import {
   AntesDepois,
@@ -58,6 +58,27 @@ const DURACAO: Record<string, number> = {
   "rx-responder": 6000,
 };
 
+/* um capítulo só aparece se o casal preencheu o conteúdo dele */
+const TEM: Record<string, () => boolean> = {
+  "rx-comeco": () => RETRO.comeco.length > 0,
+  "rx-playlist": () => RETRO.playlist.length > 0,
+  "rx-lugar": () => !!RETRO.lugar.nome,
+  "rx-antesdepois": () =>
+    !!RETRO.antesDepois.antes.cena && !!RETRO.antesDepois.depois.cena,
+  "rx-mes": () => !!RETRO.mesFeliz.nome,
+  "rx-caos": () => RETRO.caos.itens.length > 0,
+  "rx-frase": () => !!RETRO.frase.texto,
+  "rx-top": () => RETRO.top5.itens.length > 0,
+  "rx-quiz-ch": () => RETRO.quiz.length > 0,
+  "rx-premios-ch": () => RETRO.premios.length > 0,
+  "rx-mural": () => RETRO.mural.length > 0,
+  "rx-recados-ch": () => RETRO.recados.length > 0,
+  "rx-sonhos": () => RETRO.sonhos.length > 0,
+  "rx-vales-ch": () => RETRO.vales.length > 0,
+  "rx-capsula": () => !!RETRO.capsula.abreTexto,
+  "rx-musica": () => !!RETRO.musica.titulo,
+};
+
 export function RetroExemplo() {
   const scroller = useRef<HTMLDivElement>(null);
   const trilha = useRef(criarTrilha());
@@ -67,8 +88,9 @@ export function RetroExemplo() {
   const [som, setSom] = useState(false);
   const [auto, setAuto] = useState(false);
   const pedido =
-    typeof window !== "undefined" &&
-    new URLSearchParams(window.location.search).has("pedido");
+    (typeof window !== "undefined" &&
+      new URLSearchParams(window.location.search).has("pedido")) ||
+    RETRO.temPedido;
 
   useEffect(() => {
     const el = scroller.current;
@@ -108,10 +130,14 @@ export function RetroExemplo() {
       });
   };
 
+  const comTrilha = RETRO.plano !== "basica";
+
   const abrir = () => {
     setAberto(true);
-    trilha.current.ligar();
-    setSom(true);
+    if (comTrilha) {
+      trilha.current.ligar();
+      setSom(true);
+    }
     window.setTimeout(() => irPara(1), reduz() ? 0 : 1300);
   };
 
@@ -121,7 +147,7 @@ export function RetroExemplo() {
     setSom(!som);
   };
 
-  const capitulos: {
+  const todos: {
     classe: string;
     plano: Plano;
     conteudo: (on: boolean) => ReactNode;
@@ -218,6 +244,15 @@ export function RetroExemplo() {
       conteudo: (on) => <Creditos on={on} onDeNovo={() => irPara(1)} />,
     },
   ];
+  /* só os capítulos do plano comprado e que têm conteúdo */
+  const nivel = { basica: 0, completa: 1, inesquecivel: 2 }[RETRO.plano];
+  const capitulos = todos.filter(
+    (c) =>
+      (c.plano === null ||
+        (c.classe === "rx-pergunta-ch" && RETRO.temPedido) ||
+        (c.plano === "Completa" ? nivel >= 1 : nivel >= 2)) &&
+      (TEM[c.classe]?.() ?? true),
+  );
   const total = capitulos.length - 1;
 
   /* modo "assistir sozinho": avança no ritmo de cada capítulo */
@@ -257,32 +292,34 @@ export function RetroExemplo() {
               <i key={k} className={k + 1 <= ativo ? "cheio" : ""} />
             ))}
           </div>
-          <div className="rx-controles">
-            <button
-              type="button"
-              className={`rx-som${auto ? " ligado" : ""}`}
-              onClick={() => setAuto(!auto)}
-              aria-label={
-                auto
-                  ? "Pausar o modo assistir sozinho"
-                  : "Assistir sozinho, como um filme"
-              }
-              aria-pressed={auto}
-            >
-              {auto ? <Pause size={18} /> : <Play size={18} />}
-            </button>
-            <button
-              type="button"
-              className="rx-som"
-              onClick={alternarSom}
-              aria-label={
-                som ? "Desligar a trilha sonora" : "Ligar a trilha sonora"
-              }
-            >
-              {som ? <Volume2 size={20} /> : <VolumeX size={20} />}
-            </button>
-          </div>
-          {ativo === 1 && !auto && (
+          {comTrilha && (
+            <div className="rx-controles">
+              <button
+                type="button"
+                className={`rx-som${auto ? " ligado" : ""}`}
+                onClick={() => setAuto(!auto)}
+                aria-label={
+                  auto
+                    ? "Pausar o modo assistir sozinho"
+                    : "Assistir sozinho, como um filme"
+                }
+                aria-pressed={auto}
+              >
+                {auto ? <Pause size={18} /> : <Play size={18} />}
+              </button>
+              <button
+                type="button"
+                className="rx-som"
+                onClick={alternarSom}
+                aria-label={
+                  som ? "Desligar a trilha sonora" : "Ligar a trilha sonora"
+                }
+              >
+                {som ? <Volume2 size={20} /> : <VolumeX size={20} />}
+              </button>
+            </div>
+          )}
+          {comTrilha && ativo === 1 && !auto && (
             <button
               type="button"
               className="rx-autodica"
@@ -303,7 +340,7 @@ export function RetroExemplo() {
             aria-label={`Capítulo ${k} de ${total}`}
           >
             <div className="rx-in">{c.conteudo(vistos.has(k))}</div>
-            {c.plano && (
+            {RETRO.ehExemplo && c.plano && (
               <span
                 className={`rx-plano${c.plano === "Inesquecível" ? " top" : ""}`}
               >
@@ -388,7 +425,7 @@ function Abertura({ on }: { on: boolean }) {
       </h1>
       <div className="rx-abertura__foto">
         <Polaroid
-          cena="casal"
+          cena={RETRO.fotoFavorita}
           legenda="nós dois"
           rot={-4}
           className={on ? "cai" : ""}
@@ -491,7 +528,18 @@ function Musica({ on, tocando }: { on: boolean; tocando: boolean }) {
           </defs>
           <circle cx="100" cy="100" r="34" fill="#D7263D" />
           <g clipPath="url(#rx-rotulo)">
-            <CasalG x={68} y={70} s={0.64} />
+            {ehFoto(RETRO.fotoFavorita) ? (
+              <image
+                href={RETRO.fotoFavorita}
+                x="66"
+                y="66"
+                width="68"
+                height="68"
+                preserveAspectRatio="xMidYMid slice"
+              />
+            ) : (
+              <CasalG x={68} y={70} s={0.64} />
+            )}
           </g>
           <circle cx="100" cy="100" r="3" fill="#FBF6EF" />
         </svg>
@@ -726,7 +774,7 @@ function Frase({ on }: { on: boolean }) {
         “{f.texto}”
       </h2>
       <p className={`rx-texto rx-depois${fim ? " mostra" : ""}`}>
-        Dita pela {f.quem} {f.vezes}. {f.verdade}
+        Quem mais disse: {f.quem}, {f.vezes}. {f.verdade}
       </p>
     </>
   );
@@ -877,6 +925,19 @@ function Capsula({ on }: { on: boolean }) {
     return () => window.clearInterval(t);
   }, [on]);
   const ms = Math.max(0, RETRO.capsula.abre.getTime() - agora);
+  if (ms === 0 && RETRO.capsula.mensagem)
+    return (
+      <>
+        <p className="rx-kicker rx-a">A cápsula do tempo abriu</p>
+        <div
+          className="rx-papel rx-a"
+          style={{ "--d": 1, minHeight: 0 } as CSSProperties}
+        >
+          <p className="rx-escrita">{RETRO.capsula.mensagem}</p>
+          <p className="rx-assinatura mostra">{RETRO.de}</p>
+        </div>
+      </>
+    );
   const nums = [
     [Math.floor(ms / 86400000), "dias"],
     [Math.floor(ms / 3600000) % 24, "horas"],
@@ -896,7 +957,7 @@ function Capsula({ on }: { on: boolean }) {
         <Lock size={44} strokeWidth={2.2} />
       </button>
       <h2 className="rx-titulo rx-a" style={{ "--d": 1 } as CSSProperties}>
-        Uma mensagem trancada até o Natal de {RETRO.ano + 1}
+        Uma mensagem trancada até {RETRO.capsula.abreTexto}
       </h2>
       <div
         className="rx-contagem rx-a"
@@ -942,7 +1003,7 @@ function Creditos({ on, onDeNovo }: { on: boolean; onDeNovo: () => void }) {
       </div>
       <a className="rx-assinatura-marca" href="../">
         <span>
-          <Ilustracao cena="casal" />
+          <Ilustracao cena={RETRO.fotoFavorita} />
         </span>
         Feito com Retrô a Dois · Monte a de vocês
       </a>
