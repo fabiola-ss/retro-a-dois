@@ -2,15 +2,15 @@
    As Retrôs dos clientes usam este mesmo formato: o formulário em /montar/
    monta um objeto assim, e a página /r/ o carrega com usarRetro(). */
 
-import type { Cena } from "./arte";
 import type { Tema } from "./temas";
+import { FOTOS as F } from "./fotos";
 
 export type Plano = "basica" | "completa" | "inesquecivel";
 
 export const EXEMPLO = {
   ehExemplo: true as boolean,
   plano: "inesquecivel" as Plano,
-  fotoFavorita: "casal" as Cena,
+  fotoFavorita: F.neve,
   tema: "classico" as Tema,
   /* comprou o extra do pedido de namoro/casamento */
   temPedido: false as boolean,
@@ -43,7 +43,7 @@ export const EXEMPLO = {
     {
       titulo: "Velha Infância",
       artista: "Tribalistas",
-      momento: "a estrada inteira até o Rosa",
+      momento: "a estrada inteira até Pomerode",
     },
     {
       titulo: "Trem-Bala",
@@ -68,15 +68,15 @@ export const EXEMPLO = {
   ],
 
   lugar: {
-    nome: "Praia do Rosa",
+    nome: "Pomerode",
     regiao: "Santa Catarina",
     quando: "julho de 2026",
     frase:
-      "Onde o celular caiu no mar e, mesmo assim, foi a melhor semana do ano.",
+      "Onde a bateria do celular acabou no primeiro dia e, mesmo assim, foi a melhor semana do ano.",
     fotos: [
-      { cena: "praia" as Cena, legenda: "primeiro mergulho" },
-      { cena: "praia-por-do-sol" as Cena, legenda: "o pôr do sol" },
-      { cena: "estrada" as Cena, legenda: "a estrada até lá" },
+      { cena: F.portal, legenda: "o portal da cidade" },
+      { cena: F.parque, legenda: "o parque, de novo" },
+      { cena: F.castelo, legenda: "o castelo" },
     ],
   },
 
@@ -84,11 +84,11 @@ export const EXEMPLO = {
     mes: 6, // 0 = janeiro
     nome: "Julho",
     frase:
-      "A viagem para o Rosa e o aniversário da Ana. Teve bolo, teve mar e teve muita risada.",
+      "A viagem para Pomerode e o aniversário da Ana. Teve bolo, teve frio e teve muita risada.",
     fotos: [
-      { cena: "aniversario" as Cena, legenda: "o bolo torto" },
-      { cena: "jantar" as Cena, legenda: "jantar surpresa" },
-      { cena: "praia" as Cena, legenda: "Rosa, de novo" },
+      { cena: F.neve, legenda: "a neve que ninguém esperava" },
+      { cena: F.festa, legenda: "o aniversário" },
+      { cena: F.parque, legenda: "o parque" },
     ],
   },
 
@@ -101,7 +101,7 @@ export const EXEMPLO = {
       "0 brigas sérias (quase)",
     ],
     carimbo: "Sobrevivemos",
-    foto: { cena: "mudanca" as Cena, legenda: "a mudança" },
+    foto: { cena: F.casa, legenda: "a primeira noite na casa nova" },
   },
 
   frase: {
@@ -122,12 +122,12 @@ export const EXEMPLO = {
   },
 
   mural: [
-    { cena: "cafe" as Cena, legenda: "domingo" },
-    { cena: "pacoca" as Cena, legenda: "o dia em que o Paçoca chegou" },
-    { cena: "cidade" as Cena, legenda: "noite na cidade" },
-    { cena: "sofa" as Cena, legenda: "maratona de série" },
-    { cena: "natal" as Cena, legenda: "Natal passado" },
-    { cena: "casal" as Cena, legenda: "a gente" },
+    { cena: F.casa, legenda: "domingo em casa" },
+    { cena: F.shopping, legenda: "de mãos dadas" },
+    { cena: F.catedral, legenda: "um sábado em São Paulo" },
+    { cena: F.bar, legenda: "o bar de sempre" },
+    { cena: F.castelo, legenda: "mais um castelo" },
+    { cena: F.neve, legenda: "a gente" },
   ],
 
   comeco: [
@@ -135,31 +135,31 @@ export const EXEMPLO = {
       data: "março de 2021",
       titulo: "O primeiro encontro",
       texto: "Um café que virou jantar, que virou cinco horas de conversa.",
-      cena: "cafe" as Cena,
+      cena: F.antes,
     },
     {
       data: "setembro de 2021",
       titulo: "O primeiro \u201ceu te amo\u201d",
       texto: "Dito sem querer, no meio de um filme. Ninguém lembra do filme.",
-      cena: "sofa" as Cena,
+      cena: F.bar,
     },
     {
       data: "fevereiro de 2022",
       titulo: "Começamos a namorar",
       texto: "No dia 14, porque a Ana achava clichê e o Leo achava perfeito.",
-      cena: "jantar" as Cena,
+      cena: F.shopping,
     },
     {
       data: "março de 2026",
       titulo: "A casa nova",
       texto: "Um sofá, duas escovas de dente e o Paçoca.",
-      cena: "mudanca" as Cena,
+      cena: F.casa,
     },
   ],
 
   antesDepois: {
-    antes: { cena: "cidade" as Cena, legenda: "2021" },
-    depois: { cena: "casal" as Cena, legenda: "2026" },
+    antes: { cena: F.antes, legenda: "2021" },
+    depois: { cena: F.festa, legenda: "2026" },
     frase: "Cinco anos depois, o mesmo sorriso. O cabelo do Leo, nem tanto.",
   },
 
@@ -255,63 +255,63 @@ export const EXEMPLO = {
   mesAMes: [
     {
       mes: "Janeiro",
-      frase: "Réveillon na casa da Júlia e a promessa de viajar mais.",
-      cena: "natal" as Cena,
+      frase: "Férias em São Paulo e a promessa de viajar mais.",
+      cena: F.catedral,
     },
     {
       mes: "Fevereiro",
-      frase: "Quatro anos de namoro e um jantar que acabou em pizza.",
-      cena: "jantar" as Cena,
+      frase: "Quatro anos de namoro e um brinde no bar de sempre.",
+      cena: F.bar,
     },
     {
       mes: "Março",
       frase: "A mudança. A geladeira. O sofá. A gente sobreviveu.",
-      cena: "mudanca" as Cena,
+      cena: F.casa,
     },
     {
       mes: "Abril",
       frase: "O Paçoca chegou e virou o dono da casa.",
-      cena: "pacoca" as Cena,
+      cena: F.casa,
     },
     {
       mes: "Maio",
-      frase: "Maratona de série no sofá novo, todo fim de semana.",
-      cena: "sofa" as Cena,
+      frase: "Passeio de domingo, de mãos dadas, sem pressa.",
+      cena: F.shopping,
     },
     {
       mes: "Junho",
-      frase: "Festa junina, quentão e o Leo dançando quadrilha.",
-      cena: "cafe" as Cena,
+      frase: "Fim de semana na serra, frio e fondue.",
+      cena: F.castelo,
     },
     {
       mes: "Julho",
-      frase: "Praia do Rosa e o aniversário da Ana.",
-      cena: "praia" as Cena,
+      frase: "Pomerode, a neve e o aniversário da Ana.",
+      cena: F.neve,
     },
     {
       mes: "Agosto",
-      frase: "Volta à rotina, com saudade do mar.",
-      cena: "cidade" as Cena,
+      frase: "Volta à rotina, com saudade de Pomerode.",
+      cena: F.portal,
     },
     {
       mes: "Setembro",
-      frase: "Primavera e piquenique no parque.",
-      cena: "casal" as Cena,
+      frase: "Primavera e um dia inteiro no parque.",
+      cena: F.parque,
     },
     {
       mes: "Outubro",
       frase: "A lasanha que quase deu certo.",
-      cena: "aniversario" as Cena,
+      cena: F.bar,
     },
     {
       mes: "Novembro",
       frase: "Planejando o Natal e a viagem de 2027.",
-      cena: "estrada" as Cena,
+      cena: F.catedral,
     },
     {
       mes: "Dezembro",
       frase: "E chegou a hora de lembrar de tudo isso.",
-      cena: "praia-por-do-sol" as Cena,
+      cena: F.festa,
     },
   ],
 
@@ -340,13 +340,7 @@ export const EXEMPLO = {
   ],
 
   mapa: {
-    lugares: [
-      "São Paulo",
-      "Campos do Jordão",
-      "Praia do Rosa",
-      "Florianópolis",
-      "Paraty",
-    ],
+    lugares: ["São Paulo", "Campos do Jordão", "Pomerode", "Penha", "Paraty"],
     km: 2340,
   },
 
@@ -372,7 +366,7 @@ export const EXEMPLO = {
     {
       mes: "Julho",
       tempo: "arcoiris",
-      texto: "Céu limpo na Praia do Rosa. Índice de felicidade: máximo.",
+      texto: "Neve em Pomerode. Índice de felicidade: máximo.",
     },
     {
       mes: "Outubro",
@@ -390,12 +384,12 @@ export const EXEMPLO = {
   ],
 
   videos: [
-    { src: "../videos/praia.mp4", legenda: "o primeiro mergulho no Rosa" },
+    { src: "../videos/praia.mp4", legenda: "o primeiro mergulho do ano" },
     { src: "../videos/pacoca.mp4", legenda: "o Paçoca conhecendo a casa" },
   ] as { src: string; legenda: string }[],
 
   sonhos: [
-    "Conhecer a neve juntos",
+    "Ver a neve de novo",
     "Acertar a receita da lasanha",
     "Um irmão para o Paçoca",
   ],
@@ -422,7 +416,7 @@ export const EXEMPLO = {
     ["Estrelando", "Ana e Leo"],
     ["Participação especial", "Paçoca"],
     ["Trilha sonora", "Velha Infância, Tribalistas"],
-    ["Locações", "Praia do Rosa, o apartamento novo e o banco do carro"],
+    ["Locações", "Pomerode, o apartamento novo e o banco do carro"],
     ["Figurino", "o moletom que ela roubou dele"],
     ["Direção", "o amor de vocês"],
   ],

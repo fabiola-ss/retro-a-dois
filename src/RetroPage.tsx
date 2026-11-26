@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 
 import { Ilustracao } from "./exemplo/arte";
+import { FOTOS } from "./exemplo/fotos";
 
 /* Links de checkout: troque pelos links reais de cada plano. */
 const CHECKOUT = {
@@ -899,7 +900,7 @@ function ComoFunciona() {
                   </span>
                   <div className="ra-ui-phone__polaroid">
                     <div>
-                      <Ilustracao cena="casal" />
+                      <Ilustracao cena={FOTOS.neve} />
                     </div>
                     <span>nós dois</span>
                   </div>
