@@ -14,6 +14,9 @@ import anel from "./fotos/12.jpg";
 import maos from "./fotos/13.jpg";
 import chave from "./fotos/14.jpg";
 import formatura from "./fotos/15.jpg";
+import festa2 from "./fotos/16.jpg";
+import pacoca from "./fotos/17.jpg";
+import beijo from "./fotos/18.jpg";
 import type { Cena } from "./arte";
 
 const c = (url: string) => url as Cena;
@@ -34,4 +37,7 @@ export const FOTOS = {
   maos: c(maos),
   chave: c(chave),
   formatura: c(formatura),
+  festa2: c(festa2),
+  pacoca: c(pacoca),
+  beijo: c(beijo),
 };

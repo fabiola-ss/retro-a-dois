@@ -124,10 +124,10 @@ export const EXEMPLO = {
   mural: [
     { cena: F.casa, legenda: "domingo em casa" },
     { cena: F.maos, legenda: "de mãos dadas" },
-    { cena: F.catedral, legenda: "um sábado em São Paulo" },
+    { cena: F.pacoca, legenda: "o dia em que o Paçoca chegou" },
     { cena: F.formatura, legenda: "a formatura dela" },
     { cena: F.anel, legenda: "o anel" },
-    { cena: F.neve, legenda: "a gente" },
+    { cena: F.beijo, legenda: "a gente" },
   ],
 
   comeco: [
@@ -260,8 +260,8 @@ export const EXEMPLO = {
     },
     {
       mes: "Fevereiro",
-      frase: "Quatro anos de namoro e um brinde no bar de sempre.",
-      cena: F.bar,
+      frase: "Quatro anos de namoro e um beijo que ainda dá frio na barriga.",
+      cena: F.beijo,
     },
     {
       mes: "Março",
@@ -271,7 +271,7 @@ export const EXEMPLO = {
     {
       mes: "Abril",
       frase: "O Paçoca chegou e virou o dono da casa.",
-      cena: F.casa,
+      cena: F.pacoca,
     },
     {
       mes: "Maio",
@@ -280,8 +280,8 @@ export const EXEMPLO = {
     },
     {
       mes: "Junho",
-      frase: "Fim de semana na serra, frio e fondue.",
-      cena: F.castelo,
+      frase: "O casamento da Júlia. A Ana pegou o buquê.",
+      cena: F.festa2,
     },
     {
       mes: "Julho",
