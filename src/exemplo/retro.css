@@ -3359,3 +3359,9 @@ html[data-tema="minimal"]
   :is(.rx-btn, .rx-cadeado, .rx-faixas a) {
   color: #161616;
 }
+
+/* sem o destaque azul que o celular põe nos botões ao tocar */
+.rx button,
+.rx a {
+  -webkit-tap-highlight-color: transparent;
+}

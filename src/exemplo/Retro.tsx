@@ -115,7 +115,13 @@ export function RetroExemplo() {
   const trilha = useRef(criarTrilha());
   const [aberto, setAberto] = useState(false);
   const [ativo, setAtivo] = useState(0);
-  const [vistos, setVistos] = useState<Set<number>>(() => new Set([0]));
+  /* ?gravar: todos os capítulos já chegam prontos na tela (para gravar anúncios) */
+  const [vistos, setVistos] = useState<Set<number>>(() =>
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).has("gravar")
+      ? new Set(Array.from({ length: 80 }, (_, k) => k))
+      : new Set([0]),
+  );
   const [som, setSom] = useState(false);
   const [auto, setAuto] = useState(false);
   const pedido =
