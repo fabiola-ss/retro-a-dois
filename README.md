@@ -61,9 +61,9 @@ No topo de `src/RetroPage.tsx`, troque `#planos` pelo link de cada plano:
 
 ```ts
 const CHECKOUT = {
-  basica: "#planos",
-  completa: "#planos",
-  inesquecivel: "#planos",
+  basica: "https://pay.kiwify.com.br/JSrFo7E",
+  completa: "https://pay.kiwify.com.br/jSjdHtY",
+  inesquecivel: "https://pay.kiwify.com.br/2XCZkSk",
 };
 ```
 
