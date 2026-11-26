@@ -74,7 +74,7 @@ export const EXEMPLO = {
     frase:
       "Onde a bateria do celular acabou no primeiro dia e, mesmo assim, foi a melhor semana do ano.",
     fotos: [
-      { cena: F.portal, legenda: "o portal da cidade" },
+      { cena: F.portal, legenda: "o portal" },
       { cena: F.parque, legenda: "o parque, de novo" },
       { cena: F.castelo, legenda: "o castelo" },
     ],
@@ -86,7 +86,7 @@ export const EXEMPLO = {
     frase:
       "A viagem para Pomerode e o aniversário da Ana. Teve bolo, teve frio e teve muita risada.",
     fotos: [
-      { cena: F.neve, legenda: "a neve que ninguém esperava" },
+      { cena: F.neve, legenda: "neve!" },
       { cena: F.festa, legenda: "o aniversário" },
       { cena: F.parque, legenda: "o parque" },
     ],
