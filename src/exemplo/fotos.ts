@@ -9,6 +9,11 @@ import castelo from "./fotos/7.jpg";
 import catedral from "./fotos/8.jpg";
 import bar from "./fotos/9.jpg";
 import shopping from "./fotos/10.jpg";
+import aliancas from "./fotos/11.jpg";
+import anel from "./fotos/12.jpg";
+import maos from "./fotos/13.jpg";
+import chave from "./fotos/14.jpg";
+import formatura from "./fotos/15.jpg";
 import type { Cena } from "./arte";
 
 const c = (url: string) => url as Cena;
@@ -24,4 +29,9 @@ export const FOTOS = {
   catedral: c(catedral),
   bar: c(bar),
   shopping: c(shopping),
+  aliancas: c(aliancas),
+  anel: c(anel),
+  maos: c(maos),
+  chave: c(chave),
+  formatura: c(formatura),
 };

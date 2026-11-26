@@ -101,7 +101,7 @@ export const EXEMPLO = {
       "0 brigas sérias (quase)",
     ],
     carimbo: "Sobrevivemos",
-    foto: { cena: F.casa, legenda: "a primeira noite na casa nova" },
+    foto: { cena: F.chave, legenda: "a chave da casa nova" },
   },
 
   frase: {
@@ -123,10 +123,10 @@ export const EXEMPLO = {
 
   mural: [
     { cena: F.casa, legenda: "domingo em casa" },
-    { cena: F.shopping, legenda: "de mãos dadas" },
+    { cena: F.maos, legenda: "de mãos dadas" },
     { cena: F.catedral, legenda: "um sábado em São Paulo" },
-    { cena: F.bar, legenda: "o bar de sempre" },
-    { cena: F.castelo, legenda: "mais um castelo" },
+    { cena: F.formatura, legenda: "a formatura dela" },
+    { cena: F.anel, legenda: "o anel" },
     { cena: F.neve, legenda: "a gente" },
   ],
 
@@ -153,7 +153,7 @@ export const EXEMPLO = {
       data: "março de 2026",
       titulo: "A casa nova",
       texto: "Um sofá, duas escovas de dente e o Paçoca.",
-      cena: F.casa,
+      cena: F.chave,
     },
   ],
 
@@ -266,7 +266,7 @@ export const EXEMPLO = {
     {
       mes: "Março",
       frase: "A mudança. A geladeira. O sofá. A gente sobreviveu.",
-      cena: F.casa,
+      cena: F.chave,
     },
     {
       mes: "Abril",
@@ -276,7 +276,7 @@ export const EXEMPLO = {
     {
       mes: "Maio",
       frase: "Passeio de domingo, de mãos dadas, sem pressa.",
-      cena: F.shopping,
+      cena: F.maos,
     },
     {
       mes: "Junho",
@@ -300,13 +300,13 @@ export const EXEMPLO = {
     },
     {
       mes: "Outubro",
-      frase: "A lasanha que quase deu certo.",
-      cena: F.bar,
+      frase: "A formatura da Ana. Teve beca, teve choro e teve festa.",
+      cena: F.formatura,
     },
     {
       mes: "Novembro",
-      frase: "Planejando o Natal e a viagem de 2027.",
-      cena: F.catedral,
+      frase: "As alianças chegaram. O resto ainda é segredo.",
+      cena: F.aliancas,
     },
     {
       mes: "Dezembro",
